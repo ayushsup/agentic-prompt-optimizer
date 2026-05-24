@@ -1,0 +1,28 @@
+{
+  "parties": {
+    "administrative_agent": "CITIBANK, N.A. and JPMORGAN CHASE BANK, N.A.",
+    "borrower": "THE WALT DISNEY COMPANY",
+    "lead_arranger": [
+      "CITIBANK, N.A.",
+      "JPMORGAN CHASE BANK, N.A.",
+      "BNP PARIBAS SECURITIES CORP.",
+      "DEUTSCHE BANK SECURITIES INC."
+    ],
+    "lenders": [
+      "NOT_FOUND"
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 5250000000,
+      "currency": "USD"
+    },
+    "agreement_date": "2022-03-04",
+    "authorized_officer_definition": "the chief executive officer, the president, the chief financial officer, the treasurer or any assistant treasurer of the Borrower",
+    "beneficial_ownership_certification_required": false,
+    "borrowing_request": "Each Borrowing shall be made on notice, given not later than (i) 11:00 A.M. (New York City time) on the same Business Day as the date of a proposed Borrowing comprised of Base Rate Advances, (ii) 11:00 A.M. (New York City time) on the third Business Day prior to the date of a proposed Borrowing comprised of EURIBOR Advances or TIBOR Advances, (iii) 11:00 A.M. (New York City time) on the fifth RFR Business Day prior to the date of a proposed Borrowing comprised of SONIA Advances and (iv)(A) 11:00 A.M. (New York City time) on the third Business Day prior to the date of a proposed Borrowing comprised of Term SOFR Advances or (B) if applicable pursuant to Section 2.08, 11:00 A.M. (New York City time) on the fifth RFR Business Day prior to the date of a proposed Borrowing comprised of Daily Simple SOFR Advances, by the Borrower to the Designated Agent, which shall give to each Lender prompt notice thereof.",
+    "governing_law": "the State of New York",
+    "maturity_date": "2023-03-03",
+    "use_of_proceeds": "The proceeds of the Advances shall be available (and the Borrower agrees that it shall use such proceeds) for general corporate purposes of the Borrower and its subsidiaries. Notwithstanding the foregoing provisions of this Section 2.18, the Borrower will not use the proceeds of any Advance to purchase the capital stock of any corporation in a transaction, or as part of a series of transactions, (i) the purpose of which is, at the time of any such purchase, to acquire control of such corporation or (ii) the result of which is the ownership by the Borrower and its Subsidiaries of 10% or more of the capital stock of such corporation, in either case if the board of directors of such corporation has publicly announced its opposition to such transaction."
+  }
+}

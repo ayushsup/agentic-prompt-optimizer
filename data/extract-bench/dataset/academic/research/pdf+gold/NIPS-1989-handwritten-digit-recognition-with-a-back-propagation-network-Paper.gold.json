@@ -1,0 +1,53 @@
+{
+  "title": "Handwritten Digit Recognition with a Back-Propagation Network",
+  "ids": null,
+  "venue": null,
+  "publication_date": null,
+  "authors": [
+    {
+      "name": "Le Cun",
+      "affiliation": "AT&T Bell Laboratories"
+    },
+    {
+      "name": "B. Boser",
+      "affiliation": "AT&T Bell Laboratories"
+    },
+    {
+      "name": "J. S. Denker",
+      "affiliation": "AT&T Bell Laboratories"
+    },
+    {
+      "name": "D. Henderson",
+      "affiliation": "AT&T Bell Laboratories"
+    },
+    {
+      "name": "R. E. Howard",
+      "affiliation": "AT&T Bell Laboratories"
+    },
+    {
+      "name": "W. Hubbard",
+      "affiliation": "AT&T Bell Laboratories"
+    },
+    {
+      "name": "L. D. Jackel",
+      "affiliation": "AT&T Bell Laboratories"
+    }
+  ],
+  "abstract": "We present an application of back-propagation networks to handwritten digit recognition. Minimal preprocessing of the data was required, but architecture of the network was highly constrained and specifically designed for the task. The input of the network consists of normalized images of isolated digits. The method has 1% error rate and about a 9% reject rate on zipcode digits provided by the U.S. Postal Service.",
+  "keywords": [],
+  "number_of_pages": 9,
+  "publication_type": "Conference Paper",
+  "citations": [
+    "Bottou, L.-Y. and Le Cun, Y. (1989). SN2: A Simulator for Connectionist Models. Neuristique SA, Paris, France.",
+    "Denker, J., Schwartz, D., Wittner, B., Solla, S. A., Howard, R., Jackel, L., and Hopfield, J. (1987). Large Automatic Learning, Rule Extraction and Generalization. Complex Systems, 1:877–922.",
+    "Denker, J. S., Gardner, W. R., Graf, H. P., Henderson, D., Howard, R. E., Hubbard, W., Jackel, L. D., Baird, H. S., and Guyon, I. (1989). Neural Network Recognizer for Hand-Written Zip Code Digits. In Touretzky, D., editor, Neural Information Processing Systems, volume 1, pages 323–331, Denver, 1988. Morgan Kaufmann.",
+    "Fukushima, K. and Miyake, S. (1982). Neocognitron: A new algorithm for pattern recognition tolerant of deformations and shifts in position. Pattern Recognition, 15:455–469.",
+    "Le Cun, Y. (1989). Generalization and Network Design Strategies. In Pfeifer, R., Schreter, Z., Fogelman, F., and Steels, L., editors, Connectionism in Perspective, Zurich, Switzerland. Elsevier.",
+    "Le Cun, Y., Boser, B., Denker, J. S., Henderson, D., Howard, R. E., Hubbard, W., and Jackel, L. D. (1990a). Back-Propagation Applied to Handwritten Zipcode Recognition. Neural Computation, 1(4).",
+    "Le Cun, Y., Denker, J. S., Solla, S., Howard, R. E., and Jackel, L. D. (1990b). Optimal Brain Damage. In Touretzky, D., editor, Neural Information Processing Systems, volume 2, Denver, 1989. Morgan Kaufman.",
+    "Patarnello, S. and Carnevali, P. (1987). Learning Networks of Neurons with Boolean Logic. Europhysics Letters, 4(4):503–508.",
+    "Rumelhart, D. E., Hinton, G. E., and Williams, R. J. (1986). Learning internal representations by error propagation. In Parallel distributed processing: Explorations in the microstructure of cognition, volume 1, pages 318–362. Bradford Books, Cambridge, MA.",
+    "Tishby, N., Levin, E., and Solla, S. A. (1989). Consistent Inference of Probabilities in Layered Networks: Predictions and Generalization. In Proceedings of the International Joint Conference on Neural Networks, Washington DC.",
+    "Wang, C. H. and Srihari, S. N. (1988). A Framework for Object Recognition in a Visually Complex Environment and its Application to Locating Address Blocks on Mail Pieces. International Journal of Computer Vision, 2:125."
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "type": "object",
+  "properties": {
+    "parties": {
+      "type": "object",
+      "properties": {
+        "lenders": {
+          "description": "All legal entities or individuals providing credit facilities under this agreement, including initial lenders and any assignees",
+          "evaluation_config": "array_llm",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "administrative_agent": {
+          "description": "The financial institution designated to administer the credit facilities, manage payments, and coordinate between borrower and lenders",
+          "evaluation_config": "string_fuzzy",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "borrower": {
+          "description": "The legal entity receiving the credit facility and obligated to repay borrowed amounts plus interest",
+          "evaluation_config": "string_fuzzy",
+          "type": "string"
+        },
+        "lead_arranger": {
+          "description": "The financial institution(s) responsible for structuring, underwriting, and syndicating the credit facility",
+          "evaluation_config": "array_llm",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "description": "Parties to the credit agreement"
+    },
+    "terms": {
+      "type": "object",
+      "properties": {
+        "agreement_date": {
+          "description": "Effective date when the credit agreement becomes binding. Return in YYYY-MM-DD format.",
+          "evaluation_config": "string_semantic",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "maturity_date": {
+          "description": "Final date by which all outstanding principal and interest must be repaid. If specified relatively (e.g., 'three years from the effective date'), calculate the absolute date. Return in YYYY-MM-DD format.",
+          "evaluation_config": "string_semantic",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "beneficial_ownership_certification_required": {
+          "description": "Whether the agreement explicitly mandates submission of FinCEN Form 314(b) or equivalent beneficial ownership documentation",
+          "evaluation_config": "boolean_exact",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "governing_law": {
+          "description": "The jurisdiction whose laws govern interpretation and enforcement of the agreement (e.g., 'State of New York', 'England and Wales')",
+          "evaluation_config": "string_semantic",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "loan_commitment": {
+          "type": "object",
+          "required": [
+            "amount",
+            "currency"
+          ],
+          "properties": {
+            "amount": {
+              "description": "Total aggregate principal amount available for borrowing across all facilities",
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "evaluation_config": "number_exact"
+            },
+            "currency": {
+              "description": "Three-letter ISO 4217 currency code (e.g., USD, EUR, GBP)",
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "evaluation_config": "string_case_insensitive"
+            }
+          },
+          "description": "Total loan commitment under the credit agreement"
+        },
+        "use_of_proceeds": {
+          "description": "Permitted purposes for which borrowed funds may be used, as specified in the agreement",
+          "evaluation_config": "string_semantic",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "borrowing_request": {
+          "description": "Required notice period and submission method for the borrower to request a drawdown (e.g., '3 business days prior via written notice to Administrative Agent')",
+          "evaluation_config": "string_semantic",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "authorized_officer_definition": {
+          "description": "Specific roles, titles, or positions of individuals empowered to execute documents and make binding decisions on behalf of the borrower",
+          "evaluation_config": "string_semantic",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "description": "All terms, conditions, dates, and financial details"
+    }
+  }
+}

@@ -1,0 +1,1733 @@
+{
+  "meta": {
+    "company": "McKesson Corporation",
+    "report_period": "FY2025 Q2",
+    "report_period_end_date": "2024-08-02"
+  },
+  "income_statement": {
+    "basic_eps": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 1.88
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 8.94
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 4.95
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 12.03
+      }
+    ],
+    "cost_of_revenue": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 90403
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 166534
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 74146
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 145607
+      }
+    ],
+    "diluted_eps": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 1.87
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 8.89
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 4.92
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 11.95
+      }
+    ],
+    "effective_tax_rate": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 46.3
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 22.9
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 23.3
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 15.3
+      }
+    ],
+    "gross_margin": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 3.47
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 3.7
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 3.97
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 4.02
+      }
+    ],
+    "gross_profit": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3248
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 6400
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 6091
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3069
+      }
+    ],
+    "income_tax_expense": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 247
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 371
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 307
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 213
+      }
+    ],
+    "interest_expense": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 78
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 153
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 61
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 108
+      }
+    ],
+    "net_income": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 241
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1156
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 664
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1622
+      }
+    ],
+    "net_income_growth": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -64,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -64,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -29,
+        "comparison_type": "Yoy"
+      }
+    ],
+    "operating_expenses": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2670
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4793
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2118
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4040
+      }
+    ],
+    "operating_income": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 578
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1607
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2051
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 951
+      }
+    ],
+    "operating_margin": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "%",
+        "scale": 1,
+        "value": 1.25
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 16.21
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 3.02
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "%",
+        "scale": 1,
+        "value": -13.7
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "%",
+        "scale": 1,
+        "value": 1.18
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 16.28
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 4.96
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "%",
+        "scale": 1,
+        "value": -5.65
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "%",
+        "scale": 1,
+        "value": 0.85
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 20.88
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 8.61
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "%",
+        "scale": 1,
+        "value": 1.9
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "%",
+        "scale": 1,
+        "value": 1.04
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 19.67
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 8.65
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "%",
+        "scale": 1,
+        "value": 1.77
+      }
+    ],
+    "restructuring_charge": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 64
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 147
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -1
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 23
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 234
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 0
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 24
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 65
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 150
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 6
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 46
+      }
+    ],
+    "revenue": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 85726
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1265
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2948
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3709
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 93651
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 172934
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 157441
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2506
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5584
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 7400
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 0
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 77215
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 69766
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1140
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2834
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3475
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 0
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 151698
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 136926
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2384
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5445
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 6943
+      }
+    ],
+    "revenue_growth": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "%",
+        "scale": 1,
+        "value": 23,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 11,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 4,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "International",
+        "unit": "%",
+        "scale": 1,
+        "value": 7,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Corporate",
+        "unit": "%",
+        "scale": 1,
+        "value": 0,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 21,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 14,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "U.S. Pharmaceutical",
+        "unit": "%",
+        "scale": 1,
+        "value": 15,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Prescription Technology Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 5,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Medical-Surgical Solutions",
+        "unit": "%",
+        "scale": 1,
+        "value": 3,
+        "comparison_type": "Yoy"
+      }
+    ],
+    "stock_based_compensation": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 63
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 119
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 48
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 91
+      }
+    ]
+  },
+  "balance_sheet": {
+    "accounts_payable": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 53317
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 47097
+      }
+    ],
+    "accounts_receivable": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 25270
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 21622
+      }
+    ],
+    "additional_paid_in_capital": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 8221
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 8048
+      }
+    ],
+    "cash": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2509
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4583
+      }
+    ],
+    "cash_st_investments": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "current_assets": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 53341
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 47970
+      }
+    ],
+    "current_liabilities": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 58771
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 52357
+      }
+    ],
+    "dividends_payable": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 90
+      }
+    ],
+    "goodwill": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 10087
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 10132
+      }
+    ],
+    "inventories": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 24176
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 21139
+      }
+    ],
+    "long_term_debt": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5691
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5579
+      }
+    ],
+    "marketable_securities": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "money_market_funds": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 49
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 705
+      }
+    ],
+    "property_plant_and_equipment": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2361
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2316
+      }
+    ],
+    "retained_earnings": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 15959
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 14978
+      }
+    ],
+    "shareholders_equity": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -3017
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -1971
+      }
+    ],
+    "short_term_debt": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 53
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 50
+      }
+    ],
+    "short_term_investments": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "total_assets": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 72429
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 67443
+      }
+    ],
+    "total_debt": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5744
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5629
+      }
+    ],
+    "total_liabilities": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "total_receivables": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "commercial_paper_outstanding": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 0
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 0
+      }
+    ]
+  },
+  "cash_flow_statement": {
+    "commercial_paper_issuance": [],
+    "capex": [
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 242
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 153
+      }
+    ],
+    "dividends_paid": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 162
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 149
+      }
+    ],
+    "financing_cash_flow": [
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -2408
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -1752
+      }
+    ],
+    "operating_cash_flow": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 720
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -87
+      }
+    ],
+    "share_repurchases": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1529
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2019
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1505
+      }
+    ],
+    "shares_issued": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 0
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1
+      }
+    ],
+    "shares_repurchased": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4
+      }
+    ]
+  },
+  "other_disclosures": {
+    "employees": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "notional_forwards_value": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "GBP",
+        "scale": 1000000,
+        "value": 27
+      },
+      {
+        "data_period": "FY2024 Q4",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "GBP",
+        "scale": 1000000,
+        "value": 39
+      }
+    ],
+    "notional_options_value": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "notional_swaps_value": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ]
+  }
+}

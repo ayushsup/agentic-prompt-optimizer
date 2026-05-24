@@ -1,0 +1,1898 @@
+{
+  "meta": {
+    "company": "Western Digital",
+    "report_period": "FY2025 Q2",
+    "report_period_end_date": "2024-12-27"
+  },
+  "income_statement": {
+    "basic_eps": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 1.68
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 3.08
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": -0.93
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": -3.09
+      }
+    ],
+    "cost_of_revenue": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2769
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5313
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2540
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5191
+      }
+    ],
+    "diluted_eps": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 1.63
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": 2.98
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": -0.93
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1,
+        "value": -3.09
+      }
+    ],
+    "effective_tax_rate": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 20
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 21
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -11
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -3
+      }
+    ],
+    "gross_margin": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 35.4
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 16.2
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 36.6
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 10.2
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "%",
+        "scale": 1,
+        "value": 38.6
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "%",
+        "scale": 1,
+        "value": 32.5
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "%",
+        "scale": 1,
+        "value": 35.4
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "%",
+        "scale": 1,
+        "value": 38.4
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "%",
+        "scale": 1,
+        "value": 35.7
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "%",
+        "scale": 1,
+        "value": 36.6
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "%",
+        "scale": 1,
+        "value": 24.8
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "%",
+        "scale": 1,
+        "value": 7.9
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "%",
+        "scale": 1,
+        "value": 16.2
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "%",
+        "scale": 1,
+        "value": 23.9
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "%",
+        "scale": 1,
+        "value": -0.9
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "%",
+        "scale": 1,
+        "value": 10.2
+      }
+    ],
+    "gross_profit": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1516
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 492
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3067
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 591
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 929
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 609
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1516
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1772
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1341
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3067
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 339
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 131
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 492
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 612
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -30
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consolidated",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 591
+      }
+    ],
+    "income_tax_expense": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 147
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 282
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 28
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 31
+      }
+    ],
+    "interest_expense": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 95
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 194
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 108
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 206
+      }
+    ],
+    "net_income": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 594
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1087
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -287
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -972
+      }
+    ],
+    "net_income_growth": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 307,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 212,
+        "comparison_type": "Yoy"
+      }
+    ],
+    "operating_expenses": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 664
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1473
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 702
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1397
+      }
+    ],
+    "operating_income": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 852
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1594
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -210
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -806
+      }
+    ],
+    "operating_margin": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 19.9
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 19
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -6.9
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": -13.9
+      }
+    ],
+    "restructuring_charge": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 44
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 87
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 36
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 36
+      }
+    ],
+    "revenue": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4285
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2409
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1876
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Cloud",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2346
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Client",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1168
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consumer",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 771
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Asia",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1995
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Americas",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1428
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Europe, Middle East and Africa",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 862
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 8380
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4620
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3760
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Cloud",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4554
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Client",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2377
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consumer",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1449
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Asia",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3832
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Americas",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3118
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Europe, Middle East and Africa",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1430
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3032
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1367
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1665
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Cloud",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1071
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Client",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1122
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consumer",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 839
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Asia",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1699
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Americas",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 804
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Europe, Middle East and Africa",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 529
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5782
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2561
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3221
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Cloud",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1943
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Client",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2269
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consumer",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1570
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Asia",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3250
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Americas",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1466
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "geographic_segment",
+        "segment_name": "Europe, Middle East and Africa",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1066
+      }
+    ],
+    "revenue_growth": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 41,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "%",
+        "scale": 1,
+        "value": 76,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "%",
+        "scale": 1,
+        "value": 13,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Cloud",
+        "unit": "%",
+        "scale": 1,
+        "value": 119,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Client",
+        "unit": "%",
+        "scale": 1,
+        "value": 4,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consumer",
+        "unit": "%",
+        "scale": 1,
+        "value": -8,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "%",
+        "scale": 1,
+        "value": 45,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "%",
+        "scale": 1,
+        "value": 80,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "%",
+        "scale": 1,
+        "value": 17,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Cloud",
+        "unit": "%",
+        "scale": 1,
+        "value": 134,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Client",
+        "unit": "%",
+        "scale": 1,
+        "value": 5,
+        "comparison_type": "Yoy"
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Consumer",
+        "unit": "%",
+        "scale": 1,
+        "value": -8,
+        "comparison_type": "Yoy"
+      }
+    ],
+    "stock_based_compensation": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 77
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 161
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 72
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 149
+      }
+    ]
+  },
+  "balance_sheet": {
+    "accounts_payable": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1627
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1411
+      }
+    ],
+    "accounts_receivable": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2597
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2166
+      }
+    ],
+    "additional_paid_in_capital": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4885
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4752
+      }
+    ],
+    "cash": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2291
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1879
+      }
+    ],
+    "cash_st_investments": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "commercial_paper_outstanding": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "current_assets": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 9372
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 8060
+      }
+    ],
+    "current_liabilities": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4706
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 6087
+      }
+    ],
+    "dividends_payable": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "goodwill": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 9729
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4319
+      },
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5410
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "HDD",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4319
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "business_segment",
+        "segment_name": "Flash",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5713
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 10032
+      }
+    ],
+    "inventories": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3420
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3342
+      }
+    ],
+    "long_term_debt": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 7216
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 5684
+      }
+    ],
+    "marketable_securities": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "money_market_funds": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 745
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 416
+      }
+    ],
+    "property_plant_and_equipment": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2930
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 3167
+      }
+    ],
+    "retained_earnings": [
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 7862
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 6775
+      }
+    ],
+    "shareholders_equity": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 12117
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 10818
+      }
+    ],
+    "short_term_debt": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 150
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1750
+      }
+    ],
+    "short_term_investments": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "total_assets": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 25456
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 24188
+      }
+    ],
+    "total_debt": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 7413
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 7488
+      }
+    ],
+    "total_liabilities": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 13110
+      },
+      {
+        "data_period": "FY2024",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 13141
+      }
+    ],
+    "total_receivables": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ]
+  },
+  "cash_flow_statement": {
+    "commercial_paper_issuance": [],
+    "capex": [
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 212
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 274
+      }
+    ],
+    "commercial_paper": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "dividends_paid": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 4
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 8
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 14
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 29
+      }
+    ],
+    "financing_cash_flow": [
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -103
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 1151
+      }
+    ],
+    "operating_cash_flow": [
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 437
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": -718
+      }
+    ],
+    "share_repurchases": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "shares_issued": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2
+      },
+      {
+        "data_period": "FY2024 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "USD",
+        "scale": 1000000,
+        "value": 2
+      },
+      {
+        "data_period": "FY2025 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      },
+      {
+        "data_period": "FY2024 H1",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "shares_repurchased": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ]
+  },
+  "other_disclosures": {
+    "employees": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "notional_forwards_value": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "notional_options_value": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ],
+    "notional_swaps_value": [
+      {
+        "data_period": "FY2025 Q2",
+        "metric_type": "actual",
+        "segment_type": "company",
+        "segment_name": "NA",
+        "unit": "NA",
+        "scale": null,
+        "value": null
+      }
+    ]
+  }
+}

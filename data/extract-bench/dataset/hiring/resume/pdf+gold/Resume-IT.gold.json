@@ -1,0 +1,113 @@
+{
+  "education": [
+    {
+      "endDate": "June 2016",
+      "startDate": "September 2012",
+      "description": "GPA: 3.7/4.0\nRelevant coursework: Algorithms, Database Systems, Machine Learning, Distributed Systems",
+      "institution": "Northbridge Institute of Technology",
+      "qualificationTitle": "BS - Computer Science"
+    }
+  ],
+  "languages": [
+    "English (Native)",
+    "French (Fluent)",
+    "German (Intermediate)"
+  ],
+  "personalInfo": {
+    "contact": {
+      "emails": [
+        "marcus.chen@devmail.com"
+      ],
+      "phones": [
+        "987123456"
+      ]
+    },
+    "fullName": "Marcus Chen",
+    "personalStatement": "Full-stack software engineer with 8+ years of experience building scalable web applications and cloud-based solutions."
+  },
+  "media": [],
+  "other": [],
+  "publications": [],
+  "certificationsAndAwards": [
+    {
+      "description": "Cloud Solutions Architect - Professional Level"
+    },
+    {
+      "description": "Database Administrator Certification"
+    }
+  ],
+  "skills": {
+    "Programming Languages": [
+      "JavaScript/TypeScript",
+      "Python",
+      "Java",
+      "Go",
+      "HTML5",
+      "CSS3",
+      "SQL"
+    ],
+    "Frameworks & Libraries": [
+      "React",
+      "Next.js",
+      "Vue.js",
+      "Node.js",
+      "Express",
+      "Django",
+      "Flask",
+      "Spring Boot",
+      "TensorFlow",
+      "PyTorch"
+    ],
+    "Databases & Tools": [
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Elasticsearch",
+      "Docker",
+      "Kubernetes",
+      "Cloud platforms",
+      "Git",
+      "Jenkins",
+      "CI/CD tools",
+      "Jest",
+      "Pytest",
+      "Selenium"
+    ],
+    "Methodologies": [
+      "Agile/Scrum development",
+      "Test-driven development (TDD)",
+      "Microservices architecture",
+      "RESTful API design"
+    ]
+  },
+  "socialLinks": [
+    "http://linkedin.com/in/marcuschen-dev",
+    "https://github.com/marcuschen"
+  ],
+  "workExperience": [
+    {
+      "employer": "NexaTech Solutions",
+      "endDate": null,
+      "jobTitle": "Senior Software Engineer",
+      "isCurrent": true,
+      "startDate": "January 2021",
+      "description": "Architected and developed microservices platform serving 2M+ daily active users\nLed migration from monolithic architecture to containerized infrastructure\nMentored team of 6 junior developers and conducted code reviews\nReduced API response times by 45% through optimization and caching strategies"
+    },
+    {
+      "employer": "CloudFlow Systems",
+      "endDate": "December 2020",
+      "jobTitle": "Software Developer",
+      "isCurrent": false,
+      "startDate": "March 2018",
+      "description": "Built real-time data processing pipeline handling 500K events per second\nImplemented CI/CD pipelines reducing deployment time by 60%\nDeveloped RESTful APIs and GraphQL endpoints for mobile applications\nCollaborated with product team to define technical requirements and roadmap"
+    },
+    {
+      "employer": "VentureSpace Digital",
+      "endDate": "February 2018",
+      "jobTitle": "Junior Developer",
+      "isCurrent": false,
+      "startDate": "July 2016",
+      "description": "Created responsive web applications using React and Node.js\nIntegrated third-party payment systems into e-commerce platform\nWrote comprehensive unit and integration tests achieving 85% code coverage\nParticipated in agile development process with daily standups and sprint planning"
+    }
+  ]
+}

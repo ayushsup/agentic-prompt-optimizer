@@ -1,0 +1,123 @@
+{
+  "type": "object",
+  "required": [
+    "title",
+    "authors",
+    "citations"
+  ],
+  "properties": {
+    "ids": {
+      "anyOf": [
+        {"type": "string"},
+        {"type": "null"}
+      ],
+      "description": "The unique identifier for the paper. Example: '10.1000/xyz123' or 'arXiv:1234.5678'.",
+      "evaluation_config": "string_exact"
+    },
+    "title": {
+      "type": "string",
+      "description": "The full title of the research paper.",
+      "evaluation_config": "string_semantic"
+    },
+    "venue": {
+      "anyOf": [
+        {"type": "string"},
+        {"type": "null"}
+      ],
+      "description": "Where the paper was published (e.g., 'NeurIPS 2024', 'Nature').",
+      "evaluation_config": "string_semantic"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the author (e.g., 'Wayne Xin Zhao').",
+            "evaluation_config": "string_semantic"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Contact email address of the author.",
+            "evaluation_config": "string_exact"
+          },
+          "affiliation": {
+            "type": "string",
+            "nullable": true,
+            "description": "The affiliation of the author. Example: 'University of California, Berkeley' or 'Google'. If unknown, leave blank.",
+            "evaluation_config": "string_semantic"
+          }
+        }
+      },
+      "description": "List of authors of the paper.",
+      "minItems": 1,
+      "evaluation_config": "array_llm"
+    },
+    "abstract": {
+      "type": "string",
+      "description": "The summary or abstract of the paper.",
+      "evaluation_config": "string_semantic"
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "evaluation_config": "string_semantic"
+      },
+      "description": "List of topics or tags (e.g., 'Machine Learning', 'Genomics').",
+      "evaluation_config": "array_llm"
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "evaluation_config": "string_semantic"
+      },
+      "description": "List of works cited by this paper.",
+      "evaluation_config": "array_llm"
+    },
+    "number_of_pages": {
+      "type": "integer",
+      "maximum": 1000,
+      "minimum": 1,
+      "description": "The number of pages in the paper.",
+      "evaluation_config": "integer_exact"
+    },
+    "publication_date": {
+      "anyOf": [
+        {"type": "string"},
+        {"type": "null"}
+      ],
+      "description": "Date of publication in YYYY-MM-DD format or YYYY-MM or YYYY format.",
+      "evaluation_config": "string_semantic"
+    },
+    "publication_type": {
+      "enum": [
+        "Conference Paper",
+        "Journal Article",
+        "Technical Report",
+        "Book Chapter",
+        "Book",
+        "Workshop Paper",
+        "Poster",
+        "Demo Paper",
+        "Thesis",
+        "Patent",
+        "White Paper",
+        "Preprint",
+        "Blog Post",
+        "Magazine Article",
+        "Dataset",
+        "Software"
+      ],
+      "type": "string",
+      "description": "The type of publication (e.g., 'Conference Paper', 'Journal Article', 'Technical Report', 'Blog Post', 'Preprint').",
+      "evaluation_config": "string_exact"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "extract-bench"
+version = "0.1.0"
+description = "Evaluate structured extraction quality with per-field metrics"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+authors = [
+    { name = "Contextual AI" }
+]
+dependencies = [
+    "pydantic>=2.0",
+    "litellm>=1.0",
+    "loguru>=0.7",
+    "jsonschema>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "python-dotenv>=1.0",
+    "google-cloud-aiplatform==1.135.0"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/extract_bench"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

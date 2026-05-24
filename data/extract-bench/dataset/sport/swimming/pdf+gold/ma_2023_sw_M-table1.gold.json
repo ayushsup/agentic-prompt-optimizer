@@ -1,0 +1,218 @@
+{
+  "championship": "WORLD AQUATICS MASTERS CHAMPIONSHIPS KYUSHU 2023",
+  "event_details": {
+    "sex": "MEN",
+    "length": "50m",
+    "category": "Freestyle"
+  },
+  "age_groups": [
+    {
+      "age_group": "90-94",
+      "results": [
+        {
+          "rank": 1,
+          "athlete_details": {
+            "athlete": "Fusao TAKAHASHI",
+            "country": "JPN",
+            "year_birth": 1933,
+            "team": "JUMP"
+          },
+          "time": "44.01",
+          "records": null
+        },
+        {
+          "rank": 2,
+          "athlete_details": {
+            "athlete": "Mitsunobu YOSHIZAWA",
+            "country": "JPN",
+            "year_birth": 1932,
+            "team": "JSS TATEISHI"
+          },
+          "time": "46.80",
+          "records": null
+        },
+        {
+          "rank": 3,
+          "athlete_details": {
+            "athlete": "Kazuyuki FUKUDA",
+            "country": "JPN",
+            "year_birth": 1932,
+            "team": "RYOGOKU KINGYO"
+          },
+          "time": "55.77",
+          "records": null
+        },
+        {
+          "rank": 4,
+          "athlete_details": {
+            "athlete": "Toshiyasu MINAMI",
+            "country": "JPN",
+            "year_birth": 1933,
+            "team": "FUKUOKA MOON CLUB"
+          },
+          "time": "59.63",
+          "records": null
+        },
+        {
+          "rank": 5,
+          "athlete_details": {
+            "athlete": "Jose PENALOZA",
+            "country": "PER",
+            "year_birth": 1932,
+            "team": "PERU MASTER - Swim"
+          },
+          "time": "59.84",
+          "records": null
+        },
+        {
+          "rank": 6,
+          "athlete_details": {
+            "athlete": "Itaru YANAGAWA",
+            "country": "JPN",
+            "year_birth": 1930,
+            "team": "ITOMAN NAGAZUMI"
+          },
+          "time": "1:03.28",
+          "records": null
+        },
+        {
+          "rank": 7,
+          "athlete_details": {
+            "athlete": "Adelson LEITE JULIAO",
+            "country": "BRA",
+            "year_birth": 1933,
+            "team": "CIRCULO MILITAR DE FORTALEZA"
+          },
+          "time": "1:04.81",
+          "records": null
+        },
+        {
+          "rank": "NA",
+          "athlete_details": {
+            "athlete": "Carlos SALAZAR FLORES",
+            "country": "MEX",
+            "year_birth": 1933,
+            "team": "CLUB BANCARIO DE GUADALAJARA"
+          },
+          "time": "DNS",
+          "records": null
+        }
+      ]
+    },
+    {
+      "age_group": "85-89",
+      "results": [
+        {
+          "rank": 1,
+          "athlete_details": {
+            "athlete": "Tohru FURUKAWA",
+            "country": "JPN",
+            "year_birth": 1938,
+            "team": "KAMOIKE SS"
+          },
+          "time": "33.74",
+          "records": ["WR", "CR"]
+        },
+        {
+          "rank": 2,
+          "athlete_details": {
+            "athlete": "Hiroshi MATSUMOTO",
+            "country": "JPN",
+            "year_birth": 1936,
+            "team": "TEAM FURINKAZAN"
+          },
+          "time": "37.86",
+          "records": null
+        },
+        {
+          "rank": 3,
+          "athlete_details": {
+            "athlete": "Shigeo OGASAWARA",
+            "country": "JPN",
+            "year_birth": 1935,
+            "team": "EIAI CLUB"
+          },
+          "time": "39.04",
+          "records": null
+        },
+        {
+          "rank": 4,
+          "athlete_details": {
+            "athlete": "Waroku HORIBE",
+            "country": "JPN",
+            "year_birth": 1934,
+            "team": "FUKUOKA MOON CLUB"
+          },
+          "time": "45.22",
+          "records": null
+        },
+        {
+          "rank": 5,
+          "athlete_details": {
+            "athlete": "Haruyoshi NAKAZONO",
+            "country": "JPN",
+            "year_birth": 1937,
+            "team": "RN FUKUOKANISHIJIN"
+          },
+          "time": "45.63",
+          "records": null
+        },
+        {
+          "rank": 6,
+          "athlete_details": {
+            "athlete": "Takanobu SOMA",
+            "country": "JPN",
+            "year_birth": 1938,
+            "team": "KSC SENRI"
+          },
+          "time": "46.57",
+          "records": null
+        },
+        {
+          "rank": 7,
+          "athlete_details": {
+            "athlete": "Anthony REBUCK",
+            "country": "AUS",
+            "year_birth": 1937,
+            "team": "Malvern Marlins"
+          },
+          "time": "53.18",
+          "records": null
+        },
+        {
+          "rank": 8,
+          "athlete_details": {
+            "athlete": "Iuliu EUGEN LEHEL FOLLERT",
+            "country": "ROU",
+            "year_birth": 1938,
+            "team": "Tribeach Brasov"
+          },
+          "time": "1:00.50",
+          "records": null
+        },
+        {
+          "rank": "NA",
+          "athlete_details": {
+            "athlete": "Masakazu MITSUHASHI",
+            "country": "JPN",
+            "year_birth": 1938,
+            "team": "CFC SOGA"
+          },
+          "time": "DNS",
+          "records": null
+        },
+        {
+          "rank": "NA",
+          "athlete_details": {
+            "athlete": "Manfred BUSCH",
+            "country": "GER",
+            "year_birth": 1938,
+            "team": "Berliner TSC"
+          },
+          "time": "DNS",
+          "records": null
+        }
+      ]
+    }
+  ]
+}

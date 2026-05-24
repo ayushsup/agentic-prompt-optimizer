@@ -1,0 +1,29 @@
+{
+  "parties": {
+    "administrative_agent": "ORION ENERGY PARTNERS TP AGENT, LLC",
+    "borrower": "BKRF OCB, LLC",
+    "lead_arranger": null,
+    "lenders": [
+      "ORION ENERGY CREDIT OPPORTUNITIES FUND II, L.P.",
+      "ORION ENERGY CREDIT OPPORTUNITIES FUND II PV, L.P.",
+      "ORION ENERGY CREDIT OPPORTUNITIES FUND II GPFA, L.P.",
+      "ORION ENERGY CREDIT OPPORTUNITIES GCE CO-INVEST, L.P.",
+      "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+      "ReliaStar Life Insurance Company",
+      "LABOR IMPACT FUND, L.P."
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 300000000,
+      "currency": "USD"
+    },
+    "agreement_date": "2020-05-04",
+    "authorized_officer_definition": "Authorized Representative means, with respect to any Person, the chief executive officer, the chief financial officer\nor any other appointed officer of such Person as may be designated from time to time by such Person in writing. Any document\nor certificate delivered under the Financing Documents that is signed by an Authorized Representative may be conclusively\npresumed by the Administrative Agent and Lenders to have been authorized by all necessary corporate, limited liability\ncompany or other action on the part of the relevant Person.",
+    "beneficial_ownership_certification_required": true,
+    "borrowing_request": "To request a borrowing of Loans, Borrower shall deliver to the Administrative\nAgent and the Lenders, on a Business Day, a Borrowing Request. The date of the proposed borrowing (each such date, subject\nto the immediately succeeding sentence below, a “Funding Date”) specified in a Borrowing Request shall be no earlier than:\n(i) in the case of the Tranche A Funding Date, (x) for an amount up to $68,800,000, (3) Business Days\nafter the delivery of such Borrowing Request and (y) for the remainder of the unfunded Tranche A Commitments\nrequested upon twelve (12) Business Days after the delivery of such Borrowing Request; and\n(ii) for each other Funding Date, twelve (12) Business Days after the delivery of such Borrowing Request.",
+    "governing_law": "New York",
+    "maturity_date": "2026-11-04",
+    "use_of_proceeds": "Borrower shall apply the proceeds of the Loans solely (i) to consummate the Acquisition and pay the Purchase Price (as defined in the SPA), (ii) for the payment of Project Costs, (iii) for a payment to GCE Holdings, in an amount not to exceed $4,500,000, in connection with the CCI Hedging Documentation, without limiting the aggregate amount that may be transferred to GCE Holdings pursuant to Section 5.29(b)(ii)(H), (iv) to cash collateralize bonds or other surety obligations and letters of credit to the extent permitted under clause (j) of the definition of Permitted Lien and (v) as otherwise permitted by the Financing Documents."
+  }
+}

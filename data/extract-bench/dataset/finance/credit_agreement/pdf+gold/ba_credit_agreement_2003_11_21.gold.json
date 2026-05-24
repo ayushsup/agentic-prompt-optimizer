@@ -1,0 +1,59 @@
+{
+  "parties": {
+    "administrative_agent": "CITIBANK, N.A.",
+    "borrower": "THE BOEING COMPANY",
+    "lead_arranger": [
+      "CITIGROUP GLOBAL MARKETS INC.",
+      "J.P.MORGAN SECURITIES INC."
+    ],
+    "lenders": [
+      "ABN AmroBank, N.V.",
+      "Australia andNew Zealand",
+      "Banking GroupLimited",
+      "Banco Bilbao Vizcaya Argerntaria",
+      "Bank One, NA",
+      "Bank of America,N.A.",
+      "The Bank ofTokyo-Mitsubishi, Ltd.",
+      "Barclays Bank PLC",
+      "Bayerische Landesbank, Cayman Island Branch",
+      "BMO Nesbitt Burns Financing, Inc.",
+      "BNP Paribas",
+      "Citibank, N.A.",
+      "Credit Lyonnais New YorkBranch",
+      "Credit Suisse First BostonCayman Islands Branch",
+      "Deutsche Bank AG NewYork Branch",
+      "JPMorgan Chase Bank",
+      "KBC Bank, N.V.",
+      "Keybank NationalAssociation",
+      "Lloyds TSB Bank Plc",
+      "Merrill Lynch Bank USA",
+      "Mizuho Corporate Bank,Ltd.",
+      "Morgan Stanley Bank",
+      "The Northern TrustCompany",
+      "PNC Bank, NationalAssociation",
+      "Royal Bank of Scotland",
+      "SANPAOLO IMI S.p.a.",
+      "Societe Generale",
+      "Standard CharteredBank",
+      "Sumitomo Mitsui Banking Corporation",
+      "UBS Loan Finance LLC",
+      "U.S. Bank National Association",
+      "Wachovia Bank, National Association",
+      "Westpac Banking Corporation",
+      "William Street Commitment Corporation"
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 2500000000,
+      "currency": "USD"
+    },
+    "agreement_date": "2003-11-21",
+    "authorized_officer_definition": "NOT_FOUND",
+    "beneficial_ownership_certification_required": false,
+    "borrowing_request": "All communications and notices shall, when mailed, telecopied,or telexed, be effective when deposited in the mail, telecopied, or confirmed by telexanswerback, respectively. Delivery by telecopier of an executed counterpart of anyamendment or waiver of any provision of this Agreement or any Notes or of any Exhibitto be executed and delivered hereunder shall be effective as delivery of a manuallyexecuted counterpart thereof.",
+    "governing_law": "State of New York",
+    "maturity_date": "2004-11-19",
+    "use_of_proceeds": "NOT_FOUND"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "parties": {
+    "administrative_agent": "Bank of America, N.A.",
+    "borrower": "TRIMBLE INC.",
+    "lead_arranger": [
+      "BofA Securities Inc.",
+      "Goldman Sachs Bank USA",
+      "TD Securities (USA) LLC",
+      "Wells Fargo Securities LLC",
+      "Sumitomo Mitsui Banking Corporation"
+    ],
+    "lenders": [
+      "Bank of America, N.A.",
+      "Goldman Sachs Bank USA",
+      "Wells Fargo Bank, National Association",
+      "TD Bank, N.A.",
+      "Sumitomo Mitsui Banking Corporation",
+      "The Bank of Nova Scotia",
+      "PNC Bank, National Association",
+      "U.S. Bank National Association",
+      "JPMorgan Chase Bank, N.A.",
+      "HSBC Bank USA, N.A.",
+      "Nordea Bank Abp, New York Branch",
+      "KBC Bank N.V., New York Branch"
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 1250000000,
+      "currency": "USD"
+    },
+    "agreement_date": "2022-03-24",
+    "authorized_officer_definition": "the Chairman of the Board, the Chief Executive Officer, the President, the Treasurer, Assistant Treasurer, any Vice President or the Chief Financial Officer of the Company",
+    "beneficial_ownership_certification_required": true,
+    "borrowing_request": "To request a Revolving Borrowing, the applicable Borrower (or the Company on its behalf) shall submit a Borrowing Request, signed by its Authorized Officer, to the Administrative Agent (a) in the case of a Term SOFR Borrowing denominated in US Dollars, not later than 11:00 a.m., Local Time, two Business Days before the date of the proposed Borrowing, (b) in the case of SONIA Borrowing, a EURIBOR Borrowing or any other Borrowing denominated in an Alternative Currency, not later than 11:00 a.m., Local Time, four Business Days before the date of the proposed Borrowing or (c) in the case of an ABR Borrowing, not later than 11:00 a.m., Local Time, on the day of the proposed Borrowing (or, in the case of any ABR Term Borrowing, such later time on such day as may be agreed to in writing by the Administrative Agent).",
+    "governing_law": "State of New York",
+    "maturity_date": "2027-03-24",
+    "use_of_proceeds": "The proceeds of the Revolving Loans will be used solely for, and\nLetters of Credit will be issued only to support, working capital needs and other general corporate purposes\nof the Company and its Subsidiaries, including, without limitation, the financing of Acquisitions."
+  }
+}

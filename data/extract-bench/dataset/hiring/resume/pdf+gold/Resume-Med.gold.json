@@ -1,0 +1,119 @@
+{
+  "personalInfo": {
+    "fullName": "Dr. Amanda Rodriguez, MD",
+    "personalStatement": "Board-certified cardiologist with 16+ years of experience in interventional cardiology, clinical research, and patient care",
+    "contact": {
+      "emails": [
+        "a.rodriguez@hospexample.org"
+      ],
+      "phones": [
+        "(617) 555-0276"
+      ]
+    }
+  },
+  "media": [],
+  "socialLinks": [],
+  "workExperience": [
+    {
+      "employer": "Westfield Heart Institute",
+      "jobTitle": "Director of Interventional Cardiology",
+      "startDate": "2019-06-30T22:00:00.000Z",
+      "endDate": null,
+      "isCurrent": true,
+      "description": "Oversee cardiac catheterization laboratory performing 800+ procedures annually; Lead multidisciplinary team of 12 physicians, nurses, and technicians; Perform complex interventional procedures including angioplasty, stent placement, and TAVR; Serve on hospital quality improvement committee reducing post-procedure complications by 23%"
+    },
+    {
+      "employer": "Riverstone Medical Center",
+      "jobTitle": "Attending Physician",
+      "startDate": "2014-07-31T22:00:00.000Z",
+      "endDate": "2019-05-31T22:00:00.000Z",
+      "isCurrent": false,
+      "description": "Provided comprehensive cardiovascular care to 2,000+ patients annually; Performed diagnostic procedures including echocardiograms and stress tests; Supervised cardiology fellows and medical residents during clinical rotations; Participated in on-call rotation for acute cardiac emergencies"
+    },
+    {
+      "employer": "Northbridge University Medical Center",
+      "jobTitle": "Cardiology Fellow",
+      "startDate": "2011-06-30T22:00:00.000Z",
+      "endDate": "2014-05-31T22:00:00.000Z",
+      "isCurrent": false,
+      "description": "Completed advanced training in interventional cardiology and cardiac imaging; Managed inpatient cardiology service and intensive care unit; Participated in multi-center clinical trial for novel anticoagulation therapy; Published 8 peer-reviewed articles in leading cardiology journals"
+    }
+  ],
+  "skills": [
+    "Legal research and analysis",
+    "Contract negotiation and drafting",
+    "Risk assessment and management",
+    "Client relationship development",
+    "Team leadership and mentoring"
+  ],
+  "languages": [
+    "English",
+    "Spanish",
+    "Portuguese"
+  ],
+  "education": [
+    {
+      "institution": "Clearwater Medical Institute",
+      "qualificationTitle": "Fellowship – Interventional Cardiology",
+      "startDate": "2011-06-30T22:00:00.000Z",
+      "endDate": "2014-05-31T22:00:00.000Z"
+    },
+    {
+      "institution": "Pinewood General Hospital",
+      "qualificationTitle": "Residency – Internal Medicine",
+      "startDate": "2008-06-30T22:00:00.000Z",
+      "endDate": "2011-05-31T22:00:00.000Z",
+      "description": "Chief Resident (2010-2011)"
+    },
+    {
+      "institution": "Bayshore Medical College",
+      "qualificationTitle": "Doctor of Medicine (MD)  ",
+      "startDate": "2004-07-31T22:00:00.000Z",
+      "endDate": "2008-04-30T22:00:00.000Z",
+      "description": "Honor Society for Medical Excellence"
+    },
+    {
+      "institution": "Springdale University",
+      "qualificationTitle": "BS – Biology ",
+      "startDate": "2000-08-31T22:00:00.000Z",
+      "endDate": "2004-04-30T22:00:00.000Z",
+      "description": "Summa Cum Laude (GPA: 3.98/4.0)"
+    }
+  ],
+  "certificationsAndAwards": [
+    {
+      "category": "Board Certifications",
+      "organization": "National Board of Internal Medicine",
+      "description": "Cardiology",
+      "date": "2011"
+    },
+    {
+      "category": "Board Certifications",
+      "organization": "National Board of Internal Medicine",
+      "description": "Interventional Cardiology",
+      "date": "2014"
+    },
+    {
+      "description": "Advanced Cardiac Life Support (ACLS)"
+    }
+  ],
+  "publications": [
+    {
+      "authors": "Rodriguez A, et al.",
+      "title": "Outcomes of TAVR in High-Risk Patients",
+      "publisher": "Journal of Cardiology",
+      "year": "2023"
+    },
+    {
+      "authors": "Rodriguez A, et al.",
+      "title": "Novel Biomarkers in Heart Failure",
+      "publisher": "Cardiovascular Medicine",
+      "year": "2021"
+    }
+  ],
+  "other": [
+    {
+      "content": "Principal Investigator: Government-funded study on novel antiplatelet therapy (2020-2024)\nAuthor of 42 peer-reviewed publications in major cardiology journals\nH-index: 28"
+    }
+  ]
+}

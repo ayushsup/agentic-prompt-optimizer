@@ -1,0 +1,36 @@
+{
+  "parties": {
+    "administrative_agent": "ABN AMRO BANK N.V.,",
+    "borrower": "Adobe Systems Incorporated",
+    "lead_arranger": null,
+    "lenders": [
+      "ABN AMRO Bank N.V.",
+      "Bank of Montreal",
+      "First Union National Bank",
+      "KeyBank National Association",
+      "Fleet National Bank",
+      "The Sumitomo Bank, Limited",
+      "The Northern Trust Company",
+      "Bank of America, N.A.",
+      "BNP Paribas",
+      "The Industrial Bank of Japan, Limited",
+      "Mellon Bank, N.A.",
+      "The Royal Bank of Scotland plc",
+      "UBS AG (Stamford Branch)",
+      "Bank Hapoalim B.M."
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 91532846.72,
+      "currency": "USD"
+    },
+    "agreement_date": "2000-08-09",
+    "authorized_officer_definition": "NOT_FOUND",
+    "beneficial_ownership_certification_required": false,
+    "borrowing_request": "Borrower shall give each Notice of Revolving Loan Borrowing to Administrative Agent at least three (3)Business Days before the date of the requested Revolving Loan Borrowing in the case of a Revolving LoanBorrowing consisting of LIBOR Loans and at least one (1) Business Day before the date of the requestedRevolving Loan Borrowing in the case of a Revolving Loan Borrowing consisting of Base Rate Loans.",
+    "governing_law": "State of California",
+    "maturity_date": "2003-08-08",
+    "use_of_proceeds": "Borrower shall use the proceeds of the Loans only for the respective purposes setforth in Paragraph 2.05 . Borrower shall not use any part of the proceeds of any Loan, directly or indirectly,for the purpose of purchasing or carrying any Margin Stock or for the purpose of purchasing or  arrying ortrading in any securities under such circumstances as to involve Borrower, any Lender or AdministrativeAgent in a violation of Regulations T, U or X issued by the Federal Reserve Board."
+  }
+}

@@ -1,0 +1,21 @@
+dataset:
+  name: "hiring/resume"
+  base_path: "./data/extract-bench"
+  split_seed: 42
+  train_ratio: 0.10
+  val_ratio: 0.10
+
+budget:
+  max_iterations: 3
+  max_cost_dollars: 0.0
+
+vision_model: "meta-llama/llama-3.2-11b-vision-instruct:free"
+
+models:
+  extractor: "poolside/laguna-xs.2:free"
+  critic:    "poolside/laguna-xs.2:free"
+  mutator:   "poolside/laguna-xs.2:free"
+
+seed_prompt: |
+  Extract the structured information from the provided document.
+  Return ONLY valid JSON matching the exact schema. Do not include markdown formatting like ```json.

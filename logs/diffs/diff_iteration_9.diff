@@ -1,0 +1,53 @@
+--- Prompt_v8
++++ Prompt_v9
+@@ -8,13 +8,13 @@
+    - `contact`: Object with `email` (exact value) and `phone` (exact value, including country code if present).  
+ 
+ 2. **Work Experience**:  
+-   - Array of objects with `company`, `title`, `dates` (ISO 8601 format with timestamps, e.g., `2019-02-28T23:00:00.000Z`), `description`, and `isCurrent` (boolean). Include `media` and `other` fields if present in the document.  
++   - Array of objects with `company`, `title`, `dates` (ISO 8601 format with timestamps, e.g., `2019-02-28T23:00:00.000Z`), `description`, and `isCurrent` (boolean). Include `media` and `other` fields **only if explicitly present in the document**.  
+ 
+ 3. **Education**:  
+    - Array of objects with `institution`, `degree`, `dates`, and `description` (include merit/GPA details if mentioned).  
+ 
+ 4. **Skills**:  
+-   - Array of strings listing skills explicitly mentioned (e.g., "Financial Expertise", "Technical Skills"). Do not infer or add related skills.  
++   - Object with categorized keys (e.g., `Financial Expertise`, `Technical Skills`, `Soft Skills`). Each key maps to an array of strings listing skills **explicitly mentioned** in the document. Do not infer or add related skills.  
+ 
+ 5. **Publications/Certifications**:  
+    - Arrays of strings. If the document does not mention these, leave arrays empty.  
+@@ -22,13 +22,20 @@
+ 6. **Other Fields**:  
+    - `social_links`: Array of URLs explicitly listed in the document.  
+    - `languages`: Array of languages explicitly mentioned, including proficiency levels (e.g., "English (Native)", "French (Fluent)").  
++   - `media` and `other`: Arrays explicitly listed in the document (omit if not present).  
+ 
+ **Critical Instructions**:  
+-- Extract data **only** from the provided document. Do not use external knowledge or assumptions.  
++- The document to extract from is provided immediately after this prompt. Do not proceed without it.  
++- Extract data **only** from the provided document. Do not use external knowledge, assumptions, or substitute with data from other sources.  
++- If a field is present in the document, include it even if unsure.  
+ - Match exact values (e.g., UK email format, phone number length, job titles).  
+ - If a field is missing in the document, omit it or use an empty array/string.  
+ - Ensure JSON validity and strict adherence to the schema.  
+ - Use ISO 8601 timestamps for dates in work experience and include `isCurrent` flags.  
++- For contact details, use the exact email and phone number as written, including country codes.  
++- For languages, include proficiency levels (e.g., "German (Fluent)") if specified.  
++- Do not infer skills or add related terms; list only explicitly mentioned skills under their respective categories.  
++- If `media`, `other`, or `publications` fields are not present in the document, omit them or leave arrays empty.  
+ 
+ Example Output (for reference):  
+ ```json  
+@@ -55,7 +62,11 @@
+       "description": "Graduated with distinction, GPA 3.8"  
+     }  
+   ],  
+-  "skills": ["Financial Expertise", "Technical Skills"],  
++  "skills": {  
++    "Financial Expertise": ["Investment Analysis", "Risk Management"],  
++    "Technical Skills": ["Python", "SQL"],  
++    "Soft Skills": ["Leadership", "Communication"]  
++  },  
+   "publications": [],  
+   "certifications": [],  
+   "social_links": [],  

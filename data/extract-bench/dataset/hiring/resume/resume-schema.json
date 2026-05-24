@@ -1,0 +1,287 @@
+{
+  "name": "Resume Extraction Schema",
+  "description": "Schema for extracting professional resumes into structured JSON",
+  "schema_definition": {
+    "type": "object",
+    "required": [
+      "personalInfo",
+      "workExperience"
+    ],
+    "properties": {
+      "media": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "string",
+          "evaluation_config": "string_semantic"
+        },
+        "description": "Media mentions, appearances, or similar"
+      },
+      "other": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "The content or description for this miscellaneous section"
+            },
+            "sectionTitle": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Miscellaneous sections"
+            }
+          }
+        },
+        "description": "Catch-all for miscellaneous sections not captured elsewhere."
+      },
+      "skills": {
+        "anyOf": [
+          {
+            "type": "array",
+            "evaluation_config": "array_llm",
+            "items": {
+              "type": "string",
+              "evaluation_config": "string_semantic"
+            },
+            "description": "Flat list of skills when skills are presented as a simple ungrouped list in the document"
+          },
+          {
+            "type": "object",
+            "description": "Skills grouped by category, when the document organizes skills under category headings like 'Research Interests', 'Technical Skills', 'Marketing Platforms', etc.). Keys are category names and values are arrays of skills under that category.",
+            "additionalProperties": {
+              "type": "array",
+              "evaluation_config": "array_llm",
+              "items": {
+                "type": "string",
+                "evaluation_config": "string_semantic"
+              }
+            }
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "education": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "object",
+          "properties": {
+            "endDate": {
+              "anyOf": [
+                {"type": "string", "evaluation_config": "string_exact"},
+                {"type": "integer", "evaluation_config": "integer_exact"},
+                {"type": "null"}
+              ]
+            },
+            "startDate": {
+              "anyOf": [
+                {"type": "string", "evaluation_config": "string_exact"},
+                {"type": "integer", "evaluation_config": "integer_exact"}
+              ]
+            },
+            "description": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Any additional information about the education, such as GPA, honors, mentors, coursework, etc."
+            },
+            "institution": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Name of the institution"
+            },
+            "qualificationTitle": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Name of the academic degree or qualification earned, such as 'Mechanical Engineering, PhD', etc."
+            }
+          }
+        },
+        "description": "Education history"
+      },
+      "languages": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "string",
+          "evaluation_config": "string_semantic"
+        },
+        "description": "Languages spoken and proficiency levels"
+      },
+      "socialLinks": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "string",
+          "format": "uri",
+          "evaluation_config": "string_exact"
+        },
+        "description": "Links to professional profiles such as LinkedIn, GitHub, personal websites"
+      },
+      "personalInfo": {
+        "type": "object",
+        "required": [
+          "fullName"
+        ],
+        "properties": {
+          "contact": {
+            "type": "object",
+            "properties": {
+              "emails": {
+                "type": "array",
+                "evaluation_config": "array_llm",
+                "items": {
+                  "type": "string",
+                  "format": "email",
+                  "evaluation_config": "string_case_insensitive"
+                },
+                "description": "Email addresses"
+              },
+              "phones": {
+                "type": "array",
+                "evaluation_config": "array_llm",
+                "items": {
+                  "type": "string",
+                  "evaluation_config": "string_semantic"
+                },
+                "description": "Phone numbers"
+              }
+            }
+          },
+          "fullName": {
+            "type": "string",
+            "evaluation_config": "string_semantic",
+            "description": "Full name of the candidate, including any titles used, such as Dr, Professor, etc."
+          },
+          "personalStatement": {
+            "type": "string",
+            "evaluation_config": "string_semantic",
+            "description": "Introductory statement, profile summary, or personal description"
+          }
+        }
+      },
+      "publications": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "object",
+          "properties": {
+            "link": {
+              "type": "string",
+              "evaluation_config": "string_exact",
+              "description": "URL to the publication"
+            },
+            "year": {
+              "type": "string",
+              "evaluation_config": "string_exact",
+              "description": "Publication year"
+            },
+            "title": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Title of the publication"
+            },
+            "authors": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Author name(s) as they appear in the publication"
+            },
+            "publisher": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Journal or publisher of the publication"
+            }
+          }
+        },
+        "description": "Academic publications, research papers, articles, or similar"
+      },
+      "workExperience": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "object",
+          "properties": {
+            "employer": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Employer name"
+            },
+            "endDate": {
+              "anyOf": [
+                {"type": "string", "evaluation_config": "string_exact"},
+                {"type": "integer", "evaluation_config": "integer_exact"},
+                {"type": "null"}
+              ],
+              "description": "Null if current"
+            },
+            "startDate": {
+              "anyOf": [
+                {"type": "string", "evaluation_config": "string_exact"},
+                {"type": "integer", "evaluation_config": "integer_exact"}
+              ]
+            },
+            "category": {
+              "anyOf": [
+                {"type": "string", "evaluation_config": "string_semantic"},
+                {"type": "null"}
+              ],
+              "description": "Type of experience (e.g., 'Teaching Experience', 'Research Experience', 'Industry Experience', 'Administrative Experience'). Only return this if work experience is clearly categorized in the document. Otherwise, leave blank."
+            },
+            "jobTitle": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Job title/position"
+            },
+            "isCurrent": {
+              "type": "boolean",
+              "evaluation_config": "boolean_exact",
+              "description": "Whether this is current position"
+            },
+            "description": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Description or responsibilities for the role, including any additional information included in the resume under this job title/position"
+            }
+          }
+        },
+        "description": "Work experience history. For academic resumes, this should include teaching experience, research experience, academic appointments and other relevant experience."
+      },
+      "certificationsAndAwards": {
+        "type": "array",
+        "evaluation_config": "array_llm",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "evaluation_config": "string_exact",
+              "description": "Date when credential was awarded or obtained"
+            },
+            "category": {
+              "anyOf": [
+                {"type": "string", "evaluation_config": "string_semantic"},
+                {"type": "null"}
+              ],
+              "description": "Type of credential (e.g., 'Certification', 'Award', 'Membership', 'License', 'Honor', 'Affiliation')."
+            },
+            "description": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Description of the certification, award, membership, etc."
+            },
+            "organization": {
+              "type": "string",
+              "evaluation_config": "string_semantic",
+              "description": "Organization associated with the credential"
+            }
+          }
+        },
+        "description": "Professional certifications, licenses, awards, honors, memberships, and affiliations"
+      }
+    }
+  }
+}

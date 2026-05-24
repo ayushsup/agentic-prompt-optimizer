@@ -1,0 +1,627 @@
+{
+  "type": "object",
+  "$defs": {
+    "unit": {
+      "type": "string",
+      "evaluation_config": "string_case_insensitive",
+      "description": "Currency or measurement unit (e.g. 'USD', 'EUR', '%', 'GBP')."
+    },
+    "scale": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "evaluation_config": "integer_exact",
+      "description": "Numeric scale factor (e.g. 1000 for thousands, 1000000 for millions, 1 for unscaled values). Null if unspecified."
+    },
+    "value": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "description": "String representation for ranges (e.g. '33–37') or non-numeric values. Exclude units and scales."
+        }
+      ],
+      "evaluation_config": {
+        "metrics": [
+          {"metric_id": "number_tolerance", "params": {"tolerance": 0.001}}
+        ]
+      },
+      "description": "Reported numeric value. Use a string for ranges (e.g. '33–37'). Null if unavailable."
+    },
+    "data_period": {
+      "type": "string",
+      "evaluation_config": "string_exact",
+      "description": "Canonical reporting period label (e.g. 'FY2025 Q3', 'FY2025 H1', 'FY2025 YTD', 'FY2025'). 'NA' if unknown."
+    },
+    "metric_type": {
+      "enum": [
+        "actual",
+        "guidance"
+      ],
+      "type": "string",
+      "default": "actual",
+      "evaluation_config": "string_exact",
+      "description": "Whether the metric is an actual reported value or forward-looking guidance."
+    },
+    "metric_entry": {
+      "type": "object",
+      "required": [
+        "data_period",
+        "segment_type",
+        "unit",
+        "scale",
+        "value"
+      ],
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/unit"
+        },
+        "scale": {
+          "$ref": "#/$defs/scale"
+        },
+        "value": {
+          "$ref": "#/$defs/value"
+        },
+        "data_period": {
+          "$ref": "#/$defs/data_period"
+        },
+        "metric_type": {
+          "$ref": "#/$defs/metric_type"
+        },
+        "segment_name": {
+          "$ref": "#/$defs/segment_name"
+        },
+        "segment_type": {
+          "$ref": "#/$defs/segment_type"
+        }
+      },
+      "description": "Common structure for all metric entries, including period, segment, unit, scale, and value.",
+      "additionalProperties": false
+    },
+    "segment_name": {
+      "type": "string",
+      "evaluation_config": "string_semantic",
+      "description": "Name of the business or geographic segment (e.g. 'Cloud', 'North America'). 'NA' for company-level metrics."
+    },
+    "segment_type": {
+      "enum": [
+        "company",
+        "business_segment",
+        "geographic_segment"
+      ],
+      "type": "string",
+      "default": "company",
+      "evaluation_config": "string_exact",
+      "description": "Reporting level: 'company' for consolidated totals, 'business_segment', or 'geographic_segment'."
+    },
+    "growth_metric": {
+      "type": "object",
+      "required": [
+        "data_period",
+        "metric_type",
+        "segment_type",
+        "unit",
+        "scale",
+        "value",
+        "comparison_type"
+      ],
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/unit"
+        },
+        "scale": {
+          "$ref": "#/$defs/scale"
+        },
+        "value": {
+          "$ref": "#/$defs/value"
+        },
+        "data_period": {
+          "$ref": "#/$defs/data_period"
+        },
+        "metric_type": {
+          "$ref": "#/$defs/metric_type"
+        },
+        "segment_name": {
+          "$ref": "#/$defs/segment_name"
+        },
+        "segment_type": {
+          "$ref": "#/$defs/segment_type"
+        },
+        "comparison_type": {
+          "enum": [
+            "Yoy",
+            "Qoq",
+            "Ytd",
+            "Ttm"
+          ],
+          "type": "string",
+          "evaluation_config": "string_exact",
+          "description": "Comparison basis: 'Yoy' (year-on-year), 'Qoq' (quarter-on-quarter), 'Ytd' (year-to-date), or 'Ttm' (trailing twelve months)."
+        }
+      },
+      "description": "Metric entry for growth-based metrics, with an additional comparison_type field.",
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "meta",
+    "income_statement",
+    "balance_sheet",
+    "cash_flow_statement",
+    "other_disclosures"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "company": {
+          "type": "string",
+          "default": "NA",
+          "evaluation_config": "string_semantic",
+          "description": "The name of the reporting entity or registrant."
+        },
+        "report_period": {
+          "type": "string",
+          "default": "NA",
+          "pattern": "^FY\\d{4}( (Q[1-4]|H[1-2]|YTD))?$",
+          "evaluation_config": "string_exact",
+          "description": "Canonical reporting period (e.g. 'FY2025 Q3', 'FY2025 H1', 'FY2025')."
+        },
+        "report_period_end_date": {
+          "type": "string",
+          "format": "date",
+          "default": "NA",
+          "evaluation_config": "string_exact",
+          "description": "End date of the reporting period in YYYY-MM-DD format (e.g. '2024-12-31')."
+        }
+      },
+      "additionalProperties": false
+    },
+    "balance_sheet": {
+      "type": "object",
+      "properties": {
+        "cash": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Cash and cash equivalents (i.e., highly liquid investments maturing within three months)"
+        },
+        "commercial_paper_outstanding": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Commercial paper: Issuance of commercial paper"
+        },
+        "dividends_payable": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Declared cash dividends owed to shareholders but not yet paid"
+        },
+        "goodwill": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Goodwill: Intangible assets from acquisitions above fair value"
+        },
+        "total_debt": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Total debt: Total short-term and long-term debt"
+        },
+        "inventories": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Inventories: Total value of inventory on hand"
+        },
+        "total_assets": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Total assets: Total current and non-current assets"
+        },
+        "current_assets": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Current assets: Assets expected to be converted into cash, sold or consumed within one year"
+        },
+        "long_term_debt": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Long-term debt: Debt obligations due beyond one year"
+        },
+        "short_term_debt": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Short-term debt: Debt obligations due within one year"
+        },
+        "accounts_payable": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Accounts payable: Money owed to suppliers for goods/services received"
+        },
+        "retained_earnings": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Retained earnings (often shown as accumulated deficit when negative)"
+        },
+        "total_liabilities": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Total liabilities: Total current and non-current liabilities"
+        },
+        "total_receivables": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Total receivables: All accounts and notes receivable"
+        },
+        "money_market_funds": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Money market funds: Investments in money market mutual funds"
+        },
+        "accounts_receivable": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Accounts receivable: Money owed by customers for delivered goods/services"
+        },
+        "cash_st_investments": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Cash and short-term investments: Cash, cash equivalents and short-term investments"
+        },
+        "current_liabilities": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Current liabilities: Obligations due within one year"
+        },
+        "shareholders_equity": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Shareholders' equity: Total equity attributable to shareholders"
+        },
+        "marketable_securities": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Marketable securities: Short-term investments in tradeable securities"
+        },
+        "short_term_investments": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Short-term investments: Investments with an expected maturity of less than one year"
+        },
+        "additional_paid_in_capital": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Additional paid-in capital: Capital received from shareholders above par value"
+        },
+        "property_plant_and_equipment": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Net property, plant, and equipment (PP&E)"
+        }
+      }
+    },
+    "income_statement": {
+      "type": "object",
+      "properties": {
+        "revenue": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Total revenue, e.g. non-GAAP, pro-forma"
+        },
+        "basic_eps": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Basic earnings per share (EPS)"
+        },
+        "net_income": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Net income"
+        },
+        "diluted_eps": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Diluted earnings per share (EPS)"
+        },
+        "gross_margin": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Gross profit as a percentage of total revenue."
+        },
+        "gross_profit": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Gross profit (revenue minus cost of goods sold)."
+        },
+        "revenue_growth": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/growth_metric"
+          },
+          "description": "Percentage growth in revenue compared to a prior period."
+        },
+        "cost_of_revenue": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Costs directly associated with the production of revenue."
+        },
+        "interest_expense": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Interest expense; cost of debt financing"
+        },
+        "operating_income": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Earnings before interest and taxes (EBIT)"
+        },
+        "operating_margin": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Operating income as a percentage of total revenue"
+        },
+        "net_income_growth": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/growth_metric"
+          },
+          "description": "Percentage growth in net income compared to a prior period."
+        },
+        "effective_tax_rate": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Effective tax rate on pre-tax income"
+        },
+        "income_tax_expense": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Provision for income taxes"
+        },
+        "operating_expenses": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Total operating expenses"
+        },
+        "restructuring_charge": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "One-time costs for reorganization or restructuring"
+        },
+        "stock_based_compensation": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Non-cash expense for employee equity compensation"
+        }
+      }
+    },
+    "other_disclosures": {
+      "type": "object",
+      "properties": {
+        "employees": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Number of employees (headcount)"
+        },
+        "notional_swaps_value": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Notional swaps value: Total notional value of swap agreements"
+        },
+        "notional_options_value": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Notional options value: Total notional value of option contracts"
+        },
+        "notional_forwards_value": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Notional forwards value: Total notional value of forward derivative contracts"
+        }
+      }
+    },
+    "cash_flow_statement": {
+      "type": "object",
+      "properties": {
+        "capex": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Capital expenditures (PP&E and other capitalised assets)"
+        },
+        "shares_issued": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Shares issued: Number of new shares issued"
+        },
+        "dividends_paid": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Cash dividends paid to shareholders"
+        },
+        "commercial_paper_issuance": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Commercial paper: Issuance of commercial paper"
+        },
+        "share_repurchases": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Share repurchases: Cash used to repurchase company shares"
+        },
+        "shares_repurchased": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Shares repurchased: Number of common shares repurchased and retired"
+        },
+        "financing_cash_flow": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Financing cash flow: Cash flows from debt, equity, and dividend activities"
+        },
+        "operating_cash_flow": {
+          "type": "array",
+          "evaluation_config": "array_llm",
+          "items": {
+            "$ref": "#/$defs/metric_entry"
+          },
+          "description": "Operating cash flow"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+You are comparing a gold string against a predicted string for semantic equivalence.
+Consider normalization differences such as casing, punctuation, whitespace, abbreviations, formatting, and common synonyms. Use the schema metadata to understand context-specific tolerances. Penalize only meaningfully incorrect or incomplete predictions.
+
+Schema metadata (JSON):
+{metadata}
+
+Gold string (JSON):
+{gold}
+
+Predicted string (JSON):
+{predicted}
+
+Return a JSON object that matches the following schema enclosed in triple backticks with the json hint:
+```json
+{structured_output_schema}
+```
+Respond with JSON only, enclosed in triple backticks prefixed with json, with no additional commentary.

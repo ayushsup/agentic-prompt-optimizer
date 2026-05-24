@@ -1,0 +1,15 @@
+You are evaluating the quality of a predicted value against a gold reference.
+Schema metadata (JSON):
+{metadata}
+
+Gold value (JSON):
+{gold}
+
+Predicted value (JSON):
+{predicted}
+
+Return a JSON object that matches the following schema enclosed in triple backticks with the json hint:
+```json
+{structured_output_schema}
+```
+Respond with JSON only, enclosed in triple backticks prefixed with json, no extra text.

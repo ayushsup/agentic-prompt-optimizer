@@ -1,0 +1,35 @@
+You are evaluating how well a predicted array matches the gold array.
+Use the schema metadata and values to assess completeness and correctness.
+Unless explicitly instructed otherwise via configuration, treat arrays as unordered collections including when counting matches.
+
+CRITICAL: A pair is a TRUE MATCH if and ONLY if EVERY field individually passes its evaluation criteria according to the schema rules and tolerances.
+- If ANY field fails its criteria (e.g., a numeric value exceeds tolerance, a string doesn't match), the ENTIRE pair is a MISMATCH.
+- Partial matches where some fields align but others don't are NOT matches - they are mismatches.
+- Example: Gold {{"score": 93.3, "subject": "Science"}} vs Predicted {{"score": 92.3, "subject": "Science"}} is a MISMATCH if the score difference exceeds tolerance, even though the subject matches perfectly.
+- IMPORTANT: Apply per-field evaluation rules when deciding whether a field passes.
+  - If a `Metric definitions (JSON)` block is present, treat it as the authoritative semantics for each `metric_id` and its params.
+  - Otherwise, use schema metadata `evaluation_config` and infer conservatively from `metric_id` + params.
+
+Follow this process:
+(1) For each gold item, attempt to find at most one predicted item where ALL fields meet their individual evaluation criteria.
+(2) Only mark a pair as matched when EVERY field in the object passes its specific evaluation requirement.
+(3) If even one field fails, treat the entire pair as a mismatch.
+(4) Report how many gold items were left unmatched and how many predictions were spurious.
+Provide constructive reasoning referencing the key matched and unmatched items.
+
+Schema metadata (JSON):
+{metadata}
+
+Gold array (JSON):
+{gold}
+
+Predicted array (JSON):
+{predicted}
+
+Return a JSON object that matches the following schema enclosed in triple backticks with the json hint like ```json
+<Response>
+```
+:
+```json
+{structured_output_schema}
+```

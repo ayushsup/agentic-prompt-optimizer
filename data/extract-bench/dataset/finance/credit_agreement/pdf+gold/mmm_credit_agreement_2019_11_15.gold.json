@@ -1,0 +1,36 @@
+{
+  "parties": {
+    "administrative_agent": "JPMORGAN CHASE BANK, N.A.",
+    "borrower": "3M COMPANY",
+    "lead_arranger": [
+      "JPMORGAN CHASE BANK, N.A.",
+      "CITIBANK, N.A.",
+      "DEUTSCHE BANK SECURITIES INC."
+    ],
+    "lenders": [
+      "JPMorgan Chase Bank, N.A.",
+      "Citibank, N.A.",
+      "Deutsche Bank AG New York Branch",
+      "Bank of America, N.A.",
+      "Barclays Bank PLC",
+      "BNP Paribas",
+      "Credit Suisse AG, Cayman Islands Branch",
+      "Goldman Sachs Bank USA",
+      "Morgan Stanley Bank, N.A.",
+      "Wells Fargo Bank, National Association"
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 1250000000,
+      "currency": "USD"
+    },
+    "agreement_date": "2019-11-15",
+    "authorized_officer_definition": null,
+    "beneficial_ownership_certification_required": true,
+    "borrowing_request": " A request for a Borrowing must be received by the Agent (and in the case of a LIBO Rate Advance denominated in a Committed Currency, to the London Sub-Agent) (i) not later than 1:00 P.M. on the day that such Borrowing is to be made in the case of a Borrowing that is to bear interest initially at the Floating Rate or (ii) not later than 11:00 A.M. on the day three Business Days before the Business Day which is the first day of the applicable Interest Period for such Borrowing in the case of a Borrowing denominated in Dollars that is to bear interest initially (in whole or in part) at a LIBO Rate, (y) 2:00 P.M. (London time) on the day three Business Days before the Business Day which is the first day of the applicable Interest Period for such Borrowing in the case of a Borrowing denominated in any Committed Currency.",
+    "governing_law": "State of New York",
+    "maturity_date": "2021-11-13",
+    "use_of_proceeds": "Use the proceeds of the Advances solely for the Borrower’s general corporate purposes; provided, however, the proceeds of the Advances shall not be used by the Borrower (i) in connection with any acquisition by the Borrower of other businesses, whether through merger, consolidation, acquisition of assets, acquisition of stock or other ownership interests or otherwise; or (ii) in connection with or preparation for any case or proceeding contemplated by Section 10.1(j) hereof; and (y) not request any Borrowing, and not knowingly use, and use commercially reasonable efforts to procure that its Subsidiaries and its or their respective directors, officers, employees and agents shall not knowingly use, the proceeds of any Borrowing (A) in furtherance of a corrupt offer, payment, promise to pay, or authorization of the payment or giving of money, or anything else of value, to any Person in a manner which constitutes (1) a violation of the FCPA, (2) a violation of the Bribery Act, or (3) a material violation of any other AntiCorruption Laws, (B) for the purpose of funding, financing or facilitating any activities, business or transaction of or with any Sanctioned Person, or in any Sanctioned Country, except to the extent licensed by the Office of Foreign Assets Control of the U.S. Department of the Treasury or the U.S. Department of State or otherwise authorized under the U.S. law, or (C) in any manner that would result in the violation of any Sanctions applicable to any party hereto."
+  }
+}

@@ -1,0 +1,11 @@
+--- Prompt_v1
++++ Prompt_v2
+@@ -4,7 +4,7 @@
+ {
+   "personalInfo": {
+     "fullName": "John Doe",
+-    "personalStatement": "Highly motivated and experienced professional with a proven track record of success in the tech industry.",
++    "personalStatement": "Highly motivated and experienced professional with a proven track record of success in the tech industry. I am passionate about innovation and continuous learning, and I am always eager to take on new challenges.",
+     "contact": {
+       "emails": [
+         "john.doe@example.com",

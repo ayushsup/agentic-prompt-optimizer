@@ -1,0 +1,25 @@
+{
+  "parties": {
+    "administrative_agent": "WELLS FARGO BANK, NATIONAL ASSOCIATION",
+    "borrower": "XPEL, INC.",
+    "lead_arranger": [
+      "WELLS FARGO SECURITIES, LLC"
+    ],
+    "lenders": [
+      "WELLS FARGO BANK, NATIONAL ASSOCIATION"
+    ]
+  },
+  "terms": {
+    "loan_commitment": {
+      "amount": 125000000,
+      "currency": "USD"
+    },
+    "agreement_date": "2023-04-06",
+    "authorized_officer_definition": "Responsible Officer means, as to any Person, the chief executive officer, president, chief financial officer,\ncontroller, treasurer or assistant treasurer of such Person or any other officer of such Person designated in writing by\nthe Borrower or such Person and reasonably acceptable to the Administrative Agent; provided that, to the extent\nrequested thereby, the Administrative Agent shall have received a certificate of such Person certifying as to the\nincumbency and genuineness of the signature of each such officer. Any document delivered hereunder or under any\nother Loan Document that is signed by a Responsible Officer of a Person shall be conclusively presumed to have been\nauthorized by all necessary corporate, limited liability company, partnership and/or other action on the part of such\nPerson and such Responsible Officer shall be conclusively presumed to have acted on behalf of such Person.",
+    "beneficial_ownership_certification_required": true,
+    "borrowing_request": "The Borrower shall give the Administrative Agent irrevocable prior written notice substantially in the form of Exhibit B (a “Notice of Borrowing”) not later than 12:00 p.m. (i) on the same Business Day as each Base Rate Loan and (ii) at least three (3) U.S. Government Securities Business Days before each SOFR Loan, of its intention to borrow.",
+    "governing_law": "Texas",
+    "maturity_date": "2026-04-06",
+    "use_of_proceeds": "The proceeds of any Incremental Increase may be used by the Borrower and its Subsidiaries for working capital and other general corporate purposes, including the financing of Permitted Acquisitions and other Investments permitted hereunder and any other use not prohibited by this Agreement."
+  }
+}
