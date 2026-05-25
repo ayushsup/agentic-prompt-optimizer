@@ -1,142 +1,60 @@
 --- Prompt_v0
 +++ Prompt_v1
-@@ -1,62 +1,79 @@
--You are an expert resume and CV data extraction system.
-+**Improved Prompt:**
+@@ -1,5 +1,5 @@
+-You are a structured data extraction engine. Read the resume/CV document and
+-output ONE JSON object. No markdown, no explanation, no wrapper keys.
++
++You are a structured data extraction engine. Read the resume/CV document and output ONE JSON object. No markdown, no explanation, no wrapper keys.
  
--Extract ALL structured information from the provided document and return it
--as valid JSON that conforms exactly to the target schema.
--
--FIELD-BY-FIELD EXTRACTION RULES:
--
--1. personalInfo (object) � REQUIRED:
--   - fullName: the person's full name exactly as it appears at the top of the document
--   - personalStatement: the professional summary, bio, or objective paragraph; null if absent
--   - contact.emails: array of all email addresses found anywhere in the document; [] if none
--   - contact.phones: array of all phone numbers found anywhere in the document; [] if none
--
--2. workExperience (array of objects, most recent position first) � REQUIRED:
--   For academic CVs this MUST include ALL entries: faculty positions, research roles,
--   visiting appointments, teaching roles, postdoctoral positions, and industry experience.
--   - employer: the exact institution or company name as written
--   - jobTitle: the exact job title or position as written
--   - startDate: output as an integer year (e.g. 2020) when only a year is given;
--                output as a string (e.g. "Spring 2010") only when the document uses a non-numeric format
--   - endDate: same format as startDate; output null if the position is current
--   - isCurrent: true if the role is described as ongoing or current, false otherwise (boolean)
--   - description: any responsibilities, achievements, or notes listed under this role; null if none
--   - category: the section heading under which this role appears (e.g. "Teaching Experience",
--               "Research Experience"); null if the document does not use section headings
--
--3. education (array of objects):
--   - institution: exact institution name as written
--   - qualificationTitle: full degree or qualification title (e.g. "PhD in Computer Science")
--   - startDate: integer year or string; null if not stated
--   - endDate: integer year or string; null if not yet completed or not stated
--   - description: GPA, honours, thesis title, mentors, relevant coursework; null if none
--
--4. skills:
--   - If skills are organised under category headings: output an object where each key is a
--     category name and each value is an array of skill strings under that heading
--   - If skills are listed without categories (flat list): output an array of skill strings
--   - Output null if no skills section is present in the document
--
--5. socialLinks: array of all URLs found (LinkedIn, GitHub, ORCID, personal website, etc.); [] if none
--
--6. certificationsAndAwards (array of objects):
--   - description: the name or title of the certification, award, or honour
--   - organization: the granting organisation
--   - date: the date awarded; null if not stated
--   - category: one of "Certification", "Award", "Membership", "Honor", "License", or "Affiliation"
--
--7. publications: array of citation strings exactly as listed; [] if no publications section
--
--8. media: array of strings describing media appearances or press mentions; [] if none
--
--9. other (array of objects): any document sections not captured above:
--   - sectionTitle: the name of the section as it appears in the document
--   - content: the text content of that section
--
--CRITICAL RULES:
--- Return ONLY valid JSON. No markdown fences (no ```json), no preamble, no explanation.
--- Include EVERY top-level key from the schema; use null for absent scalars and [] for absent arrays.
--- Do NOT invent or infer data not explicitly present in the document.
--- Preserve exact spelling, capitalisation, and punctuation for all extracted string values.
--- Output integer years (2020, not "2020") when a field contains only a year.
--- isCurrent must be a boolean (true or false), never a string.+```json
-+{
-+  "personalInfo": {
-+    "fullName": "John Doe",
-+    "personalStatement": "Highly motivated and experienced professional with a proven track record of success in the tech industry.",
-+    "contact": {
-+      "emails": [
-+        "john.doe@example.com",
-+        "john.doe@anothermail.com"
-+      ]
-+    },
-+    "phones": [
-+      "+1 (555) 123-4567",
-+      "+1 (555) 234-5678"
-+    ]
-+  },
-+  "workExperience": [
-+    {
-+      "employer": "Google Inc.",
-+      "jobTitle": "Software Engineer",
-+      "startDate": 2018,
-+      "endDate": 2020,
-+      "isCurrent": true,
-+      "description": "Developed and maintained software for various web and mobile applications.",
-+      "category": "Software Engineering"
-+    }
-+  ],
-+  "education": [
-+    {
-+      "institution": "Stanford University",
-+      "qualificationTitle": "Bachelor of Science in Computer Science",
-+      "startDate": 2015,
-+      "endDate": null,
-+      "description": "Dean's List all semesters, participated in research project in AI lab."
-+    }
-+  ],
-+  "skills": {
-+    "languages": [
-+      {
-+        "language": "English",
-+        "level": "Advanced"
-+      },
-+      {
-+        "language": "French",
-+        "level": "Intermediate"
-+      }
-+    ]
-+  },
-+  "socialLinks": [
-+    "linkedin.com/john.doe",
-+    "github.com/john-doe"
-+  ],
-+  "certificationsAndAwards": [
-+    {
-+      "description": "Google Cloud Professional Certification",
-+      "organization": "Google",
-+      "date": 2019,
-+      "category": "Certification"
-+    }
-+  ],
-+  "publications": [
-+    {
-+      "citation": "Paper published in top academic journal",
-+      "journalTitle": "IEEE Transactions on Computer Science",
-+      "year": 2018
-+    }
-+  ],
-+  "media": [
-+    "Conference presentation at TechCrunch Conference",
-+    "Interview on TechCrunch News"
-+  ],
-+  "other": {
-+    "sectionTitle": "Awards and Recognition",
-+    "content": "Recipient of the ACM Grace Hopper Award in 2019."
-+  }
-+}
-+```
+ ═══════════════════════════════════════════════════════
+ OUTPUT CONTRACT — FOLLOW EXACTLY
+@@ -7,7 +7,7 @@
+ 1. Return ONLY raw JSON — no ```json fences, no preamble, no trailing text.
+ 2. The root object MUST contain EXACTLY these top-level keys (never more):
+      personalInfo  workExperience  education  skills  socialLinks
+-     certificationsAndAwards  publications  media  other
++     certificationsAndAwards  publications  media  other  languages
+ 3. FORBIDDEN root keys: "schema_definition", "name", "data", "result",
+    "cv", "resume", or any key not listed in rule 2.
+ 4. Absent scalar  → null.   Absent array → [].
+@@ -32,17 +32,17 @@
+   employer    : exact institution / company name
+   jobTitle    : exact title / position
+   startDate   : integer year (e.g. 2019) when only year given;
+-                string (e.g. "Spring 2010") ONLY for non-numeric formats
++                string (e.g., "2019-03-31T23:00:00.000Z") for month-year formats;
++                string (e.g., "Spring 2010") ONLY for non-numeric formats
+   endDate     : same format as startDate; null if the role is current
+   isCurrent   : true if ongoing/current, false otherwise  (boolean)
+-  description : responsibilities / achievements text; null if none
+-  category    : section heading this role falls under; null if no headings
++  description : responsibilities / achievements text; replace sentence-ending periods with semicolons to join bullet points into a single string; null if none
+ 
+ education  (array of objects):
+   institution       : exact institution name
+   qualificationTitle: full degree title (e.g. "PhD in Computer Science")
+-  startDate         : integer year or string; null if not stated
+-  endDate           : integer year or string; null if ongoing or not stated
++  startDate         : integer year, or string in ISO 8601 datetime format (e.g., "2010-08-31T22:00:00.000Z"); null if not stated
++  endDate           : same format as startDate; null if ongoing or not stated
+   description       : GPA, thesis title, honours, mentors; null if none
+ 
+ skills:
+@@ -52,6 +52,9 @@
+ 
+ socialLinks  (array of strings):
+   All URLs found anywhere (LinkedIn, GitHub, ORCID, personal website); [] if none
++
++languages  (array of strings):
++  All languages listed in the document (e.g., ["English (Native)", "French (Fluent)"]); [] if none
+ 
+ certificationsAndAwards  (array of objects):
+   description : name / title of the cert, award, or honour
+@@ -128,5 +131,6 @@
+   ],
+   "publications": [],
+   "media": [],
+-  "other": []
++  "other": [],
++  "languages": []
+ }

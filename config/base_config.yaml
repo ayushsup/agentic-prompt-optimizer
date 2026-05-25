@@ -7,13 +7,9 @@ dataset:
 
 budget:
   max_iterations: 20
-  max_cost_dollars: 0.0   # 0 = no dollar cap (free tier via OpenRouter)
+  max_cost_dollars: 0.0
 
 # Vision/OCR model used as fallback for scanned/image-based PDFs.
-# Gemini is the primary OCR path (uses GEMINI_API_KEY — set this env var).
-# This setting is the OpenRouter fallback if Gemini is not configured.
-# NOTE: Gemini is always preferred for vision even when Ollama is active
-#       as the LLM fallback — OCR and text inference are separate concerns.
 vision_model: "google/gemma-4-31b-it:free"
 
 models:
@@ -22,85 +18,150 @@ models:
   mutator:   "poolside/laguna-xs.2:free"
 
 # ---------------------------------------------------------------------------
-# Environment variables (not in this file — export before running)
+# Environment variables (export before running)
 # ---------------------------------------------------------------------------
 # Required:
 #   OPENROUTER_API_KEY   — primary LLM backend
 #
 # Recommended:
-#   GEMINI_API_KEY       — used exclusively for OCR on scanned/image PDFs
-#                          (gemini-2.5-flash). Much better quality than
-#                          page-by-page rendering via OpenRouter vision models.
+#   GEMINI_API_KEY       — OCR on scanned/image PDFs (gemini-2.5-flash)
 #
-# Optional (Ollama fallback):
+# Ollama fallback (activated automatically on OpenRouter quota exhaustion):
 #   OLLAMA_BASE_URL      — default: http://localhost:11434
-#   OLLAMA_MODEL         — default: llama3.2
-#                          Used automatically when OpenRouter hits its daily
-#                          free-model quota or returns repeated errors.
-#                          Start Ollama with: ollama serve
-#                          Pull a model with: ollama pull llama3.2
+#   OLLAMA_MODEL         — default: llama3   ← use llama3, NOT gemma:2b
+#                          ollama pull llama3
 # ---------------------------------------------------------------------------
 
 seed_prompt: |
-  You are an expert resume and CV data extraction system.
+  You are a structured data extraction engine. Read the resume/CV document and
+  output ONE JSON object. No markdown, no explanation, no wrapper keys.
 
-  Extract ALL structured information from the provided document and return it
-  as valid JSON that conforms exactly to the target schema.
+  ═══════════════════════════════════════════════════════
+  OUTPUT CONTRACT — FOLLOW EXACTLY
+  ═══════════════════════════════════════════════════════
+  1. Return ONLY raw JSON — no ```json fences, no preamble, no trailing text.
+  2. The root object MUST contain EXACTLY these top-level keys (never more):
+       personalInfo  workExperience  education  skills  socialLinks
+       certificationsAndAwards  publications  media  other
+  3. FORBIDDEN root keys: "schema_definition", "name", "data", "result",
+     "cv", "resume", or any key not listed in rule 2.
+  4. Absent scalar  → null.   Absent array → [].
+  5. Never invent data not present in the document.
+  6. Year-only dates → INTEGER  (2020, not "2020").
+  7. isCurrent → boolean  (true / false, never "true" / "false").
 
-  FIELD-BY-FIELD EXTRACTION RULES:
+  ═══════════════════════════════════════════════════════
+  FIELD RULES
+  ═══════════════════════════════════════════════════════
 
-  1. personalInfo (object) — REQUIRED:
-     - fullName: the person's full name exactly as it appears at the top of the document
-     - personalStatement: the professional summary, bio, or objective paragraph; null if absent
-     - contact.emails: array of all email addresses found anywhere in the document; [] if none
-     - contact.phones: array of all phone numbers found anywhere in the document; [] if none
+  personalInfo  (object, REQUIRED):
+    fullName          : exact name as written at top of document
+    personalStatement : professional summary / objective paragraph; null if absent
+    contact:
+      emails : array — all email addresses found anywhere; [] if none
+      phones : array — all phone numbers, exact format; [] if none
 
-  2. workExperience (array of objects, most recent position first) — REQUIRED:
-     For academic CVs this MUST include ALL entries: faculty positions, research roles,
-     visiting appointments, teaching roles, postdoctoral positions, and industry experience.
-     - employer: the exact institution or company name as written
-     - jobTitle: the exact job title or position as written
-     - startDate: output as an integer year (e.g. 2020) when only a year is given;
-                  output as a string (e.g. "Spring 2010") only when the document uses a non-numeric format
-     - endDate: same format as startDate; output null if the position is current
-     - isCurrent: true if the role is described as ongoing or current, false otherwise (boolean)
-     - description: any responsibilities, achievements, or notes listed under this role; null if none
-     - category: the section heading under which this role appears (e.g. "Teaching Experience",
-                 "Research Experience"); null if the document does not use section headings
+  workExperience  (array of objects, most-recent first, REQUIRED):
+    For academic CVs include ALL: faculty, research, visiting, teaching,
+    postdoc, and industry roles.
+    employer    : exact institution / company name
+    jobTitle    : exact title / position
+    startDate   : integer year (e.g. 2019) when only year given;
+                  string (e.g. "Spring 2010") ONLY for non-numeric formats
+    endDate     : same format as startDate; null if the role is current
+    isCurrent   : true if ongoing/current, false otherwise  (boolean)
+    description : responsibilities / achievements text; null if none
+    category    : section heading this role falls under; null if no headings
 
-  3. education (array of objects):
-     - institution: exact institution name as written
-     - qualificationTitle: full degree or qualification title (e.g. "PhD in Computer Science")
-     - startDate: integer year or string; null if not stated
-     - endDate: integer year or string; null if not yet completed or not stated
-     - description: GPA, honours, thesis title, mentors, relevant coursework; null if none
+  education  (array of objects):
+    institution       : exact institution name
+    qualificationTitle: full degree title (e.g. "PhD in Computer Science")
+    startDate         : integer year or string; null if not stated
+    endDate           : integer year or string; null if ongoing or not stated
+    description       : GPA, thesis title, honours, mentors; null if none
 
-  4. skills:
-     - If skills are organised under category headings: output an object where each key is a
-       category name and each value is an array of skill strings under that heading
-     - If skills are listed without categories (flat list): output an array of skill strings
-     - Output null if no skills section is present in the document
+  skills:
+    • Organised under headings → object: { "HeadingName": ["skill1", "skill2"], … }
+    • Flat list (no headings)  → array of strings
+    • No skills section        → null
 
-  5. socialLinks: array of all URLs found (LinkedIn, GitHub, ORCID, personal website, etc.); [] if none
+  socialLinks  (array of strings):
+    All URLs found anywhere (LinkedIn, GitHub, ORCID, personal website); [] if none
 
-  6. certificationsAndAwards (array of objects):
-     - description: the name or title of the certification, award, or honour
-     - organization: the granting organisation
-     - date: the date awarded; null if not stated
-     - category: one of "Certification", "Award", "Membership", "Honor", "License", or "Affiliation"
+  certificationsAndAwards  (array of objects):
+    description : name / title of the cert, award, or honour
+    organization: granting organisation
+    date        : date awarded as a string; null if not stated
+    category    : MUST be one of:
+                  "Certification" | "Award" | "Membership" |
+                  "Honor" | "License" | "Affiliation"
 
-  7. publications: array of citation strings exactly as listed; [] if no publications section
+  publications  (array of strings):
+    Citation strings exactly as listed in the document; [] if no publications section
 
-  8. media: array of strings describing media appearances or press mentions; [] if none
+  media  (array of strings):
+    Media appearances or press mentions as strings; [] if none
 
-  9. other (array of objects): any document sections not captured above:
-     - sectionTitle: the name of the section as it appears in the document
-     - content: the text content of that section
+  other  (array of objects):
+    Any section not captured by the fields above.
+    sectionTitle : heading as it appears in the document
+    content      : full text of that section
 
-  CRITICAL RULES:
-  - Return ONLY valid JSON. No markdown fences (no ```json), no preamble, no explanation.
-  - Include EVERY top-level key from the schema; use null for absent scalars and [] for absent arrays.
-  - Do NOT invent or infer data not explicitly present in the document.
-  - Preserve exact spelling, capitalisation, and punctuation for all extracted string values.
-  - Output integer years (2020, not "2020") when a field contains only a year.
-  - isCurrent must be a boolean (true or false), never a string.
+  ═══════════════════════════════════════════════════════
+  WORKED EXAMPLE  (format reference — do not copy this data)
+  ═══════════════════════════════════════════════════════
+  {
+    "personalInfo": {
+      "fullName": "Jane Doe",
+      "personalStatement": "Results-driven engineer with 8 years in fintech.",
+      "contact": {
+        "emails": ["jane.doe@example.com"],
+        "phones": ["+44 7700 900123"]
+      }
+    },
+    "workExperience": [
+      {
+        "employer": "Acme Financial Ltd",
+        "jobTitle": "Lead Software Engineer",
+        "startDate": 2019,
+        "endDate": null,
+        "isCurrent": true,
+        "description": "Architected real-time payments API handling 2M txn/day.",
+        "category": null
+      },
+      {
+        "employer": "Beta Systems",
+        "jobTitle": "Software Engineer",
+        "startDate": 2015,
+        "endDate": 2019,
+        "isCurrent": false,
+        "description": null,
+        "category": null
+      }
+    ],
+    "education": [
+      {
+        "institution": "University of Edinburgh",
+        "qualificationTitle": "MEng Computer Science",
+        "startDate": 2011,
+        "endDate": 2015,
+        "description": "First Class Honours. Thesis: Distributed Consensus Algorithms."
+      }
+    ],
+    "skills": {
+      "Languages": ["Python", "Go", "SQL"],
+      "Frameworks": ["FastAPI", "Kafka"]
+    },
+    "socialLinks": ["https://linkedin.com/in/janedoe", "https://github.com/janedoe"],
+    "certificationsAndAwards": [
+      {
+        "description": "AWS Certified Solutions Architect",
+        "organization": "Amazon Web Services",
+        "date": "2022",
+        "category": "Certification"
+      }
+    ],
+    "publications": [],
+    "media": [],
+    "other": []
+  }

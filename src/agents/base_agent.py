@@ -82,7 +82,7 @@ class BaseAgent:
 
         # Ollama fallback client — lazily initialised on first use
         self._ollama_client: Optional[OpenAI] = None
-        self._ollama_model  = os.environ.get("OLLAMA_MODEL", "gemma:2b")
+        self._ollama_model  = os.environ.get("OLLAMA_MODEL", "qwen2.5:3b")
         self._ollama_base   = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 
     # ------------------------------------------------------------------

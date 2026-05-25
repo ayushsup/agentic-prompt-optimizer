@@ -2,38 +2,40 @@
 Central optimization engine.
 
 Implements a Greedy Accept/Reject loop augmented with:
-  - Schema-aware F1 scoring via Scorer (independent of this module)
-  - Resumability: warm-starts from SQLite if a prior run exists
-  - Stall detection: escalates mutation aggressiveness after N iterations
-  - Rejection memory: Mutator sees previously tried-and-failed prompts
-  - Budget enforcement: stops on max_iterations OR max_cost_dollars (if > 0)
-  - Daily-limit detection: graceful shutdown on OpenRouter quota exhaustion
-    (or Ollama unavailability — see base_agent.py)
-  - REPORT.md auto-generation after test evaluation
-  - Extraction debug logging: prints a sample prediction on the first
-    iteration so you can immediately see what the model outputs vs gold
 
-OCR caching
------------
-The StateManager is passed into the ExtractBenchLoader so extracted PDF
-text is persisted in SQLite. On any subsequent run (or after a resume)
-the loader skips re-extraction for files whose bytes have not changed,
-saving time and API quota.
+  Beam search (width 2)
+  ─────────────────────
+  The optimizer maintains the top-2 accepted prompts at all times.
+  On each iteration the primary (best) prompt is mutated normally.
+  When a severe stall is detected (>= BEAM_STALL_THRESHOLD), the mutator
+  is given the secondary prompt as an alternative starting point, allowing
+  it to synthesise ideas from both and escape local optima.
 
-Judge robustness
-----------------
-The LLM judge for string_semantic / array_llm parses the model response
-with a regex float extractor rather than a bare float() call.  Free-tier
-models frequently return verbose text ("I would rate this 0.8 out of 1.0")
-instead of a bare float, which causes float() to raise and scores every
-stochastic field as 0.0.  The regex extractor finds the first valid float
-token in any response format.
+  Train-example injection
+  ───────────────────────
+  When stall_count >= EXAMPLE_INJECT_AFTER, a real (document → gold JSON)
+  example from the train split is formatted and passed to the Mutator.
+  The Mutator is instructed to embed it in the improved prompt as a worked
+  example.  This is the single most effective technique for smaller models.
 
-When the judge fails entirely, stochastic fields fall back to a
-word-overlap F1 score (token-level precision/recall) rather than 0.0 or
-binary exact-match.  This gives partial credit for semantically similar
-strings and keeps the optimization signal meaningful even without a
-working judge.
+  Rejection memory
+  ────────────────
+  Previously tried-and-rejected prompts are tracked and fed to the Mutator
+  so it avoids re-proposing failed variants.
+
+  Budget enforcement
+  ──────────────────
+  Stops on max_iterations OR max_cost_dollars (if > 0).
+
+  Resumability
+  ────────────
+  Warm-starts from SQLite if a prior run exists.  OCR text is cached so
+  re-runs skip re-extraction for unchanged PDF files.
+
+  Robust LLM judge
+  ────────────────
+  The judge for string_semantic / array_llm uses regex float extraction
+  (handles verbose free-model responses) with word-overlap F1 as fallback.
 """
 
 from __future__ import annotations
@@ -66,7 +68,6 @@ def _parse_judge_float(text: str) -> Optional[float]:
 
     Handles all common free-model response styles:
       "0.8"                           → 0.8
-      "0.80"                          → 0.8
       "I would rate this 0.75/1.0"    → 0.75
       "Score: 7/10"                   → 0.7
       "Similarity: 85%"               → 0.85
@@ -76,30 +77,28 @@ def _parse_judge_float(text: str) -> Optional[float]:
     """
     text = text.strip()
 
-    # 1. X/100 pattern — must come before X/10 to avoid "85/100" matching as "85/10"
-    match = re.search(r'(\d+(?:\.\d+)?)\s*/\s*100\b', text)
-    if match:
-        return min(1.0, float(match.group(1)) / 100.0)
+    # X/100 before X/10 to avoid "85/100" matching as "85/10"
+    m = re.search(r'(\d+(?:\.\d+)?)\s*/\s*100\b', text)
+    if m:
+        return min(1.0, float(m.group(1)) / 100.0)
 
-    # 2. X/10 pattern
-    match = re.search(r'(\d+(?:\.\d+)?)\s*/\s*10\b', text)
-    if match:
-        return min(1.0, float(match.group(1)) / 10.0)
+    m = re.search(r'(\d+(?:\.\d+)?)\s*/\s*10\b', text)
+    if m:
+        return min(1.0, float(m.group(1)) / 10.0)
 
-    # 3. Percentage (e.g. "85%")
-    match = re.search(r'(\d+(?:\.\d+)?)\s*%', text)
-    if match:
-        return min(1.0, float(match.group(1)) / 100.0)
+    m = re.search(r'(\d+(?:\.\d+)?)\s*%', text)
+    if m:
+        return min(1.0, float(m.group(1)) / 100.0)
 
-    # 4. Direct float/int in [0, 1]
-    match = re.search(r'\b(0(?:\.\d+)?|1(?:\.0*)?)\b', text)
-    if match:
-        return float(match.group())
+    # Direct float/int in [0, 1]
+    m = re.search(r'\b(0(?:\.\d+)?|1(?:\.0*)?)\b', text)
+    if m:
+        return float(m.group())
 
-    # 5. Any first number in the response (last resort)
-    match = re.search(r'(\d+(?:\.\d+)?)', text)
-    if match:
-        val = float(match.group(1))
+    # Last resort: any first number
+    m = re.search(r'(\d+(?:\.\d+)?)', text)
+    if m:
+        val = float(m.group(1))
         return min(1.0, val / 10.0) if val > 1.0 else val
 
     return None
@@ -107,11 +106,8 @@ def _parse_judge_float(text: str) -> Optional[float]:
 
 def _word_overlap_f1(pred: str, gold: str) -> float:
     """
-    Token-level F1 score as a fallback for string_semantic when the judge fails.
-
-    Gives partial credit for semantically similar strings and preserves the
-    optimization signal across iterations even on free-tier models that cannot
-    produce reliable judge scores.
+    Token-level F1 as fallback when the LLM judge cannot produce a parseable score.
+    Preserves optimization gradient even without a working judge.
     """
     pred_tokens = set(str(pred).lower().split())
     gold_tokens = set(str(gold).lower().split())
@@ -130,9 +126,12 @@ def _word_overlap_f1(pred: str, gold: str) -> float:
 # ---------------------------------------------------------------------------
 
 class OptimizerLoop:
-    """Budget-enforced greedy prompt optimization loop."""
+    """Budget-enforced greedy prompt optimization loop with beam search."""
 
-    STALL_THRESHOLD = 3  # Iterations without improvement before escalating mutation
+    STALL_THRESHOLD       = 3   # Iterations without improvement before escalating mutation
+    BEAM_STALL_THRESHOLD  = 5   # Iterations before passing secondary beam to Mutator
+    EXAMPLE_INJECT_AFTER  = 2   # Stall iterations before injecting a train example
+    BEAM_WIDTH            = 2   # Number of top prompts to maintain
 
     def __init__(self, config_path: str = "config/base_config.yaml"):
         self.config = load_config(config_path)
@@ -140,12 +139,11 @@ class OptimizerLoop:
         self.diff_viewer = DiffViewer()
 
         cfg = self.config
-
         self.extractor = Extractor(cfg.models.extractor, self.state)
         self.critic    = Critic(cfg.models.critic,       self.state)
         self.mutator   = Mutator(cfg.models.mutator,     self.state)
 
-        # Build a robust LLM judge callable for stochastic metrics.
+        # Robust LLM judge for stochastic metrics
         judge_client = self.critic.client
         judge_model  = cfg.models.critic
 
@@ -155,7 +153,6 @@ class OptimizerLoop:
         self.scorer = Scorer(state_manager=self.state, judge_callable=llm_judge)
 
         # ---- Dataset loading ----
-        # Pass the StateManager so the loader can use the OCR cache.
         dataset_base   = os.path.join(cfg.dataset.base_path, "dataset")
         openrouter_key = os.environ.get("OPENROUTER_API_KEY")
         gemini_key     = os.environ.get("GEMINI_API_KEY")
@@ -166,7 +163,7 @@ class OptimizerLoop:
             vision_model=cfg.vision_model,
             openrouter_key=openrouter_key,
             gemini_key=gemini_key,
-            state_manager=self.state,      # ← enables OCR caching
+            state_manager=self.state,
         )
         print(f"\n📂 Loading dataset: {cfg.dataset.name}")
         all_docs = loader.load_all_document_pairs()
@@ -177,8 +174,8 @@ class OptimizerLoop:
                 "Check:\n"
                 "  1. data/extract-bench/dataset/<schema_name>/pdf+gold/ exists\n"
                 "  2. OPENROUTER_API_KEY is set\n"
-                "  3. For scanned PDFs: set GEMINI_API_KEY for best OCR quality\n"
-                "  4. The schema name in config matches the folder name exactly"
+                "  3. For scanned PDFs: set GEMINI_API_KEY\n"
+                "  4. Schema name in config matches folder exactly"
             )
 
         self.train_docs, self.val_docs, self.test_docs = deterministic_split(
@@ -189,10 +186,7 @@ class OptimizerLoop:
         )
 
         if not self.val_docs:
-            print(
-                "\n  ⚠️  Val set is empty after split. "
-                "Falling back to using all loaded docs for validation."
-            )
+            print("  ⚠️  Val set empty after split. Using all docs for val/test.")
             self.val_docs  = all_docs
             self.test_docs = all_docs
 
@@ -218,24 +212,17 @@ class OptimizerLoop:
         return True
 
     # ------------------------------------------------------------------
-    # LLM judge — robust float parsing + word-overlap fallback
+    # LLM judge
     # ------------------------------------------------------------------
 
     @staticmethod
     def _call_judge(pred: object, gold: object, metric: str, client, model: str) -> float:
-        """
-        Score a (pred, gold) pair for a stochastic metric using an LLM judge.
-
-        Robust to verbose model responses: uses regex float extraction rather
-        than a bare float() call.  Falls back to word-overlap F1 if the model
-        cannot produce a parseable response.
-        """
         try:
             if metric == "string_semantic":
                 prompt = (
                     "Score the semantic similarity of these two strings.\n"
                     "Return ONLY a single decimal number between 0.0 and 1.0.\n"
-                    "0.0 = completely different, 1.0 = identical meaning.\n\n"
+                    "0.0 = completely different meaning, 1.0 = identical meaning.\n\n"
                     f"String A: {pred}\n"
                     f"String B: {gold}\n\n"
                     "Score:"
@@ -256,18 +243,60 @@ class OptimizerLoop:
                 temperature=0.0,
                 max_tokens=20,
             )
-            raw = (response.choices[0].message.content or "").strip()
+            raw   = (response.choices[0].message.content or "").strip()
             score = _parse_judge_float(raw)
             if score is not None:
                 return max(0.0, min(1.0, score))
-
             return _word_overlap_f1(str(pred), str(gold))
 
         except Exception:
             return _word_overlap_f1(str(pred), str(gold))
 
     # ------------------------------------------------------------------
-    # Corpus scoring with extraction debug
+    # Train-example injection
+    # ------------------------------------------------------------------
+
+    def _get_train_example(self) -> Optional[str]:
+        """
+        Format the most information-rich train document as a few-shot example.
+
+        Selects the train doc whose gold JSON has the most non-null top-level
+        fields (most complete annotation), so the example teaches the most.
+
+        Returns a formatted string ready for injection into the Mutator prompt,
+        or None if no train documents are available.
+        """
+        if not self.train_docs:
+            return None
+
+        def completeness(doc: Dict) -> int:
+            try:
+                gold = json.loads(doc["gold_json"])
+                return sum(
+                    1 for v in gold.values()
+                    if v is not None and v != [] and v != {}
+                )
+            except Exception:
+                return 0
+
+        best_doc = max(self.train_docs, key=completeness)
+
+        # Truncate document text for the example block (keep it scannable)
+        doc_snippet = best_doc["text"][:1500].strip()
+        if len(best_doc["text"]) > 1500:
+            doc_snippet += "\n… [truncated]"
+
+        return (
+            "EXAMPLE DOCUMENT (first 1500 chars):\n"
+            "─────────────────────────────────────\n"
+            f"{doc_snippet}\n\n"
+            "EXAMPLE CORRECT OUTPUT:\n"
+            "─────────────────────────────────────\n"
+            f"{best_doc['gold_json']}"
+        )
+
+    # ------------------------------------------------------------------
+    # Corpus scoring
     # ------------------------------------------------------------------
 
     def _evaluate_corpus(
@@ -280,8 +309,9 @@ class OptimizerLoop:
         Extract + score every document in docs with the current prompt.
 
         Returns (mean_f1, info_dict).
+        info_dict keys: "docs" (per-doc breakdown), "failed" (docs with F1 < 1.0).
         """
-        total_f1  = 0.0
+        total_f1   = 0.0
         breakdown: Dict[str, Dict] = {}
         failed:    List[Dict]       = []
 
@@ -301,7 +331,7 @@ class OptimizerLoop:
                 schema_str=doc["schema"],
             )
             total_f1 += f1
-            breakdown[doc["id"]] = {**doc_breakdown, "f1": f1}
+            breakdown[doc["id"]] = {**doc_breakdown, "f1": f1, "prediction": prediction}
 
             if f1 < 1.0:
                 failed.append({
@@ -316,7 +346,23 @@ class OptimizerLoop:
         return mean_f1, {"docs": breakdown, "failed": failed}
 
     # ------------------------------------------------------------------
-    # Main loop
+    # Per-doc score display
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _print_doc_breakdown(val_info: Dict) -> None:
+        for doc_id, info in val_info["docs"].items():
+            subtrees = info.get("subtrees", {})
+            if subtrees:
+                field_scores = "  ".join(
+                    f"{k}={v['f1']:.2f}" for k, v in subtrees.items()
+                )
+                print(f"    >> {doc_id}: [{field_scores}]")
+            else:
+                print(f"    >> {doc_id}: F1={info['f1']:.4f}")
+
+    # ------------------------------------------------------------------
+    # Main optimization loop
     # ------------------------------------------------------------------
 
     def run(self) -> None:
@@ -327,7 +373,7 @@ class OptimizerLoop:
             f"dataset={cfg.dataset.name}"
         )
 
-        # ---- Resumability ----
+        # ── Resumability ──────────────────────────────────────────────
         prior_best       = self.state.get_best_state()
         last_done        = self.state.get_last_completed_iteration()
         rejected_history = self.state.get_rejected_prompts()
@@ -344,6 +390,11 @@ class OptimizerLoop:
             start_iteration = 0
             current_prompt  = cfg.seed_prompt
             print("🌱 Starting fresh from seed prompt.")
+
+        # ── Beam state ────────────────────────────────────────────────
+        # beam: list of (score, prompt) sorted descending by score
+        # Always keep BEAM_WIDTH entries once we have enough data.
+        beam: List[Tuple[float, str]] = [(best_score, best_prompt)]
 
         stall_count     = 0
         seed_test_score = 0.0
@@ -371,29 +422,42 @@ class OptimizerLoop:
                     f"Best so far: {max(best_score, 0.0):.4f}  |  "
                     f"Failed docs: {len(failed_docs)}/{len(self.val_docs)}"
                 )
-
-                for doc_id, info in val_info["docs"].items():
-                    subtrees = info.get("subtrees", {})
-                    if subtrees:
-                        field_scores = "  ".join(
-                            f"{k}={v['f1']:.2f}" for k, v in subtrees.items()
-                        )
-                        print(f"    >> {doc_id}: [{field_scores}]")
+                self._print_doc_breakdown(val_info)
 
                 accepted = val_score > best_score
 
                 if accepted:
-                    self.diff_viewer.generate_diff(best_prompt, current_prompt, iteration)
+                    # Generate diff BEFORE updating best_prompt so we diff
+                    # previous-best vs newly-accepted prompt correctly.
+                    diff_text = self.diff_viewer.generate_diff(
+                        old_prompt=best_prompt,
+                        new_prompt=current_prompt,
+                        iteration=iteration,
+                    )
+                    summary = self.diff_viewer.summarise_diff(diff_text)
+                    print(f"  🏆 New best prompt accepted! (F1={val_score:.4f})  Δ {summary}")
+
                     best_score  = val_score
                     best_prompt = current_prompt
                     stall_count = 0
-                    print(f"  🏆 New best prompt accepted! (F1={val_score:.4f})")
+
+                    # Update beam: insert new best, keep top BEAM_WIDTH by score
+                    beam.append((val_score, current_prompt))
+                    beam.sort(key=lambda x: x[0], reverse=True)
+                    beam = beam[:self.BEAM_WIDTH]
+
                 else:
                     stall_count += 1
                     print(f"  ❌ Rejected. Stall count: {stall_count}.")
                     if current_prompt not in rejected_history:
                         rejected_history.append(current_prompt)
-                    current_prompt = best_prompt
+                    current_prompt = best_prompt  # revert to best
+
+                    # Also record the new score in the beam if it beat the
+                    # secondary candidate (maintains beam diversity)
+                    if len(beam) < self.BEAM_WIDTH:
+                        beam.append((val_score, current_prompt))
+                        beam.sort(key=lambda x: x[0], reverse=True)
 
                 self.state.log_iteration(
                     iteration=iteration,
@@ -416,9 +480,10 @@ class OptimizerLoop:
                     break
 
                 if not failed_docs:
-                    print("  ℹ️  No failed documents — nothing to critique.")
+                    print("  ℹ️  No failed docs — nothing to critique.")
                     continue
 
+                # ── Critique ──────────────────────────────────────────
                 critique_docs = sorted(failed_docs, key=lambda x: x["score"])[:3]
                 critiques: List[str] = []
 
@@ -441,12 +506,33 @@ class OptimizerLoop:
                 if not self._within_budget():
                     break
 
+                # ── Prepare mutation extras ────────────────────────────
+                # Inject a train example when stalling (most impactful technique
+                # for smaller models — gives them a concrete grounding reference).
+                train_example: Optional[str] = None
+                if stall_count >= self.EXAMPLE_INJECT_AFTER and self.train_docs:
+                    train_example = self._get_train_example()
+                    if train_example:
+                        print(f"  📌 Injecting train example (stall={stall_count}).")
+
+                # Pass secondary beam prompt on severe stall
+                secondary_prompt: Optional[str] = None
+                if stall_count >= self.BEAM_STALL_THRESHOLD and len(beam) >= 2:
+                    secondary_prompt = beam[1][1]
+                    print(
+                        f"  🔀 Passing beam secondary prompt (score={beam[1][0]:.4f}) "
+                        f"to Mutator (stall={stall_count})."
+                    )
+
+                # ── Mutate ────────────────────────────────────────────
                 try:
                     current_prompt = self.mutator.mutate(
                         current_prompt=best_prompt,
                         critiques=critiques,
                         rejected_prompts=rejected_history,
                         stall_count=stall_count,
+                        train_example=train_example,
+                        secondary_prompt=secondary_prompt,
                     )
                     print("  ✏️  Mutator drafted a new prompt proposal.")
                 except DailyLimitError:
@@ -458,11 +544,11 @@ class OptimizerLoop:
         except DailyLimitError:
             print(
                 "\n🚫 API quota exhausted (OpenRouter + Ollama). "
-                "State persisted — check your API keys or Ollama setup and re-run."
+                "State persisted — re-run when quota resets or Ollama is available."
             )
 
         # ------------------------------------------------------------------
-        # Final test set evaluation
+        # Final test-set evaluation
         # ------------------------------------------------------------------
         print(f"\n{'='*60}")
         print("  🧪 FINAL HELD-OUT TEST EVALUATION")
@@ -481,9 +567,9 @@ class OptimizerLoop:
         except DailyLimitError:
             print("  ⚠️  Quota exhausted during final evaluation.")
 
-        print("\n  Per-document breakdown:")
+        print("\n  Per-document breakdown (test set):")
         for doc_id, info in test_info.get("docs", {}).items():
-            subtrees = info.get("subtrees", {})
+            subtrees  = info.get("subtrees", {})
             field_str = "  ".join(
                 f"{k}={v['f1']:.2f}" for k, v in subtrees.items()
             ) if subtrees else "n/a"
@@ -501,7 +587,7 @@ class OptimizerLoop:
         )
 
     # ------------------------------------------------------------------
-    # REPORT.md auto-generation
+    # REPORT.md
     # ------------------------------------------------------------------
 
     def _write_report(
@@ -516,7 +602,8 @@ class OptimizerLoop:
         trajectory     = self.state.get_trajectory()
         accepted_iters = [t for t in trajectory if t["accepted"]]
 
-        rows = []
+        # Per-subtree table
+        rows: List[str] = []
         for doc_id, info in test_info.get("docs", {}).items():
             for field, fs in info.get("subtrees", {}).items():
                 rows.append(
@@ -525,28 +612,49 @@ class OptimizerLoop:
                 )
         subtree_table = "\n".join(rows) if rows else "| — | — | — | — | — |"
 
+        # Trajectory table
         score_curve = "\n".join(
             f"| {t['iteration']+1:>3} | {t['val_score']:.4f} | "
             f"{'✅' if t['accepted'] else '❌'} |"
             for t in trajectory
+        ) or "| — | — | — |"
+
+        # Notable accepted mutations (skip iteration 0 = seed)
+        notable_lines: List[str] = []
+        for t in accepted_iters[1:]:
+            # Find the diff summary if it exists
+            diff_path = f"logs/diffs/diff_iteration_{t['iteration']}.diff"
+            diff_summary = ""
+            if os.path.exists(diff_path):
+                with open(diff_path, "r", encoding="utf-8") as f:
+                    diff_summary = self.diff_viewer.summarise_diff(f.read())
+            notable_lines.append(
+                f"- **Iteration {t['iteration']+1}** — Val F1: {t['val_score']:.4f}  "
+                f"({diff_summary})"
+            )
+        notable = (
+            "\n".join(notable_lines) if notable_lines
+            else "- No mutations improved over the seed during this run."
         )
 
-        notable = "\n".join(
-            f"- **Iteration {t['iteration']+1}** — Val F1: {t['val_score']:.4f}"
-            for t in accepted_iters[1:]
-        ) or "- No mutations improved over the seed during this run."
-
-        diff_note = (
-            "The seed prompt was not improved during this run."
-            if seed_prompt.strip() == best_prompt.strip()
-            else "See `logs/diffs/` for unified diffs of each accepted mutation."
-        )
+        # Diff summary
+        if seed_prompt.strip() == best_prompt.strip():
+            diff_note = "The seed prompt was not improved during this run."
+        else:
+            diff_note = "See `logs/diffs/` for unified diffs of each accepted mutation."
 
         # OCR cache stats
         ocr_stats = self.state.get_ocr_cache_stats()
         ocr_note = (
-            f"OCR cache: **{ocr_stats['total_cached']}** file(s) cached "
+            f"**{ocr_stats['total_cached']}** file(s) cached "
             f"across methods: `{ocr_stats['by_method']}`."
+        )
+
+        # Beam summary
+        beam_note = (
+            f"Beam width: **{self.BEAM_WIDTH}**.  "
+            f"Train-example injection triggered after stall ≥ **{self.EXAMPLE_INJECT_AFTER}**.  "
+            f"Secondary beam passed to Mutator after stall ≥ **{self.BEAM_STALL_THRESHOLD}**."
         )
 
         report = textwrap.dedent(f"""\
@@ -617,37 +725,30 @@ class OptimizerLoop:
 
             ## 8. Infrastructure Notes
 
+            **Optimization strategy:** {beam_note}
+
             **OCR Caching:** {ocr_note}  
             Extracted PDF text is persisted in `run_state.db` (keyed by SHA-256 of
-            file bytes). Re-runs and resumed interrupted runs skip re-extraction
-            entirely for unchanged files.
+            file bytes). Re-runs skip re-extraction entirely for unchanged files.
 
-            **LLM Fallback:** When OpenRouter hits its daily free-model quota or
-            returns repeated errors, agents automatically fall back to a local Ollama
-            instance (`OLLAMA_BASE_URL`, default `http://localhost:11434`).  The
-            model used is controlled by `OLLAMA_MODEL` (default `llama3.2`).
-            Gemini remains the exclusive OCR/vision path regardless of which LLM
-            backend is active.
+            **LLM Fallback:** When OpenRouter hits its daily free-model quota, agents
+            automatically fall back to a local Ollama instance (`OLLAMA_BASE_URL`,
+            default `http://localhost:11434`). Set `OLLAMA_MODEL=llama3` for best
+            results (significantly better than gemma:2b for JSON extraction tasks).
 
             ---
 
             ## 9. Limitations
 
             - **Small dataset:** With only 2–8 documents per schema, validation scores
-              are noisy and there is real risk of overfitting the prompt to the 1–2
-              validation documents.
+              are noisy and there is risk of overfitting to the 1–2 validation documents.
             - **Positional array alignment:** Object arrays (workExperience, education)
-              are compared positionally.  If predicted ordering differs from gold, items
-              are penalised even when content is correct.
-            - **Free-tier rate limits:** OpenRouter free models have a daily request cap
-              (~50/day).  A paid-tier plan would allow full 20-iteration runs without
-              interruption.  Ollama fallback mitigates this for local inference.
-            - **No train split used:** The greedy loop uses only the validation set for
-              feedback.  Train documents are loaded but not yet exploited for few-shot
-              example selection.
+              are compared positionally. Ordering differences are penalised.
+            - **Free-tier rate limits:** OpenRouter free models have a daily cap (~50/day).
+              Ollama fallback mitigates this; `llama3` recommended over `gemma:2b`.
             - **Stochastic metric caching:** `string_semantic` and `array_llm` scores
-              are cached per (pred, gold) pair within a run.  Initial calls for novel
-              pairs are non-deterministic.
+              are cached per (pred, gold) pair. Initial calls for novel pairs are
+              non-deterministic.
             """)
 
         with open("REPORT.md", "w", encoding="utf-8") as f:
