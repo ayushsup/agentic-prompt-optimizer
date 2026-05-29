@@ -1,29 +1,34 @@
 """
-Tests for OCR caching (StateManager) and Ollama fallback (BaseAgent).
+Tests for OCR caching, BaseAgent four-tier fallback, and the Loader cache integration.
+
+Fallback chain tested:
+  Tier 1 — OpenRouter  (primary)
+  Tier 2 — GitHub Models
+  Tier 3 — Gemini text
+  Tier 4 — Ollama      (terminal)
 
 Run with: pytest tests/test_infrastructure.py -v
 """
 
-import hashlib
+from __future__ import annotations
+
 import os
 import tempfile
 import unittest
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from src.core.state_manager import StateManager
 
 
-# ---------------------------------------------------------------------------
 # StateManager OCR cache tests
-# ---------------------------------------------------------------------------
+
 
 class TestOCRCache:
     """Verify the SQLite OCR cache stores, retrieves, and invalidates correctly."""
 
     def setup_method(self):
-        # Each test gets its own fresh in-memory-like DB via a temp file
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         self.tmp.close()
         self.sm = StateManager(db_path=self.tmp.name)
@@ -32,7 +37,6 @@ class TestOCRCache:
         os.unlink(self.tmp.name)
 
     def _write_tmp_pdf(self, content: bytes) -> str:
-        """Write fake 'PDF' bytes to a temp file and return its path."""
         f = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
         f.write(content)
         f.close()
@@ -41,8 +45,7 @@ class TestOCRCache:
     def test_cache_miss_returns_none(self):
         pdf = self._write_tmp_pdf(b"%PDF-1.4 fake content")
         try:
-            result = self.sm.get_ocr_cache(pdf)
-            assert result is None
+            assert self.sm.get_ocr_cache(pdf) is None
         finally:
             os.unlink(pdf)
 
@@ -50,21 +53,17 @@ class TestOCRCache:
         pdf = self._write_tmp_pdf(b"%PDF-1.4 fake content A")
         try:
             self.sm.set_ocr_cache(pdf, "Extracted text here", method="pymupdf")
-            result = self.sm.get_ocr_cache(pdf)
-            assert result == "Extracted text here"
+            assert self.sm.get_ocr_cache(pdf) == "Extracted text here"
         finally:
             os.unlink(pdf)
 
     def test_cache_invalidated_on_file_change(self):
-        """Replacing file bytes produces a new hash → cache miss."""
         pdf = self._write_tmp_pdf(b"%PDF-1.4 version one")
         try:
             self.sm.set_ocr_cache(pdf, "Old text", method="pymupdf")
-            # Overwrite with different content
             with open(pdf, "wb") as f:
                 f.write(b"%PDF-1.4 version TWO -- completely different")
-            result = self.sm.get_ocr_cache(pdf)
-            assert result is None, "Cache should miss after file content changes"
+            assert self.sm.get_ocr_cache(pdf) is None
         finally:
             os.unlink(pdf)
 
@@ -73,8 +72,7 @@ class TestOCRCache:
         try:
             self.sm.set_ocr_cache(pdf, "First extraction", method="pymupdf")
             self.sm.set_ocr_cache(pdf, "Updated extraction", method="pdfplumber")
-            result = self.sm.get_ocr_cache(pdf)
-            assert result == "Updated extraction"
+            assert self.sm.get_ocr_cache(pdf) == "Updated extraction"
         finally:
             os.unlink(pdf)
 
@@ -90,7 +88,6 @@ class TestOCRCache:
                 pdf = self._write_tmp_pdf(f"%PDF fake {i}".encode())
                 pdfs.append(pdf)
                 self.sm.set_ocr_cache(pdf, f"text {i}", method=method)
-
             stats = self.sm.get_ocr_cache_stats()
             assert stats["total_cached"] == 3
             assert stats["by_method"]["pymupdf"] == 2
@@ -100,126 +97,267 @@ class TestOCRCache:
                 os.unlink(pdf)
 
     def test_nonexistent_file_returns_none(self):
-        result = self.sm.get_ocr_cache("/nonexistent/path/file.pdf")
-        assert result is None
+        assert self.sm.get_ocr_cache("/nonexistent/path/file.pdf") is None
 
     def test_cache_does_not_affect_metric_cache(self):
-        """OCR cache and metric cache are independent tables."""
         pdf = self._write_tmp_pdf(b"%PDF-1.4 content")
         try:
             self.sm.set_ocr_cache(pdf, "text", method="pymupdf")
-            # metric cache should still be empty
             assert self.sm.get_metric_cache("some_key") is None
         finally:
             os.unlink(pdf)
 
 
-# ---------------------------------------------------------------------------
-# BaseAgent Ollama fallback tests
-# ---------------------------------------------------------------------------
 
-class TestOllamaFallback:
+# Helpers to build a BaseAgent without a real network
+
+def _build_agent(tmp_db: str):
     """
-    Verify the Ollama fallback logic in BaseAgent without making real HTTP calls.
+    Construct a BaseAgent backed by a real StateManager but with all HTTP
+    clients mocked so no network calls are made.
     """
+    os.environ.setdefault("OPENROUTER_API_KEY", "test-key")
+    from src.agents.base_agent import BaseAgent
 
-    def _make_agent(self, tmp_db: str):
-        """Build a BaseAgent with a real StateManager but mocked OpenRouter client."""
-        # Must have OPENROUTER_API_KEY set (value doesn't matter for mocking)
-        os.environ.setdefault("OPENROUTER_API_KEY", "test-key")
-        from src.agents.base_agent import BaseAgent
-        sm = StateManager(db_path=tmp_db)
-        agent = BaseAgent.__new__(BaseAgent)
-        agent.model_name    = "test-model"
-        agent.state_manager = sm
-        agent._ollama_client = None
-        agent._ollama_model  = os.environ.get("OLLAMA_MODEL", "gemma:2b")
-        agent._ollama_base   = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+    sm    = StateManager(db_path=tmp_db)
+    agent = BaseAgent.__new__(BaseAgent)
+    agent.model_name          = "test-model"
+    agent.state_manager       = sm
+    agent._github_token       = "gh-test-token"
+    agent._github_model       = "gpt-4o-mini"
+    agent._gemini_key         = "gemini-test-key"
+    agent._gemini_text_model  = "gemini-2.5-flash"
+    agent._ollama_base        = "http://localhost:11434"
+    agent._ollama_model       = "llama3"
+    agent._github_client      = None
+    agent._ollama_client      = None
 
-        # Mock the OpenRouter client
-        agent.client = MagicMock()
-        return agent
+    agent._openrouter_client  = MagicMock()
+    return agent
 
-    def test_ollama_called_on_daily_limit(self):
-        """When OpenRouter returns daily-limit 429, Ollama is invoked."""
+
+def _make_ok_response(text: str) -> MagicMock:
+    resp = MagicMock()
+    resp.choices[0].message.content = text
+    resp.usage.model_dump.return_value = {}
+    return resp
+
+
+# Four-tier fallback tests
+
+
+class TestFourTierFallback:
+    """Verify the OpenRouter → GitHub → Gemini → Ollama chain."""
+
+
+    def test_openrouter_success_no_other_tier_called(self):
         tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         tmp.close()
         try:
-            agent = self._make_agent(tmp.name)
-
-            # OpenRouter raises daily-limit error
-            agent.client.chat.completions.create.side_effect = Exception(
-                "429 Too Many Requests — free-models-per-day limit reached"
+            agent = _build_agent(tmp.name)
+            agent._openrouter_client.chat.completions.create.return_value = (
+                _make_ok_response("OpenRouter OK")
             )
 
-            # Ollama returns successfully
-            mock_ollama_response = MagicMock()
-            mock_ollama_response.choices[0].message.content = "Ollama response text"
-            mock_ollama_response.usage = None
+            mock_github  = MagicMock()
+            agent._github_client = mock_github
+
+            result = agent.call_llm("sys", "user", "Test")
+            assert result == "OpenRouter OK"
+            mock_github.chat.completions.create.assert_not_called()
+        finally:
+            os.unlink(tmp.name)
+
+    # ── Tier 1 daily limit → Tier 2 ──────────────────────────────────
+
+    def test_openrouter_daily_limit_falls_to_github(self):
+        tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        tmp.close()
+        try:
+            agent = _build_agent(tmp.name)
+            agent._openrouter_client.chat.completions.create.side_effect = Exception(
+                "429 free-models-per-day limit reached"
+            )
+
+            mock_github_client = MagicMock()
+            mock_github_client.chat.completions.create.return_value = (
+                _make_ok_response("GitHub Models OK")
+            )
+            agent._github_client = mock_github_client
+
+            result = agent.call_llm("sys", "user", "Test")
+            assert result == "GitHub Models OK"
+        finally:
+            os.unlink(tmp.name)
+
+    # ── Tier 2 failure → Tier 3 (Gemini) ─────────────────────────────
+
+    def test_github_failure_falls_to_gemini(self):
+        tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        tmp.close()
+        try:
+            agent = _build_agent(tmp.name)
+
+            # Tier 1 exhausted
+            agent._openrouter_client.chat.completions.create.side_effect = Exception(
+                "429 free-models-per-day"
+            )
+            # Tier 2 also fails
+            mock_github = MagicMock()
+            mock_github.chat.completions.create.side_effect = Exception(
+                "GitHub Models quota exceeded"
+            )
+            agent._github_client = mock_github
+
+            # Tier 3: mock Gemini
+            mock_gemini_response = MagicMock()
+            mock_gemini_response.text = "Gemini text OK"
+
+            with patch("src.agents.base_agent.google_genai_available", True, create=True), \
+                 patch("src.agents.base_agent.BaseAgent._call_gemini_text",
+                       return_value="Gemini text OK") as mock_gemini_call:
+                result = agent.call_llm("sys", "user", "Test")
+                assert result == "Gemini text OK"
+                mock_gemini_call.assert_called_once()
+        finally:
+            os.unlink(tmp.name)
+
+    # ── Tier 3 failure → Tier 4 (Ollama) ─────────────────────────────
+
+    def test_gemini_failure_falls_to_ollama(self):
+        tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        tmp.close()
+        try:
+            agent = _build_agent(tmp.name)
+
+            # Tiers 1, 2, 3 all exhausted
+            agent._openrouter_client.chat.completions.create.side_effect = Exception(
+                "429 free-models-per-day"
+            )
+            mock_github = MagicMock()
+            mock_github.chat.completions.create.side_effect = Exception("GitHub quota")
+            agent._github_client = mock_github
 
             mock_ollama_client = MagicMock()
-            mock_ollama_client.chat.completions.create.return_value = mock_ollama_response
+            mock_ollama_client.chat.completions.create.return_value = (
+                _make_ok_response("Ollama OK")
+            )
             agent._ollama_client = mock_ollama_client
 
-            result = agent.call_llm("sys", "user", "TestRole")
-            assert result == "Ollama response text"
+            with patch.object(agent, "_call_gemini_text",
+                               side_effect=Exception("Gemini quota")):
+                # Tier 3 raises, chain should reach Ollama
+                from src.agents.base_agent import _TierExhausted
+                with patch.object(agent, "_call_gemini_text",
+                                   side_effect=_TierExhausted("gemini exhausted")):
+                    result = agent.call_llm("sys", "user", "Test")
             mock_ollama_client.chat.completions.create.assert_called_once()
         finally:
             os.unlink(tmp.name)
 
-    def test_daily_limit_error_raised_when_ollama_unreachable(self):
-        """When both OpenRouter quota and Ollama are unavailable, DailyLimitError raised."""
-        from src.agents.base_agent import DailyLimitError
+    # ── All four tiers exhausted → DailyLimitError ────────────────────
+
+    def test_all_tiers_exhausted_raises_daily_limit_error(self):
+        from src.agents.base_agent import DailyLimitError, _TierExhausted
         tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         tmp.close()
         try:
-            agent = self._make_agent(tmp.name)
+            agent = _build_agent(tmp.name)
 
-            agent.client.chat.completions.create.side_effect = Exception(
+            agent._openrouter_client.chat.completions.create.side_effect = Exception(
+                "429 free-models-per-day"
+            )
+            mock_github = MagicMock()
+            mock_github.chat.completions.create.side_effect = Exception("GitHub quota")
+            agent._github_client = mock_github
+
+            mock_ollama = MagicMock()
+            mock_ollama.chat.completions.create.side_effect = Exception(
+                "connection refused"
+            )
+            agent._ollama_client = mock_ollama
+
+            with patch.object(agent, "_call_gemini_text",
+                               side_effect=_TierExhausted("gemini exhausted")):
+                with pytest.raises(DailyLimitError):
+                    agent.call_llm("sys", "user", "Test")
+        finally:
+            os.unlink(tmp.name)
+
+    # ── OpenRouter per-minute 429 → back-off, then succeed ───────────
+
+    def test_openrouter_rate_limit_retries_then_succeeds(self):
+        tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        tmp.close()
+        try:
+            agent = _build_agent(tmp.name)
+
+            # Fail twice with per-minute 429, succeed on third
+            agent._openrouter_client.chat.completions.create.side_effect = [
+                Exception("429 Too Many Requests"),
+                Exception("429 Too Many Requests"),
+                _make_ok_response("Retry success"),
+            ]
+
+            with patch("time.sleep"):  # speed up back-off
+                result = agent.call_llm("sys", "user", "Test")
+
+            assert result == "Retry success"
+        finally:
+            os.unlink(tmp.name)
+
+    # ── GitHub token not set → skip tier cleanly ─────────────────────
+
+    def test_missing_github_token_skips_to_gemini(self):
+        from src.agents.base_agent import _TierExhausted
+        tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        tmp.close()
+        try:
+            agent = _build_agent(tmp.name)
+            agent._github_token = ""   # no token
+
+            agent._openrouter_client.chat.completions.create.side_effect = Exception(
                 "429 free-models-per-day"
             )
 
-            mock_ollama_client = MagicMock()
-            mock_ollama_client.chat.completions.create.side_effect = Exception(
-                "connection refused"
-            )
-            agent._ollama_client = mock_ollama_client
+            with patch.object(agent, "_call_gemini_text",
+                               return_value="Gemini fallback OK"):
+                result = agent.call_llm("sys", "user", "Test")
 
-            with pytest.raises(DailyLimitError):
-                agent.call_llm("sys", "user", "TestRole")
+            assert result == "Gemini fallback OK"
         finally:
             os.unlink(tmp.name)
 
-    def test_openrouter_success_does_not_call_ollama(self):
-        """Happy path: OpenRouter works, Ollama is never touched."""
+    # ── Gemini API key not set → skip tier cleanly ───────────────────
+
+    def test_missing_gemini_key_skips_to_ollama(self):
+        from src.agents.base_agent import _TierExhausted
         tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         tmp.close()
         try:
-            agent = self._make_agent(tmp.name)
+            agent = _build_agent(tmp.name)
+            agent._gemini_key  = ""   # no key
+            agent._github_token = ""  # also no GitHub
 
-            mock_response = MagicMock()
-            mock_response.choices[0].message.content = "OpenRouter response"
-            mock_response.usage.model_dump.return_value = {}
-            agent.client.chat.completions.create.return_value = mock_response
+            agent._openrouter_client.chat.completions.create.side_effect = Exception(
+                "429 free-models-per-day"
+            )
 
             mock_ollama = MagicMock()
+            mock_ollama.chat.completions.create.return_value = _make_ok_response("Ollama OK")
             agent._ollama_client = mock_ollama
 
-            result = agent.call_llm("sys", "user", "TestRole")
-            assert result == "OpenRouter response"
-            mock_ollama.chat.completions.create.assert_not_called()
+            result = agent.call_llm("sys", "user", "Test")
+            assert result == "Ollama OK"
         finally:
             os.unlink(tmp.name)
 
 
-# ---------------------------------------------------------------------------
-# Loader OCR cache integration (lightweight, no real PDFs)
-# ---------------------------------------------------------------------------
+# Loader OCR cache integration
+
 
 class TestLoaderCacheIntegration:
-    """
-    Verify ExtractBenchLoader._extract_with_cache uses the StateManager cache.
-    """
+    """Verify ExtractBenchLoader._extract_with_cache uses the StateManager cache."""
 
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
@@ -230,7 +368,6 @@ class TestLoaderCacheIntegration:
         os.unlink(self.tmp.name)
 
     def test_cache_hit_skips_extraction(self):
-        """If text is cached, extract_text_from_pdf should never be called."""
         from src.data.loader import ExtractBenchLoader
 
         loader = ExtractBenchLoader(
@@ -238,26 +375,20 @@ class TestLoaderCacheIntegration:
             schema_name="fake/schema",
             state_manager=self.sm,
         )
-
-        # Write a real temp PDF so _hash_file works
         pdf = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
         pdf.write(b"%PDF-1.4 cached document")
         pdf.close()
 
         try:
-            # Pre-populate cache
             self.sm.set_ocr_cache(pdf.name, "Pre-cached text", method="pymupdf")
-
             with patch("src.data.loader.extract_text_from_pdf") as mock_extract:
                 result = loader._extract_with_cache(pdf.name)
-
             assert result == "Pre-cached text"
             mock_extract.assert_not_called()
         finally:
             os.unlink(pdf.name)
 
     def test_cache_miss_calls_extraction_and_stores(self):
-        """On a cache miss, extract_text_from_pdf is called and result is stored."""
         from src.data.loader import ExtractBenchLoader
 
         loader = ExtractBenchLoader(
@@ -265,7 +396,6 @@ class TestLoaderCacheIntegration:
             schema_name="fake/schema",
             state_manager=self.sm,
         )
-
         pdf = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
         pdf.write(b"%PDF-1.4 fresh document")
         pdf.close()
@@ -278,9 +408,6 @@ class TestLoaderCacheIntegration:
                 result = loader._extract_with_cache(pdf.name)
 
             assert result == "Freshly extracted text"
-
-            # Should now be in cache
-            cached = self.sm.get_ocr_cache(pdf.name)
-            assert cached == "Freshly extracted text"
+            assert self.sm.get_ocr_cache(pdf.name) == "Freshly extracted text"
         finally:
             os.unlink(pdf.name)

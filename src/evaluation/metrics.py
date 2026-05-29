@@ -19,9 +19,8 @@ import json
 from typing import Any
 
 
-# ---------------------------------------------------------------------------
+
 # Deterministic metrics
-# ---------------------------------------------------------------------------
 
 def string_exact(pred: Any, gold: Any) -> float:
     """Case-insensitive, strip-whitespace exact string match."""
@@ -73,10 +72,8 @@ def boolean_exact(pred: Any, gold: Any) -> float:
     except Exception:
         return 0.0
 
-
-# ---------------------------------------------------------------------------
 # Cache key helpers for stochastic metrics
-# ---------------------------------------------------------------------------
+
 
 def compute_cache_key(metric: str, pred: Any, gold: Any) -> str:
     """
@@ -93,9 +90,7 @@ def compute_cache_key(metric: str, pred: Any, gold: Any) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
-# ---------------------------------------------------------------------------
 # Metric dispatch table (deterministic only; stochastic injected at runtime)
-# ---------------------------------------------------------------------------
 
 DETERMINISTIC_METRICS = {
     "string_exact":     string_exact,

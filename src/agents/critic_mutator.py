@@ -11,11 +11,16 @@ Mutator   : Prompt-engineer agent that synthesises critiques into a non-regressi
               - Escalating boldness during stalls.
               - Few-shot example injection from the train set.
               - Beam-aware restart hints when the beam's second candidate is provided.
+
+All three agents inherit BaseAgent's four-tier fallback:
+  OpenRouter → GitHub Models → Gemini text → Ollama
 """
 
 from __future__ import annotations
+import json  # Added for context compression
 
 from src.agents.base_agent import BaseAgent
+from src.core.state_manager import StateManager
 
 
 # ---------------------------------------------------------------------------
@@ -25,23 +30,20 @@ from src.agents.base_agent import BaseAgent
 class Extractor(BaseAgent):
     """Executes the current prompt against a document to produce JSON."""
 
-    # The schema and hard output-contract rules are injected here so they
-    # are always present regardless of what the mutator produces.  The
-    # current_prompt supplies the field-level extraction instructions.
     _SYSTEM_TEMPLATE = """\
 ══════════════════════════════════════════════════════════
 EXTRACTION ENGINE — OUTPUT CONTRACT (highest priority)
 ══════════════════════════════════════════════════════════
-• Return ONLY raw JSON.  No ```json fences, no preamble, no trailing text.
-• The root object MUST contain EXACTLY these top-level keys — never more:
-    personalInfo  workExperience  education  skills  socialLinks
+- Return ONLY raw JSON.  No ```json fences, no preamble, no trailing text.
+- The root object MUST contain EXACTLY these top-level keys — never more:
+    personalInfo  workExperience  education  skills  languages  socialLinks
     certificationsAndAwards  publications  media  other
-• FORBIDDEN root keys: schema_definition, name, data, result, cv, resume,
-  or ANY key not listed above.  If you add forbidden keys the output is wrong.
-• Absent scalar → null.   Absent array → [].
-• Year-only dates → INTEGER (2020 not "2020").
-• isCurrent → boolean (true / false — never a string).
-• Do NOT invent or hallucinate data not present in the document.
+- FORBIDDEN root keys: schema_definition, name, data, result, cv, resume,
+  or ANY key not listed above.
+- Absent scalar → null.   Absent array → [].
+- Year-only dates → INTEGER (2020 not "2020").
+- isCurrent → boolean (true / false — never a string).
+- Do NOT invent or hallucinate data not present in the document.
 ══════════════════════════════════════════════════════════
 
 {current_prompt}
@@ -51,6 +53,10 @@ TARGET JSON SCHEMA
 ══════════════════════════════════════════════════════════
 {schema}
 """
+
+    def __init__(self, model_name: str, state_manager: StateManager,
+                 github_model: str | None = None):
+        super().__init__(model_name, state_manager, github_model=github_model)
 
     def extract(self, document_text: str, current_prompt: str, schema: str) -> str:
         system_prompt = self._SYSTEM_TEMPLATE.format(
@@ -72,10 +78,6 @@ TARGET JSON SCHEMA
 class Critic(BaseAgent):
     """
     Analyses extraction failures and returns structured, prioritised critiques.
-
-    Output format is designed for direct consumption by the Mutator: each
-    entry has a severity score, failure type, exact field path, predicted vs
-    gold values, and a one-sentence actionable fix instruction.
     """
 
     _SYSTEM_PROMPT = """\
@@ -107,18 +109,35 @@ Rules:
   • If the extraction is structurally correct, output exactly: NO_FAILURES
 """
 
+    def __init__(self, model_name: str, state_manager: StateManager,
+                 github_model: str | None = None):
+        super().__init__(model_name, state_manager, github_model=github_model)
+
     def critique(
         self,
         document_text: str,
         predicted_json: str,
         gold_json: str,
     ) -> str:
+        # STRATEGY: Minify JSONs to drastically save input tokens
+        try:
+            pred_min = json.dumps(json.loads(predicted_json))
+        except:
+            pred_min = predicted_json
+            
+        try:
+            gold_min = json.dumps(json.loads(gold_json))
+        except:
+            gold_min = gold_json
+
+        # STRATEGY: Cut document snippet from 2000 down to 1200 chars. 
         user_prompt = (
-            f"DOCUMENT (first 2000 chars):\n{document_text[:2000]}\n\n"
-            f"PREDICTED JSON:\n{predicted_json}\n\n"
-            f"GOLD STANDARD JSON:\n{gold_json}\n\n"
+            f"DOCUMENT (first 1200 chars):\n{document_text[:1200]}\n\n"
+            f"PREDICTED JSON:\n{pred_min}\n\n"
+            f"GOLD STANDARD JSON:\n{gold_min}\n\n"
             "List all discrepancies using the specified format, severity-first."
         )
+        
         return self.call_llm(
             system_prompt=self._SYSTEM_PROMPT,
             user_prompt=user_prompt,
@@ -134,18 +153,6 @@ Rules:
 class Mutator(BaseAgent):
     """
     Automated prompt engineer.
-
-    Strategy
-    --------
-    1. Receives the current best prompt + prioritised critiques from Critic.
-    2. Maintains rejection memory to avoid re-proposing failed variants.
-    3. Detects stalls and escalates to bolder rewrites.
-    4. When a train example is provided (stall >= 2), embeds a concrete
-       worked example directly into the improved prompt — the single most
-       effective technique for smaller models.
-    5. When a secondary beam prompt is provided (severe stall >= 5), uses it
-       as an alternative starting point for the rewrite.
-    6. Returns ONLY the new prompt text — no preamble, labels, or explanation.
     """
 
     _SYSTEM_PROMPT = """\
@@ -178,11 +185,18 @@ Critical constraints:
     certificationsAndAwards  publications  media  other
   • Never suggest a field name that differs from the schema (e.g. do not use "company"
     when the schema uses "employer", do not use "degree" for "qualificationTitle").
+  • NEVER add root-level keys not in: personalInfo workExperience education skills languages socialLinks certificationsAndAwards publications media other.
+    EXPLICITLY FORBIDDEN extra keys: 'certifications', 'summary', 'profile', 'contact', 'awards'.
+  • ANTI-REGRESSION RULE: You must retain ALL existing instructions for fields that are currently working correctly. Do NOT delete or shorten rules for fields that do not appear in the Failure Critiques.
   • The prompt must work standalone — it is sent directly to the extraction model.
 
 OUTPUT FORMAT:
 Return ONLY the final prompt text — no labels, no markdown, no explanation.
 """
+
+    def __init__(self, model_name: str, state_manager: StateManager,
+                 github_model: str | None = None):
+        super().__init__(model_name, state_manager, github_model=github_model)
 
     def mutate(
         self,
@@ -193,67 +207,49 @@ Return ONLY the final prompt text — no labels, no markdown, no explanation.
         train_example: str | None = None,
         secondary_prompt: str | None = None,
     ) -> str:
-        """
-        Propose an improved prompt.
-
-        Parameters
-        ----------
-        current_prompt   : The currently accepted best prompt.
-        critiques        : List of Critic outputs from failed documents.
-        rejected_prompts : Prompts already tried and rejected (last 5 shown).
-        stall_count      : Consecutive iterations with no improvement.
-        train_example    : Formatted (text → gold JSON) example from the train set.
-                           Injected when stall_count >= 2 to give the model a
-                           concrete grounding example to embed in the prompt.
-        secondary_prompt : Second-best prompt from the beam (provided on severe stall).
-                           When present, the mutator is asked to synthesise ideas
-                           from both prompts rather than mutate from the primary alone.
-        """
+        
         critique_block = "\n\n---\n\n".join(
             f"Critique {i + 1}:\n{c}" for i, c in enumerate(critiques)
         )
 
         rejection_block = ""
         if rejected_prompts:
-            recent = rejected_prompts[-5:]
+            # STRATEGY: Keep only the last 3 rejected prompts (instead of 5) 
+            # and truncate them to 400 chars (instead of 600) to save tokens.
+            recent = rejected_prompts[-3:]
             rejection_block = (
                 "\n\nREJECTED PROMPTS — do NOT reproduce these variants:\n"
                 + "\n\n".join(
-                    f"[REJECTED {i + 1}]:\n{p[:600]}…" for i, p in enumerate(recent)
+                    f"[REJECTED {i + 1}]:\n{p[:400]}…" for i, p in enumerate(recent)
                 )
             )
 
         stall_note = ""
         if stall_count >= 5:
             stall_note = (
-                f"\n\n⚠️  SEVERE STALL ({stall_count} iterations without improvement). "
-                "Incremental changes are not working. Take a RADICAL approach: completely "
-                "restructure the field rules, change the instruction order, or decompose "
-                "a failing field into explicit numbered sub-steps. Do NOT produce a prompt "
-                "that resembles any rejected variant."
+                f"\n\n⚠️ SEVERE STALL ({stall_count} iterations without improvement). "
+                "Take a RADICAL approach: restructure the field rules, change instruction order, "
+                "or decompose a failing field into explicit numbered sub-steps."
             )
         elif stall_count >= 3:
             stall_note = (
-                f"\n\n⚠️  STALL ({stall_count} iterations without improvement). "
-                "Incremental edits are not working. Try a significantly different strategy: "
-                "add concrete format examples inline, reorder the field rules by importance, "
-                "or break down a complex field into explicit sub-steps."
+                f"\n\n⚠️ STALL ({stall_count} iterations without improvement). "
+                "Try a significantly different strategy: add concrete format examples inline."
             )
 
         example_block = ""
         if train_example:
             example_block = (
-                "\n\n📌 TRAIN EXAMPLE — embed a worked example like this in your improved prompt "
-                "so the model has a concrete grounding reference:\n"
+                "\n\n📌 TRAIN EXAMPLE:\n"
                 f"{train_example}"
             )
 
         beam_block = ""
         if secondary_prompt:
+            # STRATEGY: Truncate secondary prompt heavily.
             beam_block = (
-                "\n\nALTERNATIVE PROMPT (second-best from beam — mine it for useful ideas "
-                "and synthesise the best elements of both into your rewrite):\n"
-                f"{secondary_prompt[:1200]}…"
+                "\n\nALTERNATIVE PROMPT (second-best from beam):\n"
+                f"{secondary_prompt[:800]}…"
             )
 
         user_prompt = (

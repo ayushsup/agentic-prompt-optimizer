@@ -12,9 +12,10 @@ budget:
 vision_model: "meta-llama/llama-3.2-11b-vision-instruct:free"
 
 models:
-  extractor: "poolside/laguna-xs.2:free"
-  critic:    "poolside/laguna-xs.2:free"
-  mutator:   "poolside/laguna-xs.2:free"
+  extractor:    "google/gemma-4-31b-it:free"
+  critic:       "google/gemma-4-31b-it:free"
+  mutator:      "google/gemma-4-31b-it:free"
+  github_model: "gpt-4o-mini"
 
 seed_prompt: |
   Extract the structured information from the provided document.

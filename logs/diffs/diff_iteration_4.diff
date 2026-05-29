@@ -1,0 +1,29 @@
+--- Prompt_v3
++++ Prompt_v4
+@@ -13,7 +13,7 @@
+ 4. Absent scalar  → null.   Absent array → [].
+ 5. Never invent data not present in the document. Extract ONLY information
+    explicitly stated in the document.
+-6. Year-only dates → STRING (e.g. "2020", not 2020 and NOT an ISO timestamp).
++6. Year-only dates → STRING (e.g. "2020", not 2020).
+ 7. isCurrent → boolean  (true / false, never "true" / "false").
+ 
+ ═══════════════════════════════════════════════════════
+@@ -25,7 +25,7 @@
+   (e.g., "English (Native)", "French (Fluent)"); [] if none
+ 
+ personalInfo  (object, REQUIRED):
+-  fullName          : exact name as written at top of document, omitting any titles (e.g. "Dr.")
++  fullName          : exact name as written at top of document, omitting any titles (e.g. "Dr."), but including any suffixes (e.g. "MD").
+   personalStatement : professional summary / objective paragraph; null if absent
+   contact:
+     emails : array — all email addresses found anywhere; [] if none
+@@ -38,7 +38,7 @@
+   industry roles, and consulting. Do NOT stop early. If the document has 15
+   roles, output all 15.
+   employer    : exact institution / company name
+-  jobTitle    : exact title / position
++  jobTitle    : exact title / position, omitting any additional descriptors (e.g. "– Cardiology Department").
+   startDate   : string (e.g. "Spring 2010") or integer year (e.g. "2020") when only year given;
+   endDate     : same format as startDate; null if the role is current
+   isCurrent   : true if ongoing/current, false otherwise  (boolean)

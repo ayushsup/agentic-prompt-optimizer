@@ -47,7 +47,6 @@ class DiffViewer:
         old_lines = old_prompt.splitlines(keepends=True)
         new_lines = new_prompt.splitlines(keepends=True)
 
-        # Append newline to last line if missing (cleaner diff output)
         if old_lines and not old_lines[-1].endswith("\n"):
             old_lines[-1] += "\n"
         if new_lines and not new_lines[-1].endswith("\n"):

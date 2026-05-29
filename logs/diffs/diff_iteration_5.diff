@@ -1,0 +1,140 @@
+--- Prompt_v4
++++ Prompt_v5
+@@ -13,8 +13,8 @@
+ 4. Absent scalar  → null.   Absent array → [].
+ 5. Never invent data not present in the document. Extract ONLY information
+    explicitly stated in the document.
+-6. Year-only dates → STRING (e.g. "2020", not 2020).
+-7. isCurrent → boolean  (true / false, never "true" / "false").
++6. Year-only dates → INTEGER (e.g. 2020, not "2020").
++7. isCurrent → STRING ("true" or "false", never boolean true/false).
+ 
+ ═══════════════════════════════════════════════════════
+ FIELD RULES
+@@ -25,7 +25,7 @@
+   (e.g., "English (Native)", "French (Fluent)"); [] if none
+ 
+ personalInfo  (object, REQUIRED):
+-  fullName          : exact name as written at top of document, omitting any titles (e.g. "Dr."), but including any suffixes (e.g. "MD").
++  fullName          : exact name as written at top of document. Include professional titles (e.g. "Dr.") and suffixes (e.g. "MD") if present.
+   personalStatement : professional summary / objective paragraph; null if absent
+   contact:
+     emails : array — all email addresses found anywhere; [] if none
+@@ -39,10 +39,10 @@
+   roles, output all 15.
+   employer    : exact institution / company name
+   jobTitle    : exact title / position, omitting any additional descriptors (e.g. "– Cardiology Department").
+-  startDate   : string (e.g. "Spring 2010") or integer year (e.g. "2020") when only year given;
+-  endDate     : same format as startDate; null if the role is current
+-  isCurrent   : true if ongoing/current, false otherwise  (boolean)
+-  description : responsibilities / achievements text; if bullet points,
++  startDate   : integer year (e.g. 2020) or the exact string as written (e.g. "Spring 2010"); null if not stated
++  endDate     : integer year (e.g. 2000) or the exact string as written; null if the role is current
++  isCurrent   : "true" if ongoing/current, "false" otherwise (MUST be a string)
++  description : responsibilities / achievements text; include descriptions for all roles including visiting professor roles. If bullet points,
+                 join with semicolons into one string; null if none
+   category    : section heading this role falls under (e.g. "Research
+                 Experience", "Teaching Experience"); null if no headings
+@@ -50,16 +50,15 @@
+ education  (array of objects, most-recent first):
+   institution       : exact institution name
+   qualificationTitle: full degree title (e.g. "PhD in Computer Science")
+-  startDate         : string or integer year; null if not stated
+-  endDate           : string or integer year; null if ongoing or not stated
++  startDate         : integer year or the exact string as written; null if not stated
++  endDate           : integer year or the exact string as written; null if ongoing or not stated
+   description       : GPA, thesis title, honours, advisors, distinctions; null if none
+ 
+ skills:
+-  • Organised under headings → object: { "HeadingName": ["skill1", "skill2"], … }
+-  • Flat list (no headings)  → array of strings
++  • Extract as a FLAT ARRAY of strings (e.g., ["Python", "Legal research and analysis"]).
++  • Do NOT use a keyed object or headings.
++  • Split comma-separated items into individual elements.
+   • No skills section        → null
+-  • Split comma-separated items into individual elements
+-    (e.g., "Tableau, Power BI" → ["Tableau", "Power BI"])
+   • Only include skills if explicitly stated in the source.
+ 
+ socialLinks  (array of strings):
+@@ -68,7 +67,7 @@
+ 
+ certificationsAndAwards  (array of objects):
+   ⚠️  COMPLETENESS IS CRITICAL — extract ALL certifications, awards, honours,
+-  memberships, and affiliations. Licenses go into the `other` field.
++  memberships, and affiliations.
+   description : exact name as written in the document
+   organization: granting body or organisation; null if not stated
+   date        : date as a string (e.g. "2022", "March 2021"); null if not stated
+@@ -90,15 +89,14 @@
+ 
+ other  (array of objects):
+   Any section not captured above, including licenses.
+-  sectionTitle : heading as it appears in the document (e.g. "Licenses")
+-  content      : full text of that section
++  content      : full text of that section (do NOT include a sectionTitle key)
+ 
+ ═══════════════════════════════════════════════════════
+ WORKED EXAMPLE  (format reference only — do not copy this data)
+ ═══════════════════════════════════════════════════════
+ {
+   "personalInfo": {
+-    "fullName": "Jane Doe",
++    "fullName": "Dr. Jane Doe, MD",
+     "personalStatement": "Results-driven engineer with 8 years in fintech.",
+     "contact": {
+       "emails": ["jane.doe@example.com"],
+@@ -109,18 +107,18 @@
+     {
+       "employer": "Acme Financial Ltd",
+       "jobTitle": "Lead Software Engineer",
+-      "startDate": "2019",
++      "startDate": 2019,
+       "endDate": null,
+-      "isCurrent": true,
++      "isCurrent": "true",
+       "description": "Architected real-time payments API handling 2M txn/day.",
+       "category": null
+     },
+     {
+       "employer": "State University",
+       "jobTitle": "Visiting Researcher",
+-      "startDate": "2017",
+-      "endDate": "2018",
+-      "isCurrent": false,
++      "startDate": "Spring 2017",
++      "endDate": 2018,
++      "isCurrent": "false",
+       "description": "Conducted research on distributed consensus algorithms.",
+       "category": "Research Experience"
+     }
+@@ -129,15 +127,12 @@
+     {
+       "institution": "University of Edinburgh",
+       "qualificationTitle": "MEng Computer Science",
+-      "startDate": "2011",
+-      "endDate": "2015",
++      "startDate": 2011,
++      "endDate": 2015,
+       "description": "First Class Honours. Thesis: Distributed Consensus Algorithms."
+     }
+   ],
+-  "skills": {
+-    "Programming": ["Python", "Go", "SQL"],
+-    "Frameworks": ["FastAPI", "Kafka"]
+-  },
++  "skills": ["Python", "Go", "SQL", "FastAPI", "Kafka"],
+   "languages": ["English (Native)", "Spanish (Conversational)"],
+   "socialLinks": ["https://linkedin.com/in/janedoe"],
+   "certificationsAndAwards": [
+@@ -152,5 +147,9 @@
+     "Doe, J. (2021). Distributed Consensus in Edge Networks. IEEE Trans. Networking, 29(3), 112-124."
+   ],
+   "media": [],
+-  "other": []
++  "other": [
++    {
++      "content": "• Riverside State Bar (2011)"
++    }
++  ]
+ }

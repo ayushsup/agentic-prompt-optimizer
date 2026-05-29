@@ -47,6 +47,8 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from pydoc import text
+import re
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from src.evaluation.metrics import (
@@ -57,9 +59,9 @@ from src.evaluation.metrics import (
 )
 
 
-# ---------------------------------------------------------------------------
+
 # Score accumulator
-# ---------------------------------------------------------------------------
+
 
 @dataclass
 class ScoreResult:
@@ -109,9 +111,9 @@ class ScoreResult:
         return result
 
 
-# ---------------------------------------------------------------------------
+
 # Main scorer
-# ---------------------------------------------------------------------------
+
 
 class Scorer:
     """
@@ -135,31 +137,16 @@ class Scorer:
         self.state_manager = state_manager
         self.judge_callable = judge_callable
 
-    # ------------------------------------------------------------------
+    
     # Public API
-    # ------------------------------------------------------------------
 
-    def score_document(
-        self,
-        pred_json: str,
-        gold_json: str,
-        schema_str: str,
-    ) -> Tuple[float, Dict]:
-        """
-        Score a single (prediction, gold) pair against the schema.
-
-        Automatically unwraps the ExtractBench "schema_definition" envelope
-        so callers can pass the raw schema file contents directly.
-
-        Returns
-        -------
-        (aggregate_f1, breakdown_dict)
-        """
+    def score_document(self, pred_json: str, gold_json: str, schema_str: str):
         try:
             pred = json.loads(self._clean_json(pred_json))
-        except (json.JSONDecodeError, Exception):
+        except (json.JSONDecodeError, Exception) as e:
+            print(f"  ⚠️  [Scorer] Prediction JSON parse failed: {e} — scoring as empty")
             pred = {}
-
+        
         try:
             gold = json.loads(gold_json)
             schema = json.loads(schema_str)
@@ -188,9 +175,7 @@ class Scorer:
             return 0.0
         return 2 * (precision * recall) / (precision + recall)
 
-    # ------------------------------------------------------------------
     # Internal recursive traversal
-    # ------------------------------------------------------------------
 
     def _score_object(
         self,
@@ -205,7 +190,6 @@ class Scorer:
 
         pred = pred if isinstance(pred, dict) else {}
 
-        # --- Handle schemas using additionalProperties (e.g. grouped skills) ---
         if "additionalProperties" in schema_node and "properties" not in schema_node:
             add_prop_schema = schema_node["additionalProperties"]
             for key, gold_val in gold.items():
@@ -217,7 +201,6 @@ class Scorer:
                 result.subtrees[key] = field_result
             return result
 
-        # --- Standard property-based object ---
         properties = schema_node.get("properties", {})
         for field_name, field_schema in properties.items():
             gold_val = gold.get(field_name)
@@ -373,7 +356,6 @@ class Scorer:
                     result.merge(item_result)
                     result.subtrees[f"{path}[{i}]"] = item_result
         else:
-            # ---- Set-based soft F1 for primitive arrays ----
             result.gold_count = len(gold_arr)
             result.predicted_count = len(pred_arr)
 
@@ -395,9 +377,7 @@ class Scorer:
 
         return result
 
-    # ------------------------------------------------------------------
     # Metric dispatch
-    # ------------------------------------------------------------------
 
     def _evaluate_with_config(self, pred: Any, gold: Any, eval_config: str) -> float:
         if eval_config in DETERMINISTIC_METRICS:
@@ -427,19 +407,20 @@ class Scorer:
 
         return score
 
-    # ------------------------------------------------------------------
     # Helpers
-    # ------------------------------------------------------------------
 
     @staticmethod
     def _clean_json(text: str) -> str:
-        """Strip markdown code fences that some models add around JSON output."""
+        """Strip markdown fences and extract the first valid JSON object."""
+        import re
         text = text.strip()
         if text.startswith("```"):
             lines = text.split("\n")
-            # Drop first line (```json or ```) and last line (```)
             inner = lines[1:-1] if lines[-1].strip() == "```" else lines[1:]
             text = "\n".join(inner).strip()
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        if match:
+            return match.group(0)
         return text
 
     def _count_leaves(self, obj: Any, schema_node: Dict) -> int:

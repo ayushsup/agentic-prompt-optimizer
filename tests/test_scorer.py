@@ -25,9 +25,9 @@ from src.evaluation.metrics import (
 from src.evaluation.scorer import ScoreResult, Scorer
 
 
-# ---------------------------------------------------------------------------
+
 # Deterministic metric tests
-# ---------------------------------------------------------------------------
+
 
 class TestStringExact:
     def test_identical(self):
@@ -93,9 +93,8 @@ class TestNumberTolerance:
         assert number_tolerance("invalid", 100) == 0.0
 
 
-# ---------------------------------------------------------------------------
+
 # Cache key test
-# ---------------------------------------------------------------------------
 
 class TestCacheKey:
     def test_deterministic(self):
@@ -114,9 +113,9 @@ class TestCacheKey:
         assert k1 != k2
 
 
-# ---------------------------------------------------------------------------
+
 # ScoreResult tests
-# ---------------------------------------------------------------------------
+
 
 class TestScoreResult:
     def test_perfect_score(self):
@@ -152,9 +151,8 @@ class TestScoreResult:
         assert "f1" in d
 
 
-# ---------------------------------------------------------------------------
 # Scorer.calculate_f1
-# ---------------------------------------------------------------------------
+
 
 class TestScorerF1:
     def setup_method(self):
@@ -177,9 +175,8 @@ class TestScorerF1:
         assert abs(f1 - 0.6) < 0.01
 
 
-# ---------------------------------------------------------------------------
 # Scorer.score_document integration tests
-# ---------------------------------------------------------------------------
+
 
 SCHEMA_SIMPLE = json.dumps({
     "type": "object",
@@ -230,9 +227,9 @@ class TestScorerDocument:
         assert "name" in breakdown["subtrees"]
 
 
-# ---------------------------------------------------------------------------
+
 # Array alignment policy tests
-# ---------------------------------------------------------------------------
+
 
 SCHEMA_ARRAY_STR = json.dumps({
     "type": "object",
@@ -312,13 +309,12 @@ class TestArrayAlignment:
         assert f1 == 0.0
 
 
-# ---------------------------------------------------------------------------
+
 # Stochastic metric fallback (no judge provided)
-# ---------------------------------------------------------------------------
+
 
 class TestStochasticFallback:
     def setup_method(self):
-        # No judge_callable → falls back to string_exact
         self.scorer = Scorer()
 
     def test_string_semantic_fallback_match(self):
@@ -330,9 +326,8 @@ class TestStochasticFallback:
         assert score == 0.0
 
 
-# ---------------------------------------------------------------------------
+
 # Judge float parsing (critical for stochastic metric correctness)
-# ---------------------------------------------------------------------------
 
 from src.optimizer.loop import _parse_judge_float, _word_overlap_f1
 
