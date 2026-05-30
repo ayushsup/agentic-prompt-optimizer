@@ -18,7 +18,7 @@ Implements a Greedy Accept/Reject loop augmented with:
   Previously rejected prompts are passed to the Mutator so it avoids
   re-proposing failed variants.
 
-  Prompt linting  ← NEW
+  Prompt linting
   ──────────────
   Every candidate prompt is validated before spending an iteration on it.
   Catches the two most expensive regression classes:
@@ -27,14 +27,28 @@ Implements a Greedy Accept/Reject loop augmented with:
   On lint failure the Mutator is given the lint reason and retried up to
   MAX_LINT_RETRIES times before falling back to the current best prompt.
 
+  Prediction caching
+  ──────────────────
+  Extractor outputs are cached keyed by SHA-256(prompt + doc_id).  When a
+  rejected iteration reverts to best_prompt and the next mutation also
+  produces the same score, all extraction calls are served from the SQLite
+  cache — zero LLM tokens consumed.  Critical for surviving daily-quota stalls.
+
+  Stall count persistence
+  ───────────────────────
+  On resume, stall_count is recovered from the trajectory rather than
+  resetting to 0.  This ensures train-example injection and beam-secondary
+  escalation fire at the correct iteration after an interrupted run.
+
   Budget enforcement
   ──────────────────
   Stops on max_iterations OR max_cost_dollars (if > 0).
 
   Resumability
   ────────────
-  Warm-starts from SQLite if a prior run exists. OCR text is cached so
-  re-runs skip re-extraction for unchanged PDF files.
+  Warm-starts from SQLite if a prior run exists.  OCR text, stochastic
+  metric scores, and extractor predictions are all cached so re-runs are
+  nearly free for unchanged prompts and documents.
 
   Four-tier LLM fallback (all agents)
   ────────────────────────────────────
@@ -246,13 +260,12 @@ class OptimizerLoop:
         1. ISO timestamp anti-pattern
            The gold data uses plain integer years (2019) or short strings
            ("Spring 2010"). Any instruction to produce ISO 8601 timestamps
-           (e.g. "2019-02-28T23:00:00.000Z") causes EVERY date field to score
-           0.0 because no gold value ever matches that format.
+           causes EVERY date field to score 0.0.
 
         2. `languages` field inconsistency
            If `languages` appears in the FIELD RULES section but is absent from
-           the root-key contract (rule 2 area), the extraction model receives
-           contradictory instructions and unreliably includes the field.
+           the root-key contract, the extraction model receives contradictory
+           instructions and unreliably includes the field.
 
         Returns (passes: bool, reason: str).
         """
@@ -273,20 +286,18 @@ class OptimizerLoop:
                     f"ISO timestamp anti-pattern ('{sig}'): gold data uses "
                     "integer years (2020) not ISO strings. Remove this instruction."
                 )
-                break  # one message is enough
+                break
 
         # ── 2. `languages` consistency ───────────────────────────────
         lower = prompt.lower()
-        # Check whether 'languages' appears in the body at all
         has_lang_anywhere = "languages" in lower
         if has_lang_anywhere:
-            # The root-key contract is always near the top (first ~800 chars)
             contract_zone = lower[:800]
             if "languages" not in contract_zone:
                 issues.append(
                     "'languages' appears in field rules but is ABSENT from the "
-                    "root-key contract (rule 2). This creates conflicting instructions. "
-                    "Add 'languages' to the list of required root keys in rule 2."
+                    "root-key contract (rule 2). Add 'languages' to the required "
+                    "root keys list."
                 )
 
         # ── 3. Required root keys present in contract ─────────────────
@@ -350,8 +361,7 @@ class OptimizerLoop:
     def _get_train_example(self) -> Optional[str]:
         """
         Select the most information-complete train document as a grounding
-        example for the Mutator.  Deterministic: picks by field completeness,
-        not by random choice, so results are reproducible.
+        example for the Mutator.  Deterministic: picks by field completeness.
         """
         if not self.train_docs:
             return None
@@ -387,7 +397,7 @@ class OptimizerLoop:
         )
 
     # ------------------------------------------------------------------
-    # Corpus scoring
+    # Corpus scoring  (with prediction cache)
     # ------------------------------------------------------------------
 
     def _evaluate_corpus(
@@ -396,25 +406,40 @@ class OptimizerLoop:
         prompt: str,
         debug_first: bool = False,
     ) -> Tuple[float, Dict]:
-        """Extract + score every document with the current prompt."""
+        """
+        Extract + score every document with the current prompt.
+
+        For each (prompt, doc_id) pair the extractor output is looked up in
+        the prediction_cache table first.  A cache hit skips the LLM call
+        entirely — saving one API call per document per repeated prompt.
+
+        This is the main token-conservation mechanism for stalled iterations:
+        when the optimizer reverts to best_prompt after a rejection, the
+        next iteration that evaluates best_prompt again pays nothing.
+        """
         total_f1   = 0.0
         breakdown: Dict[str, Dict] = {}
         failed:    List[Dict]      = []
 
         for i, doc in enumerate(docs):
-            # Use full document text — 10k chars covers even long academic CVs
-            # without hitting GitHub Models' context limit.  Gemini handles much
-            # larger inputs as a fallback if needed.
             doc_text = doc["text"][:10000]
 
-            prediction = self.extractor.extract(doc_text, prompt, doc["schema"])
+            # ── Prediction cache lookup ───────────────────────────────
+            cached_pred = self.state.get_prediction(prompt, doc["id"])
+            if cached_pred is not None:
+                prediction = cached_pred
+                if debug_first and i == 0:
+                    print(f"  💾 Prediction cache hit for {doc['id']} — skipping LLM call.")
+            else:
+                prediction = self.extractor.extract(doc_text, prompt, doc["schema"])
+                self.state.set_prediction(prompt, doc["id"], prediction)
 
-            if debug_first and i == 0:
-                print("\n  ── DEBUG: Raw extractor output (first 600 chars) ──")
-                print(prediction[:600])
-                print("  ── DEBUG: Gold JSON (first 400 chars) ──")
-                print(doc["gold_json"][:400])
-                print("  ──────────────────────────────────────────────────\n")
+                if debug_first and i == 0:
+                    print("\n  ── DEBUG: Raw extractor output (first 600 chars) ──")
+                    print(prediction[:600])
+                    print("  ── DEBUG: Gold JSON (first 400 chars) ──")
+                    print(doc["gold_json"][:400])
+                    print("  ──────────────────────────────────────────────────\n")
 
             f1, doc_breakdown = self.scorer.score_document(
                 pred_json=prediction,
@@ -466,27 +491,40 @@ class OptimizerLoop:
         rejected_history = self.state.get_rejected_prompts()
 
         if prior_best and last_done >= 0:
-            best_prompt     = prior_best["prompt"]
-            best_score      = prior_best["val_score"]
+            best_prompt  = prior_best["prompt"]
+            best_score   = prior_best["val_score"]
             start_iteration = last_done + 1
             current_prompt  = best_prompt
+
+            # ── Restore stall_count from the trajectory ───────────────
+            # Count consecutive rejections at the tail so escalation
+            # logic (train-example injection, beam secondary) fires at
+            # the correct iteration after an interrupted run.
+            stall_count = self.state.get_stall_count()
+
             print(f"♻️  Resuming from iteration {start_iteration} "
-                  f"(best val F1: {best_score:.4f})")
+                  f"(best val F1: {best_score:.4f}, stall count: {stall_count})")
         else:
             best_prompt     = cfg.seed_prompt
             best_score      = -1.0
             start_iteration = 0
             current_prompt  = cfg.seed_prompt
+            stall_count     = 0
             print("🌱 Starting fresh from seed prompt.")
 
         beam: List[Tuple[float, str]] = []
         if best_score >= 0.0:
             beam.append((best_score, best_prompt))
 
-        stall_count     = 0
         seed_test_score = 0.0
         test_score      = 0.0
         test_info: Dict = {"docs": {}, "failed": []}
+
+        # Print prediction cache stats on resume so user sees the savings
+        pred_stats = self.state.get_prediction_cache_stats()
+        if pred_stats["total_cached"] > 0:
+            print(f"  📦 Prediction cache: {pred_stats['total_cached']} "
+                  f"(prompt, doc) pair(s) cached — extractor LLM calls skipped on hits.")
 
         try:
             for iteration in range(start_iteration, cfg.budget.max_iterations):
@@ -605,10 +643,8 @@ class OptimizerLoop:
                     )
 
                 # ── Mutate with lint retry ────────────────────────────
-                # If the proposed prompt fails the lint check, feed the lint
-                # reason back to the Mutator and retry (up to MAX_LINT_RETRIES).
-                active_critiques = list(critiques)  # copy so we can append lint info
-                current_prompt   = best_prompt      # reset to best before retry loop
+                active_critiques = list(critiques)
+                current_prompt   = best_prompt   # reset before retry loop
 
                 for lint_attempt in range(self.MAX_LINT_RETRIES + 1):
                     try:
@@ -635,15 +671,12 @@ class OptimizerLoop:
                     else:
                         print(f"  🚫 Lint failed (attempt {lint_attempt+1}): {reason[:120]}")
                         if lint_attempt < self.MAX_LINT_RETRIES:
-                            # Append lint failure as an extra critique so the
-                            # Mutator has explicit instructions on what to fix
                             lint_critique = (
                                 f"[LINT FAILURE — fix this before anything else]\n"
                                 f"{reason}\n\n"
                                 "The prompt you just proposed was REJECTED by the "
-                                "linter. Your very first priority in the next "
-                                "rewrite is to fix this issue. Only then address "
-                                "the other failure critiques."
+                                "linter. Fix this issue first, then address the "
+                                "other failure critiques."
                             )
                             active_critiques = [lint_critique] + critiques
                             print(f"  ↩️  Retrying mutation with lint feedback…")
@@ -751,10 +784,13 @@ class OptimizerLoop:
             else "See `logs/diffs/` for unified diffs of each accepted mutation."
         )
 
-        ocr_stats = self.state.get_ocr_cache_stats()
-        ocr_note  = (
-            f"**{ocr_stats['total_cached']}** file(s) cached "
-            f"across methods: `{ocr_stats['by_method']}`."
+        ocr_stats  = self.state.get_ocr_cache_stats()
+        pred_stats = self.state.get_prediction_cache_stats()
+        ocr_note   = (
+            f"**{ocr_stats['total_cached']}** PDF(s) cached "
+            f"(methods: `{ocr_stats['by_method']}`).  "
+            f"**{pred_stats['total_cached']}** (prompt, doc) prediction(s) cached — "
+            "extractor LLM calls skipped on hits."
         )
 
         cfg        = self.config
@@ -774,7 +810,8 @@ class OptimizerLoop:
             f"Beam width: **{self.BEAM_WIDTH}**.  "
             f"Train-example injection after stall ≥ **{self.EXAMPLE_INJECT_AFTER}**.  "
             f"Beam secondary after stall ≥ **{self.BEAM_STALL_THRESHOLD}**.  "
-            f"Prompt lint with up to **{self.MAX_LINT_RETRIES}** mutation retries."
+            f"Prompt lint with up to **{self.MAX_LINT_RETRIES}** mutation retries.  "
+            f"Stall count persisted across interrupted runs."
         )
 
         report = textwrap.dedent(f"""\
@@ -851,9 +888,9 @@ class OptimizerLoop:
 
             **LLM Fallback:** {fallback_note}
 
-            **OCR Caching:** {ocr_note}  
-            Extracted PDF text is persisted in `run_state.db` (keyed by SHA-256 of
-            file bytes). Re-runs skip re-extraction entirely for unchanged files.
+            **Caching:** {ocr_note}  
+            Both OCR text and extractor predictions are persisted in `run_state.db`.
+            Re-runs and resumes are nearly free for unchanged prompts and documents.
 
             ---
 
@@ -870,9 +907,9 @@ class OptimizerLoop:
             - **Stochastic metric caching:** `string_semantic` and `array_llm` scores
               are cached per (pred, gold) pair. Initial calls for novel pairs are
               non-deterministic.
-            - **Prompt linting:** The linter catches ISO timestamp and languages
-              inconsistency regressions. Other regression classes (e.g. field removal)
-              are caught by the val score drop but still consume one iteration.
+            - **Prompt linting:** Catches ISO timestamp and languages inconsistency
+              regressions. Other regression classes still consume one iteration before
+              being caught by the val score drop.
             """)
 
         with open("REPORT.md", "w", encoding="utf-8") as f:

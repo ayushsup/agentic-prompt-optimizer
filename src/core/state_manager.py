@@ -6,6 +6,8 @@ Responsibilities:
   - Track the optimization trajectory (prompt, val_score, accepted) per iteration
   - Cache stochastic metric results (string_semantic, array_llm) for determinism
   - Cache OCR / PDF text extraction results so re-runs skip expensive re-extraction
+  - Cache extractor predictions keyed by (prompt_hash, doc_id) so rejected iterations
+    that evaluate the same prompt on the same document never call the LLM twice
   - Enable interrupted runs to resume from the last valid checkpoint
 
 Database: run_state.db (created automatically in the working directory)
@@ -78,6 +80,20 @@ class StateManager:
                     text      TEXT NOT NULL,
                     method    TEXT NOT NULL DEFAULT 'unknown',
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Extractor prediction cache.
+            # Keyed by SHA-256(prompt + doc_id) so the same prompt evaluated on
+            # the same document is never re-sent to the LLM.  This eliminates
+            # the API call on every rejected iteration that reverts to best_prompt
+            # before a new mutation is proposed.
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS prediction_cache (
+                    cache_key  TEXT PRIMARY KEY,
+                    doc_id     TEXT NOT NULL,
+                    prediction TEXT NOT NULL,
+                    timestamp  DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             """)
 
@@ -188,6 +204,22 @@ class StateManager:
             ).fetchone()
         return row[0] if row[0] is not None else -1
 
+    def get_stall_count(self) -> int:
+        """
+        Return the number of consecutive rejected iterations at the end of
+        the recorded trajectory.  Used to restore stall_count on resume so
+        the Mutator's escalation logic (train-example injection, beam secondary,
+        radical rewrite) fires at the right iteration after an interrupted run.
+        """
+        trajectory = self.get_trajectory()
+        count = 0
+        for entry in reversed(trajectory):
+            if not entry["accepted"]:
+                count += 1
+            else:
+                break
+        return count
+
     def get_rejected_prompts(self) -> List[str]:
         """Return all prompts that were evaluated but rejected."""
         with sqlite3.connect(self.db_path) as conn:
@@ -272,3 +304,53 @@ class StateManager:
             "total_cached": total,
             "by_method": {row[0]: row[1] for row in by_method},
         }
+
+    # ------------------------------------------------------------------
+    # Extractor prediction cache
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _prediction_key(prompt: str, doc_id: str) -> str:
+        """
+        Deterministic SHA-256 key for a (prompt, doc_id) pair.
+
+        Using only doc_id (not the full document text) is intentional: the
+        document text is fixed for the lifetime of a run, so doc_id is a
+        sufficient discriminator.  This keeps the key short and stable.
+        """
+        payload = f"{prompt}\n|||PIBIT_SEP|||\n{doc_id}"
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+    def get_prediction(self, prompt: str, doc_id: str) -> Optional[str]:
+        """
+        Return the cached extractor output for this (prompt, doc_id) pair,
+        or None if not yet cached.
+
+        Cache hits avoid an LLM call entirely — critical for stall iterations
+        where the prompt has not changed between evaluations.
+        """
+        key = self._prediction_key(prompt, doc_id)
+        with sqlite3.connect(self.db_path) as conn:
+            row = conn.execute(
+                "SELECT prediction FROM prediction_cache WHERE cache_key = ?", (key,)
+            ).fetchone()
+        return row[0] if row else None
+
+    def set_prediction(self, prompt: str, doc_id: str, prediction: str) -> None:
+        """Persist an extractor output for future cache lookups."""
+        key = self._prediction_key(prompt, doc_id)
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO prediction_cache (cache_key, doc_id, prediction)
+                VALUES (?, ?, ?)
+                """,
+                (key, doc_id, prediction),
+            )
+            conn.commit()
+
+    def get_prediction_cache_stats(self) -> Dict:
+        """Return summary stats on the prediction cache."""
+        with sqlite3.connect(self.db_path) as conn:
+            total = conn.execute("SELECT COUNT(*) FROM prediction_cache").fetchone()[0]
+        return {"total_cached": total}

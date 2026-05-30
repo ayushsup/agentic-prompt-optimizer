@@ -1,9 +1,9 @@
             # Prompt Optimization Report
 
-            **Generated:** 2026-05-29 19:00:55  
+            **Generated:** 2026-05-30 18:48:40  
             **Dataset:** `hiring/resume`  
-            **Split:** seed=7  
-            1 train | 3 val | 3 test  
+            **Split:** seed=42  
+            3 train | 1 val | 3 test  
             **Models:** extractor=`google/gemma-4-31b-it:free`  
             critic=`google/gemma-4-31b-it:free`  mutator=`google/gemma-4-31b-it:free`
 
@@ -13,11 +13,11 @@
 
             | Prompt | Test F1 |
             |--------|---------|
-            | Seed   | 0.6186 |
-            | Final  | 0.5423 |
-            | **Δ**  | **-0.0762** |
+            | Seed   | 0.5343 |
+            | Final  | 0.5341 |
+            | **Δ**  | **-0.0002** |
 
-            Best validation F1 during optimization: **0.5885**
+            Best validation F1 during optimization: **0.7745**
 
             ---
 
@@ -25,36 +25,36 @@
 
             | Document | Field | Precision | Recall | F1 |
             |----------|-------|-----------|--------|----|
-            | Resume-IT | media | 0.000 | 0.000 | 0.000 |
-| Resume-IT | other | 0.000 | 0.000 | 0.000 |
-| Resume-IT | skills | 0.000 | 0.000 | 0.000 |
-| Resume-IT | education | 0.982 | 0.982 | 0.982 |
-| Resume-IT | languages | 1.000 | 1.000 | 1.000 |
-| Resume-IT | socialLinks | 0.500 | 0.500 | 0.500 |
-| Resume-IT | personalInfo | 1.000 | 1.000 | 1.000 |
-| Resume-IT | publications | 0.000 | 0.000 | 0.000 |
-| Resume-IT | workExperience | 0.985 | 0.985 | 0.985 |
-| Resume-IT | certificationsAndAwards | 1.000 | 1.000 | 1.000 |
-| Resume-Academic02 | media | 0.000 | 0.000 | 0.000 |
-| Resume-Academic02 | other | 0.000 | 0.000 | 0.000 |
-| Resume-Academic02 | skills | 0.000 | 0.000 | 0.000 |
-| Resume-Academic02 | education | 1.000 | 1.000 | 1.000 |
-| Resume-Academic02 | languages | 0.000 | 0.000 | 0.000 |
-| Resume-Academic02 | socialLinks | 0.000 | 0.000 | 0.000 |
-| Resume-Academic02 | personalInfo | 1.000 | 1.000 | 1.000 |
-| Resume-Academic02 | publications | 0.000 | 0.000 | 0.000 |
-| Resume-Academic02 | workExperience | 0.897 | 0.897 | 0.897 |
-| Resume-Academic02 | certificationsAndAwards | 0.376 | 0.223 | 0.280 |
-| Resume-Finance | media | 0.000 | 0.000 | 0.000 |
-| Resume-Finance | other | 0.000 | 0.000 | 0.000 |
-| Resume-Finance | skills | 0.000 | 0.000 | 0.000 |
-| Resume-Finance | education | 0.400 | 0.400 | 0.400 |
-| Resume-Finance | languages | 1.000 | 1.000 | 1.000 |
-| Resume-Finance | socialLinks | 0.000 | 0.000 | 0.000 |
-| Resume-Finance | personalInfo | 1.000 | 1.000 | 1.000 |
-| Resume-Finance | publications | 0.000 | 0.000 | 0.000 |
-| Resume-Finance | workExperience | 0.703 | 0.703 | 0.703 |
-| Resume-Finance | certificationsAndAwards | 0.000 | 0.000 | 0.000 |
+            | Resume-Med | media | 0.000 | 0.000 | 0.000 |
+| Resume-Med | other | 0.900 | 0.900 | 0.900 |
+| Resume-Med | skills | 1.000 | 1.000 | 1.000 |
+| Resume-Med | education | 0.535 | 0.535 | 0.535 |
+| Resume-Med | languages | 0.578 | 0.578 | 0.578 |
+| Resume-Med | socialLinks | 0.000 | 0.000 | 0.000 |
+| Resume-Med | personalInfo | 0.983 | 0.983 | 0.983 |
+| Resume-Med | publications | 0.000 | 0.000 | 0.000 |
+| Resume-Med | workExperience | 0.691 | 0.691 | 0.691 |
+| Resume-Med | certificationsAndAwards | 0.521 | 0.406 | 0.456 |
+| Resume-Academic01 | media | 0.000 | 0.000 | 0.000 |
+| Resume-Academic01 | other | 0.000 | 0.000 | 0.000 |
+| Resume-Academic01 | skills | 0.000 | 0.000 | 0.000 |
+| Resume-Academic01 | education | 0.533 | 0.533 | 0.533 |
+| Resume-Academic01 | languages | 0.000 | 0.000 | 0.000 |
+| Resume-Academic01 | socialLinks | 0.000 | 0.000 | 0.000 |
+| Resume-Academic01 | personalInfo | 0.673 | 0.673 | 0.673 |
+| Resume-Academic01 | publications | 0.000 | 0.000 | 0.000 |
+| Resume-Academic01 | workExperience | 0.717 | 0.384 | 0.500 |
+| Resume-Academic01 | certificationsAndAwards | 0.005 | 0.002 | 0.003 |
+| Resume-Marketing | media | 0.000 | 0.000 | 0.000 |
+| Resume-Marketing | other | 0.000 | 0.000 | 0.000 |
+| Resume-Marketing | skills | 1.009 | 0.979 | 0.994 |
+| Resume-Marketing | education | 0.684 | 0.684 | 0.684 |
+| Resume-Marketing | languages | 0.000 | 0.000 | 0.000 |
+| Resume-Marketing | socialLinks | 1.000 | 1.000 | 1.000 |
+| Resume-Marketing | personalInfo | 1.000 | 1.000 | 1.000 |
+| Resume-Marketing | publications | 0.000 | 0.000 | 0.000 |
+| Resume-Marketing | workExperience | 0.693 | 0.693 | 0.693 |
+| Resume-Marketing | certificationsAndAwards | 0.727 | 0.516 | 0.604 |
 
             ---
 
@@ -62,34 +62,22 @@
 
             | Iter | Val F1 | Accepted |
             |------|--------|----------|
-            |   1 | 0.4608 | ✅ |
-|   2 | 0.4495 | ❌ |
-|   3 | 0.4522 | ❌ |
-|   4 | 0.4854 | ✅ |
-|   5 | 0.4877 | ✅ |
-|   6 | 0.5885 | ✅ |
-|   7 | 0.5022 | ❌ |
-|   8 | 0.5017 | ❌ |
-|   9 | 0.5030 | ❌ |
-|  10 | 0.5285 | ❌ |
-|  11 | 0.4948 | ❌ |
-|  12 | 0.5006 | ❌ |
-|  13 | 0.4680 | ❌ |
-|  14 | 0.4824 | ❌ |
-|  15 | 0.4711 | ❌ |
-|  16 | 0.4739 | ❌ |
-|  17 | 0.5017 | ❌ |
-|  18 | 0.5130 | ❌ |
-|  19 | 0.4759 | ❌ |
-|  20 | 0.4798 | ❌ |
+            |   1 | 0.7723 | ✅ |
+|   2 | 0.7745 | ✅ |
+|   3 | 0.7745 | ❌ |
+|   4 | 0.7745 | ❌ |
+|   5 | 0.7745 | ❌ |
+|   6 | 0.7745 | ❌ |
+|   7 | 0.7745 | ❌ |
+|   8 | 0.7723 | ❌ |
+|   9 | 0.7745 | ❌ |
+|  10 | 0.7745 | ❌ |
 
             ---
 
             ## 4. Notable Accepted Mutations
 
-            - **Iteration 4** — Val F1: 0.4854  (+12 lines  -13 lines)
-- **Iteration 5** — Val F1: 0.4877  (+3 lines  -3 lines)
-- **Iteration 6** — Val F1: 0.5885  (+28 lines  -29 lines)
+            - **Iteration 2** — Val F1: 0.7745  (+4 lines  -51 lines)
 
             ---
 
@@ -99,9 +87,9 @@
             You are a structured data extraction engine. Read the resume/CV document and
 output ONE JSON object. No markdown, no explanation, no wrapper keys.
 
-═══════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════
 OUTPUT CONTRACT — FOLLOW EXACTLY
-═══════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════
 1. Return ONLY raw JSON — no ```json fences, no preamble, no trailing text.
 2. The root object MUST contain EXACTLY these top-level keys (never more):
      personalInfo  workExperience  education  skills  languages  socialLinks
@@ -109,146 +97,135 @@ OUTPUT CONTRACT — FOLLOW EXACTLY
 3. FORBIDDEN root keys: "schema_definition", "name", "data", "result",
    "cv", "resume", "contact", "profile", "summary", "awards", "certifications",
    or any key not listed in rule 2.
-4. Absent scalar  → null.   Absent array → [].
-5. Never invent data not present in the document. Extract ONLY information
-   explicitly stated in the document.
-6. Year-only dates → INTEGER  (e.g. 2020, not "2020" and NOT an ISO timestamp).
-7. isCurrent → boolean  (true / false, never "true" / "false").
+4. Absent scalar → null.   Absent array → [].
+5. Never invent data not present in the document.
+6. Year-only dates → INTEGER (e.g. 2020, not "2020", NOT an ISO string).
+7. isCurrent → boolean (true / false, never "true" / "false").
 
-═══════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════
 FIELD RULES
-═══════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════
 
 languages (array of strings):
-  All spoken or written languages explicitly listed, with proficiency if stated
-  (e.g., "English (Native)", "French (Fluent)"); [] if none
+  All spoken or written languages explicitly listed; include proficiency if
+  stated (e.g., "English (Native)", "French (Fluent)"); [] if none
 
-personalInfo  (object, REQUIRED):
-  fullName          : exact name as written at top of document
-  personalStatement : professional summary / objective paragraph; null if absent
+personalInfo (object, REQUIRED):
+  fullName: exact name as written at top of document
+  personalStatement: professional summary / objective paragraph; null if absent
   contact:
-    emails : array — all email addresses found anywhere; [] if none
-    phones : array — all phone numbers, exact format; [] if none
+    emails: array — all email addresses found anywhere; [] if none
+    phones: array — all phone numbers, exact format; [] if none
 
-workExperience  (array of objects, most-recent first, REQUIRED):
-  ⚠️  COMPLETENESS IS CRITICAL — extract EVERY role listed in the document.
-  For academic CVs this means ALL sections: faculty appointments, research
-  positions, visiting roles, postdoctoral positions, teaching assistantships,
-  industry roles, and consulting. Do NOT stop early. If the document has 15
-  roles, output all 15.
-  employer    : exact institution / company name
-  jobTitle    : exact title / position
-  startDate   : integer year (e.g. 2019) when only year given;
-                string (e.g. "Spring 2010") ONLY for non-numeric formats
-  endDate     : same format as startDate; null if the role is current
-  isCurrent   : true if ongoing/current, false otherwise  (boolean)
-  description : responsibilities / achievements text; if bullet points,
-                join with semicolons into one string; null if none
-  category    : section heading this role falls under (e.g. "Research
-                Experience", "Teaching Experience"); null if no headings
+workExperience (array of objects, most-recent first, REQUIRED):
+  ⚠️  COMPLETENESS IS CRITICAL — extract EVERY role in the document.
+  Academic CVs have 10-20+ entries across sections: "Academic Appointments",
+  "Research Experience", "Teaching Experience", "Industry Experience",
+  "Consulting", "Visiting Positions", "Postdoctoral Research". Include ALL.
+  employer: exact institution / company name
+  jobTitle: exact title / position
+  startDate: integer year (e.g. 2019) when only year given;
+             string (e.g. "Spring 2010") ONLY for truly non-numeric formats
+  endDate: same format as startDate; null if the role is current
+  isCurrent: true if ongoing/current, false otherwise (boolean)
+  description: responsibilities / achievements; join bullets with "; "; null if none
+  category: section heading this role falls under (e.g. "Research Experience");
+            null if no section headings present
 
-education  (array of objects, most-recent first):
-  institution       : exact institution name
+education (array of objects, most-recent first):
+  institution: exact institution name
   qualificationTitle: full degree title (e.g. "PhD in Computer Science")
-  startDate         : integer year or string; null if not stated
-  endDate           : integer year or string; null if ongoing or not stated
-  description       : GPA, thesis title, honours, advisors, distinctions; null if none
+  startDate: integer year or string; null if not stated
+  endDate: integer year or string; null if ongoing or not stated
+  description: GPA, thesis title, advisor, honours, distinctions; null if none
 
-skills:
-  • Organised under headings → object: { "HeadingName": ["skill1", "skill2"], … }
-  • Flat list (no headings)  → array of strings
-  • No skills section        → null
-  • Split comma-separated items into individual elements
-    (e.g., "Tableau, Power BI" → ["Tableau", "Power BI"])
+skills — CHOOSE ONE format based on the document:
+  FORMAT A — skills organised under category headings:
+    Object: { "CategoryName": ["skill1", "skill2"], ... }
+    Look for: "Technical Skills", "Programming Languages", "Software",
+    "Tools & Technologies", "Research Methods", "Core Competencies",
+    "Key Skills", "Expertise", "Areas of Expertise", "Competencies"
+  FORMAT B — skills as a flat list without headings:
+    Array of strings: ["skill1", "skill2", ...]
+    Split comma-separated items: "Python, R, SQL" → ["Python", "R", "SQL"]
+  FORMAT C — no skills section at all: null
 
-socialLinks  (array of strings):
-  All URLs found anywhere (LinkedIn, GitHub, ORCID, ResearchGate, personal
-  website); [] if none
+socialLinks (array of strings):
+  ALL URLs found anywhere in the document. Look specifically for:
+  LinkedIn, GitHub, ORCID (orcid.org/...), Google Scholar,
+  ResearchGate, personal website, lab website, portfolio URL.
+  [] if none found.
 
-certificationsAndAwards  (array of objects):
-  ⚠️  COMPLETENESS IS CRITICAL — extract ALL certifications, awards, honours,
-  memberships, and affiliations. Licenses go into the `other` field.
-  description : exact name as written in the document
-  organization: granting body or organisation; null if not stated
-  date        : date as a string (e.g. "2022", "March 2021"); null if not stated
-  category    : MUST be EXACTLY one of these five strings (case-sensitive):
-                "Certification" → professional certs (AWS, CPA, PMP, etc.)
-                "Award"         → prizes, scholarships, fellowships
-                "Membership"    → professional body memberships
-                "Honor"         → dean's list, cum laude, distinctions
-                "Affiliation"   → society/association affiliations
-                When uncertain, prefer "Award" over leaving blank.
+certificationsAndAwards (array of objects):
+  ⚠️  COMPLETENESS IS CRITICAL — extract ALL of these:
+    Professional certifications (AWS, CPA, PMP, CFA, medical board, etc.)
+    Bar admissions and professional licenses → category "License"
+    Named fellowships and research grants → category "Award"
+    Academic honours (dean's list, cum laude, Phi Beta Kappa) → "Honor"
+    Professional society memberships → "Membership"
+    Professional body affiliations → "Affiliation"
+  description: exact name as written in the document
+  organization: granting body; null if not stated
+  date: date as a string (e.g. "2022", "March 2021"); null if not stated
+  category: MUST be EXACTLY one of these six (case-sensitive):
+            "Certification" | "Award" | "Membership" | "Honor" | "License" | "Affiliation"
+            When uncertain, prefer "Award"
 
-publications  (array of strings):
-  ⚠️  COMPLETENESS IS CRITICAL — include EVERY publication listed: journal
-  articles, conference papers, book chapters, preprints, technical reports.
-  Copy each citation string exactly as written in the document; [] if none
+publications (array of strings):
+  ⚠️  COMPLETENESS IS CRITICAL — extract EVERY citation listed.
+  Look for sections named ANY of: "Publications", "Peer-Reviewed Articles",
+  "Journal Articles", "Conference Papers", "Conference Proceedings",
+  "Book Chapters", "Books", "Working Papers", "Preprints",
+  "Technical Reports", "Presentations", "Published Works",
+  "Research Output", "Selected Publications", "Publications and Presentations"
+  Copy each citation EXACTLY as written — do not paraphrase.
+  Academic CVs commonly have 5–30+ publications. Extract ALL of them.
+  [] if no such section exists.
 
-media  (array of strings):
-  Media appearances or press mentions as strings; [] if none
+media (array of strings):
+  Media appearances, press mentions, interviews, podcasts; [] if none
 
-other  (array of objects):
-  Any section not captured above, including licenses.
-  sectionTitle : heading as it appears in the document (e.g. "Licenses")
-  content      : full text of that section
+other (array of objects):
+  Any section not captured above (including licenses if listed separately).
+  sectionTitle: heading as it appears in the document
+  content: full text of that section
 
-═══════════════════════════════════════════════════════
-WORKED EXAMPLE  (format reference only — do not copy this data)
-═══════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════
+WORKED EXAMPLE (format reference only — do not copy this data)
+══════════════════════════════════════════════════════════════
 {
   "personalInfo": {
     "fullName": "Jane Doe",
     "personalStatement": "Results-driven engineer with 8 years in fintech.",
-    "contact": {
-      "emails": ["jane.doe@example.com"],
-      "phones": ["+44 7700 900123"]
-    }
+    "contact": { "emails": ["jane@example.com"], "phones": ["+44 7700 900123"] }
   },
   "workExperience": [
-    {
-      "employer": "Acme Financial Ltd",
-      "jobTitle": "Lead Software Engineer",
-      "startDate": 2019,
-      "endDate": null,
-      "isCurrent": true,
-      "description": "Architected real-time payments API handling 2M txn/day.",
-      "category": null
-    },
-    {
-      "employer": "State University",
-      "jobTitle": "Visiting Researcher",
-      "startDate": 2017,
-      "endDate": 2018,
-      "isCurrent": false,
-      "description": "Conducted research on distributed consensus algorithms.",
-      "category": "Research Experience"
-    }
+    { "employer": "Acme Ltd", "jobTitle": "Lead Engineer", "startDate": 2019,
+      "endDate": null, "isCurrent": true,
+      "description": "Architected payments API; managed team of 8.", "category": null },
+    { "employer": "State University", "jobTitle": "Postdoctoral Researcher",
+      "startDate": 2017, "endDate": 2019, "isCurrent": false,
+      "description": "ML interpretability research.", "category": "Research Experience" }
   ],
   "education": [
-    {
-      "institution": "University of Edinburgh",
-      "qualificationTitle": "MEng Computer Science",
-      "startDate": 2011,
-      "endDate": 2015,
-      "description": "First Class Honours. Thesis: Distributed Consensus Algorithms."
-    }
+    { "institution": "University of Edinburgh", "qualificationTitle": "PhD Computer Science",
+      "startDate": 2013, "endDate": 2017,
+      "description": "Advisor: Prof. Smith. Thesis: Deep Learning for NLP." }
   ],
-  "skills": {
-    "Programming": ["Python", "Go", "SQL"],
-    "Frameworks": ["FastAPI", "Kafka"]
-  },
+  "skills": { "Programming": ["Python", "R", "SQL"], "Tools": ["TensorFlow", "PyTorch"] },
   "languages": ["English (Native)", "Spanish (Conversational)"],
-  "socialLinks": ["https://linkedin.com/in/janedoe"],
+  "socialLinks": ["https://linkedin.com/in/janedoe", "https://orcid.org/0000-0001-2345-6789"],
   "certificationsAndAwards": [
-    {
-      "description": "AWS Certified Solutions Architect",
-      "organization": "Amazon Web Services",
-      "date": "2022",
-      "category": "Certification"
-    }
+    { "description": "NSF Graduate Research Fellowship", "organization": "NSF",
+      "date": "2014", "category": "Award" },
+    { "description": "AWS Certified Solutions Architect", "organization": "AWS",
+      "date": "2022", "category": "Certification" },
+    { "description": "Bar Admission — New York", "organization": "New York State Bar",
+      "date": "2018", "category": "License" }
   ],
   "publications": [
-    "Doe, J. (2021). Distributed Consensus in Edge Networks. IEEE Trans. Networking, 29(3), 112-124."
+    "Doe, J., Smith, A. (2021). Neural Networks for Finance. Nature MI, 3, 45-52.",
+    "Doe, J. (2019). Interpretable ML. Proc. NeurIPS 2019, 1234-1242."
   ],
   "media": [],
   "other": []
@@ -262,159 +239,103 @@ WORKED EXAMPLE  (format reference only — do not copy this data)
             ```
             You are a structured data extraction engine. Read the resume/CV document and output ONE JSON object. No markdown, no explanation, no wrapper keys.
 
-═══════════════════════════════════════════════════════
 OUTPUT CONTRACT — FOLLOW EXACTLY
-═══════════════════════════════════════════════════════
 1. Return ONLY raw JSON — no ```json fences, no preamble, no trailing text.
 2. The root object MUST contain EXACTLY these top-level keys (never more):
-     personalInfo  workExperience  education  skills  languages  socialLinks
-     certificationsAndAwards  publications  media  other
+   personalInfo  workExperience  education  skills  languages  socialLinks
+   certificationsAndAwards  publications  media  other
 3. FORBIDDEN root keys: "schema_definition", "name", "data", "result",
    "cv", "resume", "contact", "profile", "summary", "awards", "certifications",
    or any key not listed in rule 2.
-4. Absent scalar  → null.   Absent array → [].
-5. Never invent data not present in the document. Extract ONLY information
-   explicitly stated in the document.
-6. Year-only dates → INTEGER (e.g. 2020, not "2020").
-7. isCurrent → STRING ("true" or "false", never boolean true/false).
+4. Absent scalar → null.   Absent array → [].
+5. Never invent data not present in the document.
+6. Year-only dates → INTEGER (e.g. 2020, not "2020", NOT an ISO string). For all date fields, output in the format "YYYY-MM-DD" when applicable.
+7. isCurrent → boolean (true / false, never "true" / "false").
 
-═══════════════════════════════════════════════════════
 FIELD RULES
-═══════════════════════════════════════════════════════
-
 languages (array of strings):
-  All spoken or written languages explicitly listed, with proficiency if stated
-  (e.g., "English (Native)", "French (Fluent)"); [] if none
+  All spoken or written languages explicitly listed; include proficiency if
+  stated (e.g., "English (Native)", "French (Fluent)"); [] if none
 
-personalInfo  (object, REQUIRED):
-  fullName          : exact name as written at top of document. Include professional titles (e.g. "Dr.") and suffixes (e.g. "MD") if present.
-  personalStatement : professional summary / objective paragraph; null if absent
+personalInfo (object, REQUIRED):
+  fullName: exact name as written at top of document
+  personalStatement: professional summary / objective paragraph; null if absent
   contact:
-    emails : array — all email addresses found anywhere; [] if none
-    phones : array — all phone numbers, exact format; [] if none
+    emails: array — all email addresses found anywhere; [] if none
+    phones: array — all phone numbers, exact format; [] if none
 
-workExperience  (array of objects, most-recent first, REQUIRED):
-  ⚠️  COMPLETENESS IS CRITICAL — extract EVERY role listed in the document.
-  For academic CVs this means ALL sections: faculty appointments, research
-  positions, visiting roles, postdoctoral positions, teaching assistantships,
-  industry roles, and consulting. Do NOT stop early. If the document has 15
-  roles, output all 15.
-  employer    : exact institution / company name
-  jobTitle    : exact title / position, omitting any additional descriptors (e.g. "– Cardiology Department").
-  startDate   : integer year (e.g. 2020) or the exact string as written (e.g. "Spring 2010"); null if not stated
-  endDate     : integer year (e.g. 2000) or the exact string as written; null if the role is current
-  isCurrent   : "true" if ongoing/current, "false" otherwise (MUST be a string)
-  description : responsibilities / achievements text; include descriptions for all roles including visiting professor roles. If bullet points,
-                join with semicolons into one string; null if none
-  category    : section heading this role falls under (e.g. "Research
-                Experience", "Teaching Experience"); null if no headings
+workExperience (array of objects, most-recent first, REQUIRED):
+  ⚠️  COMPLETENESS IS CRITICAL — extract EVERY role in the document.
+  Academic CVs have 10-20+ entries across sections: "Academic Appointments",
+  "Research Experience", "Teaching Experience", "Industry Experience",
+  "Consulting", "Visiting Positions", "Postdoctoral Research". Include ALL.
+  employer: exact institution / company name
+  jobTitle: exact title / position
+  startDate: integer year (e.g. 2019) when only year given;
+             string (e.g. "Spring 2010") ONLY for truly non-numeric formats
+  endDate: same format as startDate; null if the role is current
+  isCurrent: true if ongoing/current, false otherwise (boolean)
+  description: responsibilities / achievements; join bullets with "; "; null if none
+  category: section heading this role falls under (e.g. "Research Experience");
+            null if no section headings present
 
-education  (array of objects, most-recent first):
-  institution       : exact institution name
+education (array of objects, most-recent first):
+  institution: exact institution name
   qualificationTitle: full degree title (e.g. "PhD in Computer Science")
-  startDate         : integer year or the exact string as written; null if not stated
-  endDate           : integer year or the exact string as written; null if ongoing or not stated
-  description       : GPA, thesis title, honours, advisors, distinctions; null if none
+  startDate: integer year or string; null if not stated
+  endDate: integer year or string; null if ongoing or not stated
+  description: GPA, thesis title, advisor, honours, distinctions; null if none
 
-skills:
-  • Extract as a FLAT ARRAY of strings (e.g., ["Python", "Legal research and analysis"]).
-  • Do NOT use a keyed object or headings.
-  • Split comma-separated items into individual elements.
-  • No skills section        → null
-  • Only include skills if explicitly stated in the source.
+skills — CHOOSE ONE format based on the document:
+  FORMAT A — skills organised under category headings:
+    Object: { "CategoryName": ["skill1", "skill2"], ... }
+    Look for: "Technical Skills", "Programming Languages", "Software",
+    "Tools & Technologies", "Research Methods", "Core Competencies",
+    "Key Skills", "Expertise", "Areas of Expertise", "Competencies"
+  FORMAT B — skills as a flat list without headings:
+    Array of strings: ["skill1", "skill2", ...]
+    Split comma-separated items: "Python, R, SQL" → ["Python", "R", "SQL"]
+  FORMAT C — no skills section at all: null
 
-socialLinks  (array of strings):
-  All URLs found anywhere (LinkedIn, GitHub, ORCID, ResearchGate, personal
-  website); [] if none
+socialLinks (array of strings):
+  ALL URLs found anywhere in the document. Look specifically for:
+  LinkedIn, GitHub, ORCID (orcid.org/...), Google Scholar,
+  ResearchGate, personal website, lab website, portfolio URL.
+  [] if none found.
 
-certificationsAndAwards  (array of objects):
-  ⚠️  COMPLETENESS IS CRITICAL — extract ALL certifications, awards, honours,
-  memberships, and affiliations.
-  description : exact name as written in the document
-  organization: granting body or organisation; null if not stated
-  date        : date as a string (e.g. "2022", "March 2021"); null if not stated
-  category    : MUST be EXACTLY one of these five strings (case-sensitive):
-                "Certification" → professional certs (AWS, CPA, PMP, etc.)
-                "Award"         → prizes, scholarships, fellowships
-                "Membership"    → professional body memberships
-                "Honor"         → dean's list, cum laude, distinctions
-                "Affiliation"   → society/association affiliations
-                When uncertain, prefer "Award" over leaving blank.
+certificationsAndAwards (array of objects):
+  ⚠️  COMPLETENESS IS CRITICAL — extract ALL of these:
+    Professional certifications (AWS, CPA, PMP, CFA, medical board, etc.)
+    Bar admissions and professional licenses → category "License"
+    Named fellowships and research grants → category "Award"
+    Academic honours (dean's list, cum laude, Phi Beta Kappa) → "Honor"
+    Professional society memberships → "Membership"
+    Professional body affiliations → "Affiliation"
+  description: exact name as written in the document
+  organization: granting body; null if not stated
+  date: date as a string (e.g. "2022", "March 2021"); null if not stated
+  category: MUST be EXACTLY one of these six (case-sensitive):
+            "Certification" | "Award" | "Membership" | "Honor" | "License" | "Affiliation"
+            When uncertain, prefer "Award"
 
-publications  (array of strings):
-  ⚠️  COMPLETENESS IS CRITICAL — include EVERY publication listed: journal
-  articles, conference papers, book chapters, preprints, technical reports.
-  Copy each citation string exactly as written in the document; [] if none
+publications (array of strings):
+  ⚠️  COMPLETENESS IS CRITICAL — extract EVERY citation listed.
+  Look for sections named ANY of: "Publications", "Peer-Reviewed Articles",
+  "Journal Articles", "Conference Papers", "Conference Proceedings",
+  "Book Chapters", "Books", "Working Papers", "Preprints",
+  "Technical Reports", "Presentations", "Published Works",
+  "Research Output", "Selected Publications", "Publications and Presentations"
+  Copy each citation EXACTLY as written — do not paraphrase.
+  Academic CVs commonly have 5–30+ publications. Extract ALL of them.
+  [] if no such section exists.
 
-media  (array of strings):
-  Media appearances or press mentions as strings; [] if none
+media (array of strings):
+  Media appearances, press mentions, interviews, podcasts; [] if none
 
-other  (array of objects):
-  Any section not captured above, including licenses.
-  content      : full text of that section (do NOT include a sectionTitle key)
-
-═══════════════════════════════════════════════════════
-WORKED EXAMPLE  (format reference only — do not copy this data)
-═══════════════════════════════════════════════════════
-{
-  "personalInfo": {
-    "fullName": "Dr. Jane Doe, MD",
-    "personalStatement": "Results-driven engineer with 8 years in fintech.",
-    "contact": {
-      "emails": ["jane.doe@example.com"],
-      "phones": ["+44 7700 900123"]
-    }
-  },
-  "workExperience": [
-    {
-      "employer": "Acme Financial Ltd",
-      "jobTitle": "Lead Software Engineer",
-      "startDate": 2019,
-      "endDate": null,
-      "isCurrent": "true",
-      "description": "Architected real-time payments API handling 2M txn/day.",
-      "category": null
-    },
-    {
-      "employer": "State University",
-      "jobTitle": "Visiting Researcher",
-      "startDate": "Spring 2017",
-      "endDate": 2018,
-      "isCurrent": "false",
-      "description": "Conducted research on distributed consensus algorithms.",
-      "category": "Research Experience"
-    }
-  ],
-  "education": [
-    {
-      "institution": "University of Edinburgh",
-      "qualificationTitle": "MEng Computer Science",
-      "startDate": 2011,
-      "endDate": 2015,
-      "description": "First Class Honours. Thesis: Distributed Consensus Algorithms."
-    }
-  ],
-  "skills": ["Python", "Go", "SQL", "FastAPI", "Kafka"],
-  "languages": ["English (Native)", "Spanish (Conversational)"],
-  "socialLinks": ["https://linkedin.com/in/janedoe"],
-  "certificationsAndAwards": [
-    {
-      "description": "AWS Certified Solutions Architect",
-      "organization": "Amazon Web Services",
-      "date": "2022",
-      "category": "Certification"
-    }
-  ],
-  "publications": [
-    "Doe, J. (2021). Distributed Consensus in Edge Networks. IEEE Trans. Networking, 29(3), 112-124."
-  ],
-  "media": [],
-  "other": [
-    {
-      "content": "• Riverside State Bar (2011)"
-    }
-  ]
-}
+other (array of objects):
+  Any section not captured above (including licenses if listed separately).
+  sectionTitle: heading as it appears in the document
+  content: full text of that section
             ```
 
             ---
@@ -427,13 +348,13 @@ WORKED EXAMPLE  (format reference only — do not copy this data)
 
             ## 8. Infrastructure Notes
 
-            **Optimization strategy:** Beam width: **2**.  Train-example injection after stall ≥ **2**.  Beam secondary after stall ≥ **5**.  Prompt lint with up to **2** mutation retries.
+            **Optimization strategy:** Beam width: **2**.  Train-example injection after stall ≥ **2**.  Beam secondary after stall ≥ **5**.  Prompt lint with up to **2** mutation retries.  Stall count persisted across interrupted runs.
 
-            **LLM Fallback:** Four-tier chain: **OpenRouter** → **GitHub Models** (`gpt-4o`, ✅) → **Gemini text** (`gemini-2.0-flash`, ✅) → **Ollama** (`qwen2.5:3b`).
+            **LLM Fallback:** Four-tier chain: **OpenRouter** → **GitHub Models** (`gpt-4o-mini`, ✅) → **Gemini text** (`gemini-2.0-flash`, ✅) → **Ollama** (`qwen2.5:3b`).
 
-            **OCR Caching:** **7** file(s) cached across methods: `{'gemini_ocr': 5, 'pymupdf': 2}`.  
-            Extracted PDF text is persisted in `run_state.db` (keyed by SHA-256 of
-            file bytes). Re-runs skip re-extraction entirely for unchanged files.
+            **Caching:** **7** PDF(s) cached (methods: `{'gemini_ocr': 5, 'pymupdf': 2}`).  **16** (prompt, doc) prediction(s) cached — extractor LLM calls skipped on hits.  
+            Both OCR text and extractor predictions are persisted in `run_state.db`.
+            Re-runs and resumes are nearly free for unchanged prompts and documents.
 
             ---
 
@@ -450,6 +371,6 @@ WORKED EXAMPLE  (format reference only — do not copy this data)
             - **Stochastic metric caching:** `string_semantic` and `array_llm` scores
               are cached per (pred, gold) pair. Initial calls for novel pairs are
               non-deterministic.
-            - **Prompt linting:** The linter catches ISO timestamp and languages
-              inconsistency regressions. Other regression classes (e.g. field removal)
-              are caught by the val score drop but still consume one iteration.
+            - **Prompt linting:** Catches ISO timestamp and languages inconsistency
+              regressions. Other regression classes still consume one iteration before
+              being caught by the val score drop.
