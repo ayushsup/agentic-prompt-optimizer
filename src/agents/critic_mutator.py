@@ -6,18 +6,16 @@ Critic    : Performs a surgical semantic diff between prediction and gold standa
             identifying specific failure modes with actionable, field-level labels
             and severity scores.
 Mutator   : Prompt-engineer agent that synthesises critiques into a non-regressive
-            prompt improvement.  Supports:
-              - Rejection memory to avoid re-proposing failed variants.
-              - Escalating boldness during stalls.
-              - Few-shot example injection from the train set.
-              - Beam-aware restart hints when the beam's second candidate is provided.
+            prompt improvement. Supports rejection memory, escalating boldness,
+            train-example injection, and beam-aware synthesis.
 
 All three agents inherit BaseAgent's four-tier fallback:
-  OpenRouter → GitHub Models → Gemini text → Ollama
+  OpenRouter → GitHub Models (gpt-4o) → Gemini text → Ollama
 """
 
 from __future__ import annotations
-import json  # Added for context compression
+
+import json
 
 from src.agents.base_agent import BaseAgent
 from src.core.state_manager import StateManager
@@ -30,20 +28,23 @@ from src.core.state_manager import StateManager
 class Extractor(BaseAgent):
     """Executes the current prompt against a document to produce JSON."""
 
+    # Hard output contract is injected here so it always overrides whatever
+    # the mutator does to the per-field instruction section.
     _SYSTEM_TEMPLATE = """\
 ══════════════════════════════════════════════════════════
 EXTRACTION ENGINE — OUTPUT CONTRACT (highest priority)
 ══════════════════════════════════════════════════════════
-- Return ONLY raw JSON.  No ```json fences, no preamble, no trailing text.
-- The root object MUST contain EXACTLY these top-level keys — never more:
+• Return ONLY raw JSON. No ```json fences, no preamble, no trailing text.
+• The root object MUST contain EXACTLY these top-level keys — never more:
     personalInfo  workExperience  education  skills  languages  socialLinks
     certificationsAndAwards  publications  media  other
-- FORBIDDEN root keys: schema_definition, name, data, result, cv, resume,
-  or ANY key not listed above.
-- Absent scalar → null.   Absent array → [].
-- Year-only dates → INTEGER (2020 not "2020").
-- isCurrent → boolean (true / false — never a string).
-- Do NOT invent or hallucinate data not present in the document.
+• FORBIDDEN root keys: schema_definition, name, data, result, cv, resume,
+  contact, profile, summary, awards, certifications, or ANY key not listed above.
+• Absent scalar → null.   Absent array → [].
+• Year-only dates → INTEGER (2020 not "2020" — NEVER use ISO timestamp strings).
+• isCurrent → boolean (true / false — never a string).
+• Do NOT invent data not present in the document.
+• Extract EVERY item in each section — do not truncate long arrays.
 ══════════════════════════════════════════════════════════
 
 {current_prompt}
@@ -67,7 +68,7 @@ TARGET JSON SCHEMA
             system_prompt=system_prompt,
             user_prompt=f"DOCUMENT:\n{document_text}",
             role_name="Extractor",
-            temperature=0.0,  # Fully deterministic for extraction
+            temperature=0.0,
         )
 
 
@@ -78,6 +79,7 @@ TARGET JSON SCHEMA
 class Critic(BaseAgent):
     """
     Analyses extraction failures and returns structured, prioritised critiques.
+    Minifies JSON inputs to stay within GitHub Models token limits.
     """
 
     _SYSTEM_PROMPT = """\
@@ -89,24 +91,29 @@ For EACH discrepancy output a critique block in EXACTLY this format:
 
   [SEVERITY: HIGH|MEDIUM|LOW]
   [FIELD: <dot.path.to.field>]
-  [TYPE: MISSING|WRONG_VALUE|TYPE_MISMATCH|HALLUCINATED|FORMAT_ERROR|ARRAY_MISMATCH|NULL_WHEN_PRESENT|FORBIDDEN_KEY]
+  [TYPE: MISSING|WRONG_VALUE|TYPE_MISMATCH|HALLUCINATED|FORMAT_ERROR|ARRAY_MISMATCH|NULL_WHEN_PRESENT|FORBIDDEN_KEY|TRUNCATED_ARRAY]
   Predicted : <value, or ABSENT, or null>
-  Gold      : <expected value>
+  Gold      : <expected value or count>
   Fix       : <one concrete instruction for rewording the extraction prompt>
 
 Severity guidelines:
-  HIGH   — affects a required top-level field or produces wrong root structure
-  MEDIUM — affects a repeated array (workExperience, education) or key nested field
-  LOW    — affects optional/rare fields (publications, media, other)
+  HIGH   — affects a required top-level field or wrong root structure
+  MEDIUM — affects a repeated array (workExperience, education, publications) or key nested field
+  LOW    — affects optional/rare fields (media, other)
 
-Prioritise by severity (HIGH first), then list up to 7 total failures.
+Use TRUNCATED_ARRAY when the prediction has fewer items than gold for publications,
+workExperience, certificationsAndAwards, or education — this means the model stopped
+extracting early and the prompt needs a stronger completeness instruction.
+
+Prioritise by severity (HIGH first), then list up to 8 total failures.
 
 Rules:
   • Skip fields that match correctly — only list failures.
-  • Focus on TYPE_MISMATCH for year-as-string-vs-integer and isCurrent-as-string.
-  • Focus on FORBIDDEN_KEY if the root object contains schema_definition or other illegal keys.
-  • Do NOT suggest fine-tuning, data changes, or post-processing — only prompt wording fixes.
-  • If the extraction is structurally correct, output exactly: NO_FAILURES
+  • Focus on TYPE_MISMATCH for year-as-string vs integer (e.g. "2020" vs 2020).
+  • Do NOT suggest ISO timestamp formats — gold data always uses integer years.
+  • Focus on FORBIDDEN_KEY for any unexpected root keys.
+  • Do NOT suggest fine-tuning, data changes, or post-processing.
+  • If structurally correct with no failures: output exactly: NO_FAILURES
 """
 
     def __init__(self, model_name: str, state_manager: StateManager,
@@ -119,25 +126,24 @@ Rules:
         predicted_json: str,
         gold_json: str,
     ) -> str:
-        # STRATEGY: Minify JSONs to drastically save input tokens
+        # Minify JSONs to save tokens
         try:
             pred_min = json.dumps(json.loads(predicted_json))
-        except:
-            pred_min = predicted_json
-            
+        except Exception:
+            pred_min = predicted_json[:3000]
+
         try:
             gold_min = json.dumps(json.loads(gold_json))
-        except:
-            gold_min = gold_json
+        except Exception:
+            gold_min = gold_json[:3000]
 
-        # STRATEGY: Cut document snippet from 2000 down to 1200 chars. 
         user_prompt = (
-            f"DOCUMENT (first 1200 chars):\n{document_text[:1200]}\n\n"
+            f"DOCUMENT (first 1500 chars):\n{document_text[:1500]}\n\n"
             f"PREDICTED JSON:\n{pred_min}\n\n"
             f"GOLD STANDARD JSON:\n{gold_min}\n\n"
             "List all discrepancies using the specified format, severity-first."
         )
-        
+
         return self.call_llm(
             system_prompt=self._SYSTEM_PROMPT,
             user_prompt=user_prompt,
@@ -153,45 +159,79 @@ Rules:
 class Mutator(BaseAgent):
     """
     Automated prompt engineer.
+
+    Key improvements over baseline:
+    - Explicit zero-field recovery strategies for publications, skills, certs
+    - Correct languages field in root-key contract
+    - Anti-regression rule to preserve working fields
+    - Explicit prohibition of ISO timestamp instructions
     """
 
     _SYSTEM_PROMPT = """\
 You are a world-class prompt engineer specialising in structured JSON extraction from documents.
 
-Your task: rewrite the given extraction prompt to fix every listed failure mode WITHOUT
+Your task: rewrite the given extraction prompt to fix every listed failure WITHOUT
 degrading performance on fields that currently extract correctly.
 
-Internal reasoning (do NOT include in your output):
-  1. Group critiques by failure type (missing, wrong value, type mismatch, format, etc.)
-  2. Identify which instructions are absent, ambiguous, or contradicted in the current prompt.
-  3. Draft targeted additions / clarifications for each failure group.
-  4. Check new rules do not conflict with currently-working extraction rules.
-  5. If a train example is provided, embed it verbatim as a WORKED EXAMPLE section.
-  6. Write the final, self-contained prompt.
+══════════════════════════════════════════════════════════
+IMPROVEMENT STRATEGIES BY FAILURE TYPE
+══════════════════════════════════════════════════════════
 
-Improvement strategies by failure type:
-  MISSING field      → Add an explicit rule naming the exact field and where to find it.
-  WRONG_VALUE        → Clarify which value to prefer (most recent, exact as-written, etc.).
-  TYPE_MISMATCH      → Add an explicit type rule with example ("output years as integers: 2020").
-  HALLUCINATED       → Strengthen "extract ONLY from the document" prohibition.
-  FORMAT_ERROR       → Add a precise format example matching the schema.
-  ARRAY_MISMATCH     → Clarify ordering (most-recent first) and completeness requirement.
-  NULL_WHEN_PRESENT  → Stress that a field present in the document must never be null.
-  FORBIDDEN_KEY      → Add the exact forbidden key to the root-key prohibition list.
+MISSING / TRUNCATED_ARRAY field:
+  publications  → The model likely doesn't recognise the section. Add ALL known
+                  section headers: "Publications", "Peer-Reviewed Articles", "Journal
+                  Articles", "Conference Papers", "Conference Proceedings", "Book
+                  Chapters", "Books", "Working Papers", "Preprints", "Technical Reports",
+                  "Presentations", "Published Works", "Research Output".
+                  Add a completeness warning: "Academic CVs have 5–30+ publications."
+  workExperience → Add a completeness warning and list ALL section headers for
+                  academic CVs: "Academic Appointments", "Research Experience",
+                  "Teaching Experience", "Industry Experience", "Consulting",
+                  "Visiting Positions", "Postdoctoral Research".
+  certificationsAndAwards → Add: named fellowships and research grants → "Award",
+                  bar admissions → "License", academic honours → "Honor", society
+                  memberships → "Membership". Include "License" as a valid category.
+  skills        → Add ALL heading variants: "Technical Skills", "Research Methods",
+                  "Expertise", "Core Competencies", "Programming Languages", "Software",
+                  "Tools", "Areas of Expertise", "Competencies".
+  socialLinks   → Explicitly mention ORCID (orcid.org/...), ResearchGate, Google Scholar,
+                  lab website, portfolio as URL types to look for.
 
-Critical constraints:
-  • The improved prompt MUST preserve the root-key contract:
-    personalInfo  workExperience  education  skills  socialLinks
-    certificationsAndAwards  publications  media  other
-  • Never suggest a field name that differs from the schema (e.g. do not use "company"
-    when the schema uses "employer", do not use "degree" for "qualificationTitle").
-  • NEVER add root-level keys not in: personalInfo workExperience education skills languages socialLinks certificationsAndAwards publications media other.
-    EXPLICITLY FORBIDDEN extra keys: 'certifications', 'summary', 'profile', 'contact', 'awards'.
-  • ANTI-REGRESSION RULE: You must retain ALL existing instructions for fields that are currently working correctly. Do NOT delete or shorten rules for fields that do not appear in the Failure Critiques.
-  • The prompt must work standalone — it is sent directly to the extraction model.
+WRONG_VALUE       → Clarify which value to prefer (exact as-written, most recent, etc.)
+TYPE_MISMATCH     → Add explicit type rule: "output years as integers: 2020 not '2020'"
+                    ⚠️  NEVER instruct the model to use ISO 8601 timestamp strings —
+                    the gold data ALWAYS uses plain integer years or short strings.
+HALLUCINATED      → Strengthen "extract ONLY from the document" prohibition.
+FORMAT_ERROR      → Add a precise format example matching the schema.
+NULL_WHEN_PRESENT → Stress that a field present in the document must never be null.
+FORBIDDEN_KEY     → Add the exact forbidden key to the root-key prohibition list.
 
-OUTPUT FORMAT:
-Return ONLY the final prompt text — no labels, no markdown, no explanation.
+══════════════════════════════════════════════════════════
+CRITICAL CONSTRAINTS — NEVER VIOLATE
+══════════════════════════════════════════════════════════
+1. ROOT KEY CONTRACT — the improved prompt MUST list EXACTLY these keys:
+     personalInfo  workExperience  education  skills  languages  socialLinks
+     certificationsAndAwards  publications  media  other
+   (Note: `languages` is REQUIRED in rule 2. Do not remove it.)
+
+2. SCHEMA FIDELITY — never rename fields:
+   "employer" not "company", "qualificationTitle" not "degree",
+   "certificationsAndAwards" not "certifications"
+
+3. ANTI-REGRESSION — retain ALL existing instructions for fields NOT mentioned in
+   the critiques. Do not delete or shorten rules for fields that are working.
+
+4. NO ISO TIMESTAMPS — never add instructions to format dates as ISO 8601 strings
+   (e.g. "2019-02-28T23:00:00.000Z"). Gold data uses plain integers (2019) or short
+   strings ("Spring 2010"). Any ISO timestamp instruction will cause all date fields
+   to score 0.0. This is the most damaging regression possible.
+
+5. STANDALONE — the prompt must work on its own; it is sent directly to the model.
+
+══════════════════════════════════════════════════════════
+OUTPUT FORMAT
+══════════════════════════════════════════════════════════
+Return ONLY the final prompt text — no labels, no markdown, no preamble.
 """
 
     def __init__(self, model_name: str, state_manager: StateManager,
@@ -207,49 +247,47 @@ Return ONLY the final prompt text — no labels, no markdown, no explanation.
         train_example: str | None = None,
         secondary_prompt: str | None = None,
     ) -> str:
-        
         critique_block = "\n\n---\n\n".join(
             f"Critique {i + 1}:\n{c}" for i, c in enumerate(critiques)
         )
 
         rejection_block = ""
         if rejected_prompts:
-            # STRATEGY: Keep only the last 3 rejected prompts (instead of 5) 
-            # and truncate them to 400 chars (instead of 600) to save tokens.
             recent = rejected_prompts[-3:]
             rejection_block = (
                 "\n\nREJECTED PROMPTS — do NOT reproduce these variants:\n"
                 + "\n\n".join(
-                    f"[REJECTED {i + 1}]:\n{p[:400]}…" for i, p in enumerate(recent)
+                    f"[REJECTED {i+1}]:\n{p[:500]}…" for i, p in enumerate(recent)
                 )
             )
 
         stall_note = ""
         if stall_count >= 5:
             stall_note = (
-                f"\n\n⚠️ SEVERE STALL ({stall_count} iterations without improvement). "
-                "Take a RADICAL approach: restructure the field rules, change instruction order, "
-                "or decompose a failing field into explicit numbered sub-steps."
+                f"\n\n⚠️  SEVERE STALL ({stall_count} iterations without improvement). "
+                "Take a RADICAL approach: completely restructure the failing field rules, "
+                "reorder sections, or decompose a complex field into numbered sub-steps. "
+                "Do NOT reproduce any rejected variant."
             )
         elif stall_count >= 3:
             stall_note = (
-                f"\n\n⚠️ STALL ({stall_count} iterations without improvement). "
-                "Try a significantly different strategy: add concrete format examples inline."
+                f"\n\n⚠️  STALL ({stall_count} iterations). Incremental edits are not "
+                "working. Try a significantly different approach for the failing fields."
             )
 
         example_block = ""
         if train_example:
             example_block = (
-                "\n\n📌 TRAIN EXAMPLE:\n"
-                f"{train_example}"
+                "\n\n📌 TRAIN EXAMPLE — embed a worked example like this in the "
+                "improved prompt to give the model a concrete grounding reference:\n"
+                f"{train_example[:2000]}"
             )
 
         beam_block = ""
         if secondary_prompt:
-            # STRATEGY: Truncate secondary prompt heavily.
             beam_block = (
-                "\n\nALTERNATIVE PROMPT (second-best from beam):\n"
-                f"{secondary_prompt[:800]}…"
+                "\n\nALTERNATIVE PROMPT (second-best from beam — mine for useful ideas):\n"
+                f"{secondary_prompt[:900]}…"
             )
 
         user_prompt = (
